@@ -46,6 +46,15 @@ async function loadRemoteLists() {
   }
 }
 
+// Popup/panel may be closed — a broadcast with no receiver must not throw.
+function broadcast(msg) {
+  try {
+    Promise.resolve(chrome.runtime.sendMessage(msg)).catch(() => {});
+  } catch {
+    // ignore
+  }
+}
+
 function iconPaths(level) {
   const paths = {};
   for (const size of [16, 32, 48, 128]) paths[size] = `icons/icon${size}-${level}.png`;
@@ -70,7 +79,7 @@ async function scoreTab(tabId, url) {
   result.trusted = data.trustList.has(result.registrable);
   results.set(tabId, result);
   paint(tabId, result);
-  chrome.runtime.sendMessage({ type: 'scored', tabId }).catch(() => {});
+  broadcast({ type: 'scored', tabId });
   maybeBanner(tabId, url, result);
 }
 

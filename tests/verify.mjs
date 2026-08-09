@@ -1,7 +1,8 @@
 // Invariant checks: manifests, locales, icons, dist output (M0) + engine corpus (M1).
 // Run: node tests/verify.mjs (after node scripts/build.mjs)
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, mkdtempSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { toFirefoxManifest } from '../scripts/build.mjs';
@@ -10,6 +11,7 @@ import { punyDecode, decodeHost, asciiFold, hasMixedScripts } from '../src/engin
 import { registrableDomain } from '../src/engine/psl.js';
 import { levenshtein } from '../src/engine/signals.js';
 import { format } from '../src/ui/i18n.js';
+import { zipDirectory } from '../scripts/package.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = (p) => JSON.parse(readFileSync(join(root, p), 'utf8'));
@@ -208,6 +210,29 @@ check('bundle: i18n + banner bundled for both targets', () => {
 check('locales: M3 options/banner strings present', () => {
   for (const key of ['optionsHeading', 'strictLabel', 'strictHint', 'remoteLabel', 'remoteUrlLabel', 'remoteHint', 'langLabel', 'langAuto', 'trustTitle', 'trustEmpty', 'removeTrust', 'bannerDismiss']) {
     assert.ok(enMessages[key], `en has ${key}`);
+  }
+});
+
+// ── M4: manifest hygiene + packaging ────────────────────────────
+check('manifests: no unused contextMenus permission', () => {
+  const c = readJson('src/manifest.json');
+  const f = toFirefoxManifest(c);
+  assert.ok(!c.permissions.includes('contextMenus'));
+  assert.ok(!f.permissions.includes('contextMenus'));
+});
+
+check('zip: valid store package (store method, EOCD intact)', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'fc-zip-'));
+  try {
+    writeFileSync(join(dir, 'a.txt'), 'hello');
+    mkdirSync(join(dir, 'sub'), { recursive: true });
+    writeFileSync(join(dir, 'sub', 'b.json'), '{"x":1}');
+    const zip = zipDirectory(dir);
+    assert.equal(zip.readUInt32LE(0), 0x04034b50, 'local header magic');
+    assert.equal(zip.readUInt32LE(zip.length - 22), 0x06054b50, 'EOCD magic');
+    assert.equal(zip.readUInt16LE(zip.length - 12), 2, 'two entries');
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
   }
 });
 

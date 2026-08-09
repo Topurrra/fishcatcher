@@ -14,6 +14,7 @@ No build framework — plain vanilla JS, two small Node scripts.
 node scripts/make-icons.mjs   # regenerate placeholder icons (only when src changes)
 node scripts/build.mjs        # stamp dist/chrome and dist/firefox from src/
 node tests/verify.mjs         # invariant checks (run after build)
+node scripts/package.mjs      # zip both targets for store submission (run after build)
 ```
 
 - **Chrome / Brave:** `chrome://extensions` → Developer mode → *Load unpacked* → `dist/chrome`
@@ -28,6 +29,12 @@ node tests/verify.mjs         # invariant checks (run after build)
 - `src/data/` — (M1) bundled detection lists (safe list, brands, TLDs, keywords)
 - `src/_locales/{en,ka}/` — i18n strings
 
+## Store submission
+
+- Zips: `dist/fishcatcher-chrome.zip` (Chrome Web Store, also Brave/Edge/Opera), `dist/fishcatcher-firefox.zip` (AMO)
+- Listing copy: [store-listing.md](store-listing.md) — privacy policy: [privacy-policy.md](privacy-policy.md)
+- Screenshots and promo tiles are a manual design step (see ROADMAP.md)
+
 ## Status
 
-M0 scaffold. See Plan.md §9 for milestones.
+M0–M4 implemented. See Plan.md §9 for milestones and ROADMAP.md for deferred work.

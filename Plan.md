@@ -119,7 +119,7 @@ Shared 100% vanilla JS source (no build framework — same convention as ToolKit
 
 Side panel/sidebar share one `panel.html`; popup is a compact version of the same status card.
 
-**Minimal permissions (both):** `storage`, `tabs` (needed for auto-badge on navigation), `scripting` + `activeTab` (strict-mode banner injection), `contextMenus` (right-click "Check this link"). `host_permissions` only for the optional update endpoint, added only when the user enables it.
+**Minimal permissions (both):** `storage`, `tabs` (needed for auto-badge on navigation), `scripting` + `activeTab` (strict-mode banner injection). `host_permissions` only for the optional update endpoint, added only when the user enables it. (Right-click "Check this link" deferred — see ROADMAP.md.)
 
 ---
 
