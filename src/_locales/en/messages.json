@@ -1,0 +1,22 @@
+{
+  "appName": {
+    "message": "FishCatcher",
+    "description": "Extension name"
+  },
+  "appDescription": {
+    "message": "Detects phishing-like URL patterns and explains the warning signs in plain language — without blocking anything.",
+    "description": "Extension description shown in the store and extension manager"
+  },
+  "m0Status": {
+    "message": "Detection engine coming soon",
+    "description": "Placeholder status shown until the M1 engine ships"
+  },
+  "m0Note": {
+    "message": "FishCatcher is installed. URL analysis arrives with the next update — nothing is sent anywhere, everything stays on your device.",
+    "description": "Placeholder explanation shown in popup and panel"
+  },
+  "panelHint": {
+    "message": "When you visit a page, FishCatcher will show its verdict here and explain every warning sign it finds.",
+    "description": "Panel placeholder explaining the future behavior"
+  }
+}

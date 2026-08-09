@@ -1,0 +1,22 @@
+{
+  "appName": {
+    "message": "FishCatcher",
+    "description": "Extension name"
+  },
+  "appDescription": {
+    "message": "ამოიცნობს ფიშინგისთვის დამახასიათებელ URL-ნიშნებს და გასაგებად განგიმარტავთ, რატომ გაფრთხილებთ — და არაფერს ბლოკავს.",
+    "description": "Extension description shown in the store and extension manager"
+  },
+  "m0Status": {
+    "message": "შემოწმების ძრავა მალე გამოჩნდება",
+    "description": "Placeholder status shown until the M1 engine ships"
+  },
+  "m0Note": {
+    "message": "FishCatcher დაყენებულია. URL-ების ანალიზი შემდეგ განახლებასთან ერთად გამოჩნდება — არაფერი იგზავნება, ყველაფერი თქვენს მოწყობილობაზე რჩება.",
+    "description": "Placeholder explanation shown in popup and panel"
+  },
+  "panelHint": {
+    "message": "გვერდზე შესვლისას FishCatcher აქ გაჩვენებთ გადაწყვეტილებას და განმარტავს ყველა ნაპოვნ საეჭვო ნიშანს.",
+    "description": "Panel placeholder explaining the future behavior"
+  }
+}
