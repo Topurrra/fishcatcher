@@ -39,6 +39,7 @@ const BACKGROUND_MODULES = [
   'engine/bloom.js',
   'engine/remote.js',
   'engine/rdap.js',
+  'engine/ml.js',
   'ui/i18n.js',
   'background.js'
 ];

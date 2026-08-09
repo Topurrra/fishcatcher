@@ -210,5 +210,9 @@
   "remoteDefaultHint": {
     "message": "ნაგულისხმევი წყარო: topurrra/fishcatcher-registry GitHub-ზე.",
     "description": "Options: default remote update source"
+  },
+  "reasonMl": {
+    "message": "დომენის სიმბოლოების ნაკადი ავტოგენერირებულ შემთხვევით დომენებს ჰგავს",
+    "description": "S17 lexical model signal"
   }
 }

@@ -1,6 +1,7 @@
-// S1–S16 red-flag signals. Each match contributes a weight and an i18n reason key.
+// S1–S17 red-flag signals. Each match contributes a weight and an i18n reason key.
 import { decodeHost, asciiFold, hasMixedScripts } from './punycode.js';
 import { registrableDomain, sldOf } from './psl.js';
+import { mlPredict } from './ml.js';
 
 export function levenshtein(a, b) {
   if (a === b) return 0;
@@ -109,6 +110,9 @@ export function runSignals(ctx, data) {
 
   // S11 — short random-looking domain
   if (!isIp && sld.length <= 6 && /\d/.test(sld)) add(5, 'reasonShort');
+
+  // S17 — lexical model flags random/DGA-like domains
+  if (!isIp && data.ml && mlPredict(data.ml, sld) >= (data.ml.threshold ?? 0.6)) add(20, 'reasonMl');
 
   return { score, reasons };
 }

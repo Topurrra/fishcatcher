@@ -210,5 +210,9 @@
   "remoteDefaultHint": {
     "message": "Default source: topurrra/fishcatcher-registry on GitHub.",
     "description": "Options: default remote update source"
+  },
+  "reasonMl": {
+    "message": "The domain's letter pattern resembles automatically generated random domains",
+    "description": "S17 lexical model signal"
   }
 }

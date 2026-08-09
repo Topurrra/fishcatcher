@@ -26,7 +26,8 @@ const data = {
   tlds: readJson('src/data/tlds.json').tlds,
   keywords: readJson('src/data/keywords.json').keywords,
   psl: readJson('src/data/psl.json').suffixes,
-  blockList: new Set(readJson('src/data/blocklist.json').domains)
+  blockList: new Set(readJson('src/data/blocklist.json').domains),
+  ml: readJson('src/data/ml-weights.json')
 };
 const enMessages = readJson('src/_locales/en/messages.json');
 
@@ -117,8 +118,8 @@ const phishing = [
   ['http://185.22.64.3/login', 'high'],
   ['https://paypal.com@evil.com/', 'elevated'],
   ['https://secure-verify-account.tk/', 'elevated'],
-  ['https://a1b2c3.xyz/', 'elevated'],
-  ['https://microsoft-login-2026.com/', 'high'],
+  ['https://a1b2c3.xyz/', 'high'],
+  ['https://microsoft-login-2026.com/', 'critical'],
   ['https://dhl-track-parcel.top/', 'high'],
   ['https://login.dhl-track-parcel.top/', 'critical']
 ];
@@ -321,6 +322,33 @@ check('locales: M6 strings present', () => {
   for (const key of ['reasonYoungDomain', 'reasonBloom', 'cloudLabel', 'cloudHint', 'remoteDefaultHint']) {
     assert.ok(enMessages[key], `en has ${key}`);
   }
+});
+
+// ── M7: lexical model (S17) ─────────────────────────────────────
+import { mlPredict } from '../src/engine/ml.js';
+
+check('ml: random DGAs high, legit domains low', () => {
+  const ml = data.ml;
+  for (const d of ['xqzkvwqt', 'qwzxkjt9', 'a1b2c3']) assert.ok(mlPredict(ml, d) >= ml.threshold, `${d} flagged`);
+  for (const d of ['google', 'example', 'microsoft', 'tbcbank', 'netgazeti']) assert.ok(mlPredict(ml, d) < ml.threshold, `${d} clean`);
+});
+
+check('engine: S17 fires on random domain only', () => {
+  const flagged = analyzeUrl('https://xqzkvwqt.com/', data);
+  assert.ok(flagged.reasons.some((x) => x.key === 'reasonMl'));
+  const clean = analyzeUrl('https://example.com/', data);
+  assert.ok(!clean.reasons.some((x) => x.key === 'reasonMl'));
+});
+
+check('bundle: ml inference bundled for both targets', () => {
+  for (const target of ['chrome', 'firefox']) {
+    const bg = readFileSync(join(root, `dist/${target}/background.js`), 'utf8');
+    assert.ok(bg.includes('function mlPredict'), `${target}: mlPredict bundled`);
+  }
+});
+
+check('locales: reasonMl present', () => {
+  assert.ok(enMessages.reasonMl);
 });
 
 check('zip: valid store package (store method, EOCD intact)', () => {

@@ -19,13 +19,14 @@ let pendingNote = null;
 let cloudEnabled = false;
 
 async function loadData() {
-  const [safe, brands, tlds, keywords, psl, block, stored] = await Promise.all([
+  const [safe, brands, tlds, keywords, psl, block, mlw, stored] = await Promise.all([
     fetch(chrome.runtime.getURL('data/safe-list.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/brands.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/tlds.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/keywords.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/psl.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/blocklist.json')).then((r) => r.json()),
+    fetch(chrome.runtime.getURL('data/ml-weights.json')).then((r) => r.json()),
     chrome.storage.local.get(['trust:list', 'opt:cloud'])
   ]);
   data.safeList = new Set(safe.domains);
@@ -34,6 +35,7 @@ async function loadData() {
   data.keywords = keywords.keywords;
   data.psl = psl.suffixes;
   data.blockList = new Set(block.domains);
+  data.ml = mlw;
   data.trustList = new Set(stored['trust:list'] ? JSON.parse(stored['trust:list']) : []);
   cloudEnabled = !!stored['opt:cloud'];
   await loadRemoteLists();
