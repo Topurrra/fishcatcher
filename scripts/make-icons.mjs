@@ -63,7 +63,14 @@ function inTriangle(px, py, a, b, c) {
   return !(neg && pos);
 }
 
-function drawIcon(size) {
+const PALETTES = {
+  low: { top: [21, 94, 117], bottom: [11, 32, 51] },
+  elevated: { top: [161, 98, 7], bottom: [69, 26, 3] },
+  high: { top: [194, 65, 12], bottom: [67, 20, 7] },
+  critical: { top: [185, 28, 28], bottom: [69, 10, 10] }
+};
+
+function drawIcon(size, palette = PALETTES.low) {
   const s = size;
   const img = Buffer.alloc(size * size * 4);
   const radius = 0.22 * s;
@@ -95,7 +102,7 @@ function drawIcon(size) {
     return clamp01(d);
   };
 
-  const top = [21, 94, 117], bottom = [11, 32, 51];
+  const { top, bottom } = palette;
   const tailColor = [159, 215, 240], bodyColor = [224, 242, 254], eyeColor = [11, 32, 51];
 
   for (let y = 0; y < size; y++) {
@@ -128,7 +135,9 @@ function drawIcon(size) {
 const outDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'icons');
 mkdirSync(outDir, { recursive: true });
 for (const size of [16, 32, 48, 128]) {
-  const file = join(outDir, `icon${size}.png`);
-  writeFileSync(file, drawIcon(size));
-  console.log(`wrote ${file}`);
+  writeFileSync(join(outDir, `icon${size}.png`), drawIcon(size));
+  for (const [level, palette] of Object.entries(PALETTES)) {
+    writeFileSync(join(outDir, `icon${size}-${level}.png`), drawIcon(size, palette));
+  }
 }
+console.log(`wrote ${4 * (1 + Object.keys(PALETTES).length)} icons to ${outDir}`);

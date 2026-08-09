@@ -23,7 +23,7 @@ export function analyzeUrl(input, data) {
   const registrable = isIpAddress(host) ? host : registrableDomain(host, data.psl);
   const result = { url: input, host, registrable, score: 0, level: 'low', reasons: [] };
 
-  if (data.safeList.has(registrable)) return result;
+  if (data.safeList.has(registrable) || data.trustList?.has(registrable)) return result;
 
   const { score, reasons } = runSignals({ url, host, registrable }, data);
   result.score = Math.min(100, score);

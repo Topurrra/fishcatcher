@@ -153,6 +153,37 @@ check('engine: non-http input ignored', () => {
   assert.equal(analyzeUrl('not a url', data), null);
 });
 
+// ── M2: trust list + bundling + UI wiring ───────────────────────
+check('engine: user trust short-circuits scoring', () => {
+  const trusted = { ...data, trustList: new Set(['evil.ru']) };
+  const r = analyzeUrl('https://login.microsoft.com.evil.ru/', trusted);
+  assert.equal(r.score, 0);
+  assert.equal(r.level, 'low');
+});
+
+check('bundle: background is a classic script in both targets', () => {
+  for (const target of ['chrome', 'firefox']) {
+    const src = readFileSync(join(root, `dist/${target}/background.js`), 'utf8');
+    assert.ok(src.includes('function analyzeUrl'), `${target}: engine bundled`);
+    assert.ok(!/^import /m.test(src), `${target}: no import statements`);
+    assert.ok(!/^export /m.test(src), `${target}: no export statements`);
+  }
+});
+
+check('icons: per-level variants exist', () => {
+  for (const size of [16, 32, 48, 128]) {
+    for (const level of ['low', 'elevated', 'high', 'critical']) {
+      assert.ok(existsSync(join(root, `src/icons/icon${size}-${level}.png`)), `icon${size}-${level}.png`);
+    }
+  }
+});
+
+check('locales: M2 popup strings present', () => {
+  for (const key of ['levelLow', 'levelElevated', 'levelHigh', 'levelCritical', 'trustButton', 'untrustButton', 'recheckButton', 'reasonsTitle', 'noCheck']) {
+    assert.ok(enMessages[key], `en has ${key}`);
+  }
+});
+
 // ── report ──────────────────────────────────────────────────────
 let failed = 0;
 for (const c of checks) {

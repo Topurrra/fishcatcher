@@ -62,5 +62,41 @@
   "reasonShort": {
     "message": "ძალიან მოკლე, შემთხვევითი სახის დომენი",
     "description": "S11 short random domain signal"
+  },
+  "levelLow": {
+    "message": "საეჭვო ნიშნები არ ჩანს",
+    "description": "Low risk verdict"
+  },
+  "levelElevated": {
+    "message": "რამდენიმე უჩვეულო ნიშანი — კიდევ ერთხელ შეამოწმეთ მისამართი",
+    "description": "Elevated risk verdict"
+  },
+  "levelHigh": {
+    "message": "ფიშინგის რამდენიმე ნიშანი — სიფრთხილე, სანამ შეხვალთ",
+    "description": "High risk verdict"
+  },
+  "levelCritical": {
+    "message": "ფიშინგის ძლიერი ნიშნები — ნუ შეიყვანთ აქ პაროლებს",
+    "description": "Critical risk verdict"
+  },
+  "trustButton": {
+    "message": "ენდე ამ საიტს",
+    "description": "Popup button: whitelist the current registrable domain locally"
+  },
+  "untrustButton": {
+    "message": "ნდობის გაუქმება",
+    "description": "Popup button: remove local whitelist entry"
+  },
+  "recheckButton": {
+    "message": "თავიდან შემოწმება",
+    "description": "Popup button: re-score the current tab"
+  },
+  "reasonsTitle": {
+    "message": "რატომ ვხედავ ამას?",
+    "description": "Popup heading above the reasons list"
+  },
+  "noCheck": {
+    "message": "ამ გვერდის შემოწმება შეუძლებელია (ბრაუზერის გვერდები არ მოწმდება)",
+    "description": "Popup status for chrome:// and other uncheckable pages"
   }
 }
