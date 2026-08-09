@@ -35,6 +35,7 @@ const BACKGROUND_MODULES = [
   'engine/psl.js',
   'engine/signals.js',
   'engine/analyzer.js',
+  'ui/i18n.js',
   'background.js'
 ];
 

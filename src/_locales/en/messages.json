@@ -98,5 +98,53 @@
   "noCheck": {
     "message": "This page can't be checked (browser pages are out of scope)",
     "description": "Popup status for chrome:// and other uncheckable pages"
+  },
+  "optionsHeading": {
+    "message": "Settings",
+    "description": "Options page heading"
+  },
+  "strictLabel": {
+    "message": "Strict mode — show a warning banner on risky pages",
+    "description": "Options: strict mode toggle"
+  },
+  "strictHint": {
+    "message": "Off by default. The banner never blocks the page and can always be dismissed.",
+    "description": "Options: strict mode explanation"
+  },
+  "remoteLabel": {
+    "message": "Fetch updated detection lists from a URL",
+    "description": "Options: remote update toggle"
+  },
+  "remoteUrlLabel": {
+    "message": "Update URL",
+    "description": "Options: remote update URL field label"
+  },
+  "remoteHint": {
+    "message": "Optional. Only a JSON file is downloaded — nothing leaves your device.",
+    "description": "Options: remote update privacy note"
+  },
+  "langLabel": {
+    "message": "Language",
+    "description": "Options: language selector label"
+  },
+  "langAuto": {
+    "message": "Automatic (browser language)",
+    "description": "Options: follow browser language"
+  },
+  "trustTitle": {
+    "message": "Trusted sites",
+    "description": "Options: trusted sites section heading"
+  },
+  "trustEmpty": {
+    "message": "No trusted sites yet.",
+    "description": "Options: empty trusted list"
+  },
+  "removeTrust": {
+    "message": "Remove",
+    "description": "Options: remove trusted site button"
+  },
+  "bannerDismiss": {
+    "message": "Dismiss",
+    "description": "Strict-mode banner dismiss button"
   }
 }

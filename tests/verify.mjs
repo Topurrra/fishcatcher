@@ -9,6 +9,7 @@ import { analyzeUrl } from '../src/engine/analyzer.js';
 import { punyDecode, decodeHost, asciiFold, hasMixedScripts } from '../src/engine/punycode.js';
 import { registrableDomain } from '../src/engine/psl.js';
 import { levenshtein } from '../src/engine/signals.js';
+import { format } from '../src/ui/i18n.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = (p) => JSON.parse(readFileSync(join(root, p), 'utf8'));
@@ -180,6 +181,32 @@ check('icons: per-level variants exist', () => {
 
 check('locales: M2 popup strings present', () => {
   for (const key of ['levelLow', 'levelElevated', 'levelHigh', 'levelCritical', 'trustButton', 'untrustButton', 'recheckButton', 'reasonsTitle', 'noCheck']) {
+    assert.ok(enMessages[key], `en has ${key}`);
+  }
+});
+
+// ── M3: strict mode, options, i18n override ─────────────────────
+check('i18n: $N substitution', () => {
+  assert.equal(format('Mentions $1 but is not a $1 domain', ['Microsoft']), 'Mentions Microsoft but is not a Microsoft domain');
+  assert.equal(format('No $1 here', []), 'No  here');
+});
+
+check('manifest: options page wired', () => {
+  const m = readJson('src/manifest.json');
+  assert.equal(m.options_ui.page, 'options/options.html');
+  assert.ok(m.options_ui.open_in_tab);
+});
+
+check('bundle: i18n + banner bundled for both targets', () => {
+  for (const target of ['chrome', 'firefox']) {
+    const src = readFileSync(join(root, `dist/${target}/background.js`), 'utf8');
+    assert.ok(src.includes('function getMessage'), `${target}: i18n bundled`);
+    assert.ok(src.includes('function showBanner'), `${target}: banner bundled`);
+  }
+});
+
+check('locales: M3 options/banner strings present', () => {
+  for (const key of ['optionsHeading', 'strictLabel', 'strictHint', 'remoteLabel', 'remoteUrlLabel', 'remoteHint', 'langLabel', 'langAuto', 'trustTitle', 'trustEmpty', 'removeTrust', 'bannerDismiss']) {
     assert.ok(enMessages[key], `en has ${key}`);
   }
 });

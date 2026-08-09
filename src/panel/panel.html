@@ -11,14 +11,24 @@
     <h1 data-i18n="appName">FishCatcher</h1>
   </header>
 
-  <div class="status">
+  <div id="status" class="status level-low">
     <span class="dot"></span>
-    <span class="label" data-i18n="m0Status">Detection engine coming soon</span>
+    <span class="label" id="status-label"></span>
   </div>
 
-  <p class="note" data-i18n="panelHint">When you visit a page, FishCatcher will show its verdict here.</p>
+  <p id="domain" class="domain" hidden></p>
 
-  <p class="note" data-i18n="m0Note">FishCatcher is installed.</p>
+  <section id="reasons-wrap" hidden>
+    <h2 data-i18n="reasonsTitle">Why am I seeing this?</h2>
+    <ul id="reasons"></ul>
+  </section>
+
+  <p id="hint" class="note" data-i18n="panelHint"></p>
+
+  <div class="actions">
+    <button id="trust-btn" hidden></button>
+    <button id="recheck-btn" data-i18n="recheckButton">Check again</button>
+  </div>
 
   <script type="module" src="panel.js"></script>
 </body>

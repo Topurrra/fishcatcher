@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="../ui/base.css">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <header>
+    <img src="../icons/icon32.png" alt="">
+    <h1><span data-i18n="appName">FishCatcher</span> — <span data-i18n="optionsHeading">Settings</span></h1>
+  </header>
+
+  <section>
+    <label class="row">
+      <input type="checkbox" id="strict">
+      <span data-i18n="strictLabel">Strict mode — show a warning banner on risky pages</span>
+    </label>
+    <p class="hint" data-i18n="strictHint">Off by default. The banner never blocks the page and can always be dismissed.</p>
+  </section>
+
+  <section>
+    <label class="row">
+      <input type="checkbox" id="remote">
+      <span data-i18n="remoteLabel">Fetch updated detection lists from a URL</span>
+    </label>
+    <label class="row url">
+      <span data-i18n="remoteUrlLabel">Update URL</span>
+      <input type="url" id="remote-url" placeholder="https://example.com/fishcatcher-lists.json">
+    </label>
+    <p class="hint" data-i18n="remoteHint">Optional. Only a JSON file is downloaded — nothing leaves your device.</p>
+  </section>
+
+  <section>
+    <label class="row">
+      <span data-i18n="langLabel">Language</span>
+      <select id="lang">
+        <option value="auto" data-i18n="langAuto">Automatic (browser language)</option>
+        <option value="en">English</option>
+        <option value="ka">ქართული</option>
+      </select>
+    </label>
+  </section>
+
+  <section>
+    <h2 data-i18n="trustTitle">Trusted sites</h2>
+    <p id="trust-empty" class="hint" data-i18n="trustEmpty" hidden>No trusted sites yet.</p>
+    <ul id="trust-list"></ul>
+  </section>
+
+  <script type="module" src="options.js"></script>
+</body>
+</html>

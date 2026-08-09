@@ -98,5 +98,53 @@
   "noCheck": {
     "message": "ამ გვერდის შემოწმება შეუძლებელია (ბრაუზერის გვერდები არ მოწმდება)",
     "description": "Popup status for chrome:// and other uncheckable pages"
+  },
+  "optionsHeading": {
+    "message": "პარამეტრები",
+    "description": "Options page heading"
+  },
+  "strictLabel": {
+    "message": "მკაცრი რეჟიმი — გამაფრთხილებელი ბანერი სარისკო გვერდებზე",
+    "description": "Options: strict mode toggle"
+  },
+  "strictHint": {
+    "message": "ნაგულისხმევად გამორთული. ბანერი არასდროს ბლოკავს გვერდს და ყოველთვის დახურვადია.",
+    "description": "Options: strict mode explanation"
+  },
+  "remoteLabel": {
+    "message": "განახლებული სიების ჩამოტვირთვა URL-იდან",
+    "description": "Options: remote update toggle"
+  },
+  "remoteUrlLabel": {
+    "message": "განახლების URL",
+    "description": "Options: remote update URL field label"
+  },
+  "remoteHint": {
+    "message": "არასავალდებულო. მხოლოდ JSON-ფაილი იტვირთება — არაფერი გადის თქვენი მოწყობილობიდან.",
+    "description": "Options: remote update privacy note"
+  },
+  "langLabel": {
+    "message": "ენა",
+    "description": "Options: language selector label"
+  },
+  "langAuto": {
+    "message": "ავტომატური (ბრაუზერის ენა)",
+    "description": "Options: follow browser language"
+  },
+  "trustTitle": {
+    "message": "ნდობით აღნიშნული საიტები",
+    "description": "Options: trusted sites section heading"
+  },
+  "trustEmpty": {
+    "message": "ჯერ არ გაქვთ ნდობით აღნიშნული საიტი.",
+    "description": "Options: empty trusted list"
+  },
+  "removeTrust": {
+    "message": "წაშლა",
+    "description": "Options: remove trusted site button"
+  },
+  "bannerDismiss": {
+    "message": "დახურვა",
+    "description": "Strict-mode banner dismiss button"
   }
 }
