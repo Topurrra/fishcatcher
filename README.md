@@ -41,4 +41,4 @@ node scripts/package.mjs      # zip both targets for store submission (run after
 
 ## Status
 
-M0–M5 implemented. See Plan.md §9 for milestones and ROADMAP.md for deferred work.
+M0–M7 implemented. See Plan.md §9 for milestones and ROADMAP.md for deferred work.

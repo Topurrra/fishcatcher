@@ -172,7 +172,10 @@ The engine has **zero extension-API dependencies** → unit-testable in plain No
 | **M3** UX complete | strict-mode banner, options, side panel, EN+KA _locales | Non-technical person test: can they explain the warning back? |
 | **M4** Firefox | Firefox manifest variant + sidebar + store-ready packaging | Loads as temporary add-on in Firefox, same corpus passes |
 | **M5** Friend-review gaps | Blocklist (S12), login-form probe (S13), device-code protection (S14), QR tools, MIT open-source | §10a; 44-check suite green |
-| **M6** Release | Chrome Web Store + AMO listings, privacy policy text, screenshots | Published |
+| **M6** Opt-in cloud + updates v2 | RDAP domain age (S15), bloom community feed (S16), GitHub-registry updates (ETag + daily alarm), optional host permissions requested at opt-in | 50-check suite green |
+| **M7** On-device ML | Lexical logistic regression (S17), trained offline on Majestic Million + synthetic DGAs, weights as JSON | 94% train accuracy; legit corpus stays 0 |
+| **M8** AiTM signals | From `AiTM_MV3_Detection_Research_Brief_Qwen_2026-08-10.docx`: identity-security interaction on unrelated origin (primary), resource-origin graph anomaly (corroboration) | Brief's ranked signal set |
+| **M9** Release | Chrome Web Store + AMO listings, privacy policy text, screenshots | Published |
 
 ### End-to-end verification (every milestone)
 1. `node tests/verify.mjs` — engine corpus green.
