@@ -5,12 +5,18 @@
 const LEVEL_COLORS = { low: '#34d399', elevated: '#fbbf24', high: '#fb923c', critical: '#f87171' };
 const BADGE_TEXT = { low: '', elevated: '!', high: '!!', critical: '!!!' };
 
-const data = { safeList: new Set(), brands: [], tlds: {}, keywords: [], psl: [], blockList: new Set(), trustList: new Set() };
+// One-click default update source — same pattern as voli-registry.
+const DEFAULT_REMOTE_URL = 'https://raw.githubusercontent.com/topurrra/fishcatcher-registry/main/fishcatcher-lists.json';
+
+const data = { safeList: new Set(), brands: [], tlds: {}, keywords: [], psl: [], blockList: new Set(), trustList: new Set(), bloom: null };
 const results = new Map();
 const probeFlags = new Map(); // tabId → page has a password form
+const cloudFlags = new Map(); // tabId → young-domain age in days (opt-in RDAP)
+const ageCache = new Map(); // registrable → age in days | null
 const dismissedBanners = new Set(); // `${tabId} ${url}`
 let pendingResult = null; // one-shot result handed to the panel (QR / link checks)
 let pendingNote = null;
+let cloudEnabled = false;
 
 async function loadData() {
   const [safe, brands, tlds, keywords, psl, block, stored] = await Promise.all([
@@ -20,7 +26,7 @@ async function loadData() {
     fetch(chrome.runtime.getURL('data/keywords.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/psl.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/blocklist.json')).then((r) => r.json()),
-    chrome.storage.local.get('trust:list')
+    chrome.storage.local.get(['trust:list', 'opt:cloud'])
   ]);
   data.safeList = new Set(safe.domains);
   data.brands = brands.brands;
@@ -29,26 +35,53 @@ async function loadData() {
   data.psl = psl.suffixes;
   data.blockList = new Set(block.domains);
   data.trustList = new Set(stored['trust:list'] ? JSON.parse(stored['trust:list']) : []);
+  cloudEnabled = !!stored['opt:cloud'];
   await loadRemoteLists();
 }
 const ready = loadData();
 
 // Optional opt-in update channel: downloads a JSON bundle, never uploads anything.
-// Falls back silently to the bundled lists on any failure.
+// ETag-cached, refreshed daily via alarm. Falls back silently to bundled lists.
 async function loadRemoteLists() {
-  const prefs = await chrome.storage.local.get(['opt:remote', 'opt:remoteUrl']);
-  if (!prefs['opt:remote'] || !prefs['opt:remoteUrl']) return;
+  const prefs = await chrome.storage.local.get(['opt:remote', 'opt:remoteUrl', 'data:etag']);
+  if (!prefs['opt:remote']) return;
+  const url = prefs['opt:remoteUrl'] || DEFAULT_REMOTE_URL;
   try {
-    const res = await fetch(prefs['opt:remoteUrl'], { cache: 'no-store' });
+    const headers = {};
+    if (prefs['data:etag']) headers['If-None-Match'] = prefs['data:etag'];
+    const res = await fetch(url, { cache: 'no-store', headers });
+    if (res.status === 304) return;
     if (!res.ok) return;
     const bundle = await res.json();
-    if (Array.isArray(bundle.domains)) data.safeList = new Set(bundle.domains);
-    if (Array.isArray(bundle.brands)) data.brands = bundle.brands;
-    if (bundle.tlds && typeof bundle.tlds === 'object') data.tlds = bundle.tlds;
-    if (Array.isArray(bundle.keywords)) data.keywords = bundle.keywords;
-    if (Array.isArray(bundle.blocklist)) data.blockList = new Set(bundle.blocklist);
+    Object.assign(data, applyBundle(data, bundle));
+    const etag = res.headers.get('ETag');
+    if (etag) chrome.storage.local.set({ 'data:etag': etag });
   } catch {
     // keep bundled lists
+  }
+}
+
+chrome.alarms?.create('fc-list-update', { periodInMinutes: 1440 });
+chrome.alarms?.onAlarm.addListener((alarm) => {
+  if (alarm.name === 'fc-list-update') loadRemoteLists();
+});
+
+// Opt-in RDAP domain-age check: sends only the registrable domain, nothing else.
+async function checkAge(tabId, url, domain) {
+  try {
+    const res = await fetch(`https://rdap.org/domain/${domain}`, { cache: 'no-store' });
+    if (!res.ok) {
+      ageCache.set(domain, null);
+      return;
+    }
+    const age = ageInDays(parseRegistrationDate(await res.json()));
+    ageCache.set(domain, age);
+    if (age != null && age < YOUNG_DOMAIN_DAYS) {
+      cloudFlags.set(tabId, age);
+      scoreTab(tabId, url);
+    }
+  } catch {
+    ageCache.set(domain, null);
   }
 }
 
@@ -76,7 +109,10 @@ function paint(tabId, result) {
 
 async function scoreTab(tabId, url) {
   await ready;
-  const result = analyzeUrl(url, data, { hasPasswordForm: probeFlags.get(tabId) === true });
+  const result = analyzeUrl(url, data, {
+    hasPasswordForm: probeFlags.get(tabId) === true,
+    youngDomainDays: cloudFlags.get(tabId) ?? null
+  });
   if (!result) {
     results.delete(tabId);
     paint(tabId, null);
@@ -87,6 +123,7 @@ async function scoreTab(tabId, url) {
   paint(tabId, result);
   broadcast({ type: 'scored', tabId });
   maybeBanner(tabId, url, result);
+  if (cloudEnabled && !ageCache.has(result.registrable)) checkAge(tabId, url, result.registrable);
 }
 
 // Strict mode (opt-in): informational, dismissible top banner on high/critical.
@@ -291,6 +328,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'local') return;
   if (changes['opt:remote'] || changes['opt:remoteUrl']) loadRemoteLists();
+  if (changes['opt:cloud']) cloudEnabled = !!changes['opt:cloud'].newValue;
 });
 
 // Chromium-only: keyboard command opens the side panel.

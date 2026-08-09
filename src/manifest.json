@@ -22,7 +22,12 @@
   "side_panel": { "default_path": "panel/panel.html" },
   "options_ui": { "page": "options/options.html", "open_in_tab": true },
   "background": { "service_worker": "background.js" },
-  "permissions": ["storage", "tabs", "scripting", "activeTab", "sidePanel", "contextMenus"],
+  "permissions": ["storage", "tabs", "scripting", "activeTab", "sidePanel", "contextMenus", "alarms"],
+  "optional_permissions": [
+    "https://rdap.org/*",
+    "https://rdap.verisign.com/*",
+    "https://raw.githubusercontent.com/*"
+  ],
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],

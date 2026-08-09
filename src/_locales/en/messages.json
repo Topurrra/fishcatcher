@@ -190,5 +190,25 @@
   "ctxCheckQr": {
     "message": "Check QR code with FishCatcher",
     "description": "Right-click context menu item on images"
+  },
+  "reasonYoungDomain": {
+    "message": "Domain was registered only $1 days ago — fresh domains are common in phishing",
+    "description": "S15 opt-in RDAP age check signal; $1 = age in days"
+  },
+  "reasonBloom": {
+    "message": "Matches the community threat feed (probabilistic match)",
+    "description": "S16 bloom-filter community feed signal"
+  },
+  "cloudLabel": {
+    "message": "Cloud age check — ask public RDAP how old the domain is",
+    "description": "Options: RDAP age check toggle"
+  },
+  "cloudHint": {
+    "message": "Sends only the registrable domain to rdap.org. Off by default.",
+    "description": "Options: RDAP privacy note"
+  },
+  "remoteDefaultHint": {
+    "message": "Default source: topurrra/fishcatcher-registry on GitHub.",
+    "description": "Options: default remote update source"
   }
 }

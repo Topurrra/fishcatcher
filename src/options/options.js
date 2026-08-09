@@ -24,23 +24,47 @@ async function renderTrustList() {
   }
 }
 
+// Opt-in network features request their host permissions at enable time,
+// so the manifest stays quiet until the user explicitly opts in.
+async function enableWithPermission(checkbox, origins) {
+  if (!checkbox.checked) {
+    return true;
+  }
+  const granted = await chrome.permissions.request({ origins });
+  if (!granted) checkbox.checked = false;
+  return granted;
+}
+
 async function init() {
   await applyI18n();
-  const stored = await chrome.storage.local.get(['opt:strict', 'opt:remote', 'opt:remoteUrl', 'ui:lang']);
+  const stored = await chrome.storage.local.get(['opt:strict', 'opt:remote', 'opt:remoteUrl', 'opt:cloud', 'ui:lang']);
 
   $('strict').checked = !!stored['opt:strict'];
   $('remote').checked = !!stored['opt:remote'];
   $('remote-url').value = stored['opt:remoteUrl'] ?? '';
+  $('cloud').checked = !!stored['opt:cloud'];
   $('lang').value = stored['ui:lang'] ?? 'auto';
 
   $('strict').addEventListener('change', (e) => {
     chrome.storage.local.set({ 'opt:strict': e.target.checked });
   });
-  $('remote').addEventListener('change', (e) => {
+  $('remote').addEventListener('change', async (e) => {
+    const url = $('remote-url').value.trim() || $('remote-url').placeholder;
+    let origin;
+    try {
+      origin = new URL(url).origin + '/*';
+    } catch {
+      origin = 'https://raw.githubusercontent.com/*';
+    }
+    if (!(await enableWithPermission(e.target, [origin]))) return;
     chrome.storage.local.set({ 'opt:remote': e.target.checked });
   });
   $('remote-url').addEventListener('change', (e) => {
     chrome.storage.local.set({ 'opt:remoteUrl': e.target.value.trim() });
+  });
+  $('cloud').addEventListener('change', async (e) => {
+    if (!(await enableWithPermission(e.target, ['https://rdap.org/*', 'https://rdap.verisign.com/*']))) return;
+    chrome.storage.local.set({ 'opt:cloud': e.target.checked });
   });
   $('lang').addEventListener('change', (e) => {
     chrome.storage.local.set({ 'ui:lang': e.target.value });

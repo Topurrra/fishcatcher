@@ -36,6 +36,9 @@ const BACKGROUND_MODULES = [
   'engine/psl.js',
   'engine/signals.js',
   'engine/analyzer.js',
+  'engine/bloom.js',
+  'engine/remote.js',
+  'engine/rdap.js',
   'ui/i18n.js',
   'background.js'
 ];

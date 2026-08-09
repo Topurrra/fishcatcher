@@ -35,6 +35,12 @@ export function analyzeUrl(input, data, opts) {
     reasons.push({ key: 'reasonPasswordForm', params: [], weight: 20 });
   }
 
+  // S15 — freshly registered domain (opt-in RDAP cloud check)
+  if (opts?.youngDomainDays != null) {
+    score += 25;
+    reasons.push({ key: 'reasonYoungDomain', params: [String(opts.youngDomainDays)], weight: 25 });
+  }
+
   result.score = Math.min(100, score);
   result.level = levelForScore(result.score);
   result.reasons = reasons;

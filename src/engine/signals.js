@@ -1,4 +1,4 @@
-// S1–S11 red-flag signals. Each match contributes a weight and an i18n reason key.
+// S1–S16 red-flag signals. Each match contributes a weight and an i18n reason key.
 import { decodeHost, asciiFold, hasMixedScripts } from './punycode.js';
 import { registrableDomain, sldOf } from './psl.js';
 
@@ -39,14 +39,17 @@ export function runSignals(ctx, data) {
   const sld = sldOf(ctx.registrable);
 
   // S12 — known-bad domain on the local blocklist (exact or parent of host)
+  let blockedHit = false;
   if (data.blockList) {
     for (const blocked of data.blockList) {
       if (ctx.registrable === blocked || host === blocked || host.endsWith('.' + blocked)) {
-        add(60, 'reasonBlocklist');
+        blockedHit = true;
         break;
       }
     }
   }
+  if (blockedHit) add(60, 'reasonBlocklist');
+  else if (data.bloom?.has(ctx.registrable) || data.bloom?.has(host)) add(45, 'reasonBloom'); // S16 — community feed (probabilistic)
 
   // S1 — brand impersonation via typo (Levenshtein ≤ 2)
   for (const brand of data.brands) {

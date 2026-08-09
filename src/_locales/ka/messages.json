@@ -190,5 +190,25 @@
   "ctxCheckQr": {
     "message": "QR-კოდის შემოწმება FishCatcher-ით",
     "description": "Right-click context menu item on images"
+  },
+  "reasonYoungDomain": {
+    "message": "დომენი მხოლოდ $1 დღის წინ დარეგისტრირდა — ახალი დომენები ფიშინგში ხშირია",
+    "description": "S15 opt-in RDAP age check signal; $1 = age in days"
+  },
+  "reasonBloom": {
+    "message": "ემთხვევა საზოგადოებრივ საფრთხეების სიას (ალბათური დამთხვევა)",
+    "description": "S16 bloom-filter community feed signal"
+  },
+  "cloudLabel": {
+    "message": "ღრუბლოვანი შემოწმება — RDAP-ს ეკითხება დომენის ასაკს",
+    "description": "Options: RDAP age check toggle"
+  },
+  "cloudHint": {
+    "message": "rdap.org-ს მხოლოდ რეგისტრირებად დომენს უგზავნის. ნაგულისხმევად გამორთული.",
+    "description": "Options: RDAP privacy note"
+  },
+  "remoteDefaultHint": {
+    "message": "ნაგულისხმევი წყარო: topurrra/fishcatcher-registry GitHub-ზე.",
+    "description": "Options: default remote update source"
   }
 }

@@ -13,6 +13,9 @@ import { levenshtein } from '../src/engine/signals.js';
 import { format } from '../src/ui/i18n.js';
 import { zipDirectory } from '../scripts/package.mjs';
 import { matchDeviceCodeScam } from '../src/engine/devicecode.js';
+import { Bloom } from '../src/engine/bloom.js';
+import { parseRegistrationDate, ageInDays } from '../src/engine/rdap.js';
+import { applyBundle } from '../src/engine/remote.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = (p) => JSON.parse(readFileSync(join(root, p), 'utf8'));
@@ -266,6 +269,56 @@ check('license: MIT + vendor notice present', () => {
 
 check('locales: M5 strings present', () => {
   for (const key of ['reasonBlocklist', 'reasonPasswordForm', 'reasonDeviceCode', 'deviceCodeNotice', 'qrTitle', 'qrPick', 'qrCamera', 'qrStop', 'qrNone', 'qrResultNote', 'ctxCheckQr']) {
+    assert.ok(enMessages[key], `en has ${key}`);
+  }
+});
+
+// ── M6: bloom, RDAP, remote v2, opt-in cloud ────────────────────
+check('bloom: no false negatives, base64 round-trip', () => {
+  const b = new Bloom(1024, 4, 7);
+  for (const d of ['evil-one.com', 'evil-two.tk', 'bad.example']) b.add(d);
+  assert.ok(b.has('evil-one.com'));
+  assert.ok(b.has('evil-two.tk'));
+  assert.ok(!b.has('google.com'));
+  const restored = Bloom.fromPayload({ m: 1024, k: 4, seed: 7, bits: b.toBase64() });
+  assert.ok(restored.has('bad.example'));
+  assert.ok(!restored.has('github.com'));
+});
+
+check('rdap: registration date parsing + age', () => {
+  const rdap = { events: [ { eventAction: 'expiration', eventDate: '2027-01-01T00:00:00Z' }, { eventAction: 'registration', eventDate: '2026-08-01T00:00:00Z' } ] };
+  const iso = parseRegistrationDate(rdap);
+  assert.equal(iso, '2026-08-01T00:00:00Z');
+  assert.equal(ageInDays(iso, Date.parse('2026-08-10T00:00:00Z')), 9);
+  assert.equal(ageInDays('not-a-date'), null);
+});
+
+check('remote: v2 bundle applies bloom + lists', () => {
+  const b = new Bloom(512, 3, 1);
+  b.add('bloom-bad.com');
+  const next = applyBundle(data, { blocklist: ['x-bad.com'], bloom: { m: 512, k: 3, seed: 1, bits: b.toBase64() } });
+  assert.ok(next.blockList.has('x-bad.com'));
+  assert.ok(next.bloom.has('bloom-bad.com'));
+  assert.equal(next.trustList, data.trustList, 'trust list preserved');
+  const r = analyzeUrl('https://bloom-bad.com/', next);
+  assert.ok(r.reasons.some((x) => x.key === 'reasonBloom'));
+});
+
+check('engine: S15 young domain adds weight', () => {
+  const r = analyzeUrl('https://random-unknown-site.com/', data, { youngDomainDays: 3 });
+  assert.equal(r.score, 25);
+  assert.ok(r.reasons.some((x) => x.key === 'reasonYoungDomain' && x.params[0] === '3'));
+});
+
+check('manifest: alarms + optional opt-in origins', () => {
+  const m = readJson('src/manifest.json');
+  assert.ok(m.permissions.includes('alarms'));
+  assert.ok(m.optional_permissions.includes('https://rdap.org/*'));
+  assert.ok(m.optional_permissions.includes('https://raw.githubusercontent.com/*'));
+});
+
+check('locales: M6 strings present', () => {
+  for (const key of ['reasonYoungDomain', 'reasonBloom', 'cloudLabel', 'cloudHint', 'remoteDefaultHint']) {
     assert.ok(enMessages[key], `en has ${key}`);
   }
 });

@@ -22,13 +22,22 @@
   <section>
     <label class="row">
       <input type="checkbox" id="remote">
-      <span data-i18n="remoteLabel">Fetch updated detection lists from a URL</span>
+      <span data-i18n="remoteLabel">Fetch updated detection lists</span>
     </label>
     <label class="row url">
       <span data-i18n="remoteUrlLabel">Update URL</span>
-      <input type="url" id="remote-url" placeholder="https://example.com/fishcatcher-lists.json">
+      <input type="url" id="remote-url" placeholder="https://raw.githubusercontent.com/topurrra/fishcatcher-registry/main/fishcatcher-lists.json">
     </label>
     <p class="hint" data-i18n="remoteHint">Optional. Only a JSON file is downloaded — nothing leaves your device.</p>
+    <p class="hint" data-i18n="remoteDefaultHint">Default source: topurrra/fishcatcher-registry on GitHub.</p>
+  </section>
+
+  <section>
+    <label class="row">
+      <input type="checkbox" id="cloud">
+      <span data-i18n="cloudLabel">Cloud age check — ask public RDAP how old the domain is</span>
+    </label>
+    <p class="hint" data-i18n="cloudHint">Sends only the registrable domain to rdap.org. Off by default.</p>
   </section>
 
   <section>
