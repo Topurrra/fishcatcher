@@ -1,13 +1,26 @@
-// M0 invariant checks: manifests, locales, icons, dist output.
-// Run: node tests/verify.mjs
+// Invariant checks: manifests, locales, icons, dist output (M0) + engine corpus (M1).
+// Run: node tests/verify.mjs (after node scripts/build.mjs)
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { toFirefoxManifest } from '../scripts/build.mjs';
+import { analyzeUrl } from '../src/engine/analyzer.js';
+import { punyDecode, decodeHost, asciiFold, hasMixedScripts } from '../src/engine/punycode.js';
+import { registrableDomain } from '../src/engine/psl.js';
+import { levenshtein } from '../src/engine/signals.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = (p) => JSON.parse(readFileSync(join(root, p), 'utf8'));
+
+const data = {
+  safeList: new Set(readJson('src/data/safe-list.json').domains),
+  brands: readJson('src/data/brands.json').brands,
+  tlds: readJson('src/data/tlds.json').tlds,
+  keywords: readJson('src/data/keywords.json').keywords,
+  psl: readJson('src/data/psl.json').suffixes
+};
+const enMessages = readJson('src/_locales/en/messages.json');
 
 const checks = [];
 function check(name, fn) {
@@ -19,6 +32,7 @@ function check(name, fn) {
   }
 }
 
+// ── M0: scaffold ────────────────────────────────────────────────
 check('chrome manifest: MV3 basics', () => {
   const m = readJson('src/manifest.json');
   assert.equal(m.manifest_version, 3);
@@ -51,8 +65,7 @@ check('icons: all sizes are valid PNGs', () => {
   for (const size of [16, 32, 48, 128]) {
     const p = join(root, `src/icons/icon${size}.png`);
     assert.ok(existsSync(p), `icon${size}.png exists`);
-    const buf = readFileSync(p);
-    assert.equal(buf.readUInt32BE(0), 0x89504e47, 'PNG magic');
+    assert.equal(readFileSync(p).readUInt32BE(0), 0x89504e47, 'PNG magic');
   }
 });
 
@@ -66,6 +79,81 @@ check('dist: built for both targets', () => {
   assert.ok(existsSync(join(root, 'dist/firefox/_locales/ka/messages.json')));
 });
 
+// ── M1: engine units ────────────────────────────────────────────
+check('punycode: decodes IDN homoglyph host', () => {
+  const decoded = decodeHost('xn--pypal-4ve.com');
+  assert.notEqual(decoded, 'xn--pypal-4ve.com');
+  assert.equal(asciiFold(decoded), 'paypal.com');
+  assert.ok(hasMixedScripts(decoded), 'mixed Latin + Cyrillic detected');
+});
+
+check('psl: registrable domain extraction', () => {
+  assert.equal(registrableDomain('login.microsoft.com.evil.ru', data.psl), 'evil.ru');
+  assert.equal(registrableDomain('www.bbc.co.uk', data.psl), 'bbc.co.uk');
+  assert.equal(registrableDomain('example.com', data.psl), 'example.com');
+  assert.equal(registrableDomain('mygov.ge', data.psl), 'mygov.ge');
+});
+
+check('levenshtein: typo distance', () => {
+  assert.equal(levenshtein('micr0soft.com', 'microsoft.com'), 1);
+  assert.equal(levenshtein('paypa1.com', 'paypal.com'), 1);
+  assert.equal(levenshtein('microsoft.com', 'microsoft.com'), 0);
+});
+
+// ── M1: phishing corpus (must be flagged) ───────────────────────
+const phishing = [
+  ['http://micr0soft.com/login', 'high'],
+  ['https://paypa1.com/', 'high'],
+  ['http://xn--pypal-4ve.com/', 'high'],
+  ['https://login.microsoft.com.evil.ru/', 'high'],
+  ['http://185.22.64.3/login', 'high'],
+  ['https://paypal.com@evil.com/', 'elevated'],
+  ['https://secure-verify-account.tk/', 'elevated'],
+  ['https://a1b2c3.xyz/', 'elevated'],
+  ['https://microsoft-login-2026.com/', 'high']
+];
+for (const [url, level] of phishing) {
+  check(`phishing: ${url} → ${level}`, () => {
+    const r = analyzeUrl(url, data);
+    assert.ok(r, 'analyzable');
+    assert.equal(r.level, level, `score=${r.score} reasons=${r.reasons.map((x) => x.key)}`);
+    assert.ok(r.reasons.length, 'has named reasons');
+    for (const reason of r.reasons) {
+      assert.ok(enMessages[reason.key], `locale has ${reason.key}`);
+    }
+  });
+}
+
+// ── M1: legit corpus (must stay quiet) ──────────────────────────
+const legitZero = [
+  'https://www.google.com/search?q=test',
+  'https://github.com/qwen-code/qwen-code',
+  'https://www.bbc.co.uk/',
+  'https://login.microsoftonline.com/',
+  'https://mygov.ge/',
+  'https://www.tbcbank.ge/',
+  'https://example.com/'
+];
+for (const url of legitZero) {
+  check(`legit: ${url} → score 0`, () => {
+    const r = analyzeUrl(url, data);
+    assert.equal(r.score, 0, `reasons=${r.reasons.map((x) => x.key)}`);
+    assert.equal(r.level, 'low');
+  });
+}
+
+check('legit: http-only site stays low, not silent-fail', () => {
+  const r = analyzeUrl('http://example.com/', data);
+  assert.equal(r.level, 'low');
+  assert.ok(r.score > 0 && r.score < 20);
+});
+
+check('engine: non-http input ignored', () => {
+  assert.equal(analyzeUrl('ftp://example.com/', data), null);
+  assert.equal(analyzeUrl('not a url', data), null);
+});
+
+// ── report ──────────────────────────────────────────────────────
 let failed = 0;
 for (const c of checks) {
   console.log(`${c.ok ? 'ok  ' : 'FAIL'} ${c.name}${c.error ? ` — ${c.error}` : ''}`);

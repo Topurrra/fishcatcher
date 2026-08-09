@@ -18,5 +18,49 @@
   "panelHint": {
     "message": "გვერდზე შესვლისას FishCatcher აქ გაჩვენებთ გადაწყვეტილებას და განმარტავს ყველა ნაპოვნ საეჭვო ნიშანს.",
     "description": "Panel placeholder explaining the future behavior"
+  },
+  "reasonBrand": {
+    "message": "დომენი ჰგავს $1-ის დამახინჯებულ ვარიანტს",
+    "description": "S1 typo-squat signal; $1 = real brand domain"
+  },
+  "reasonHomoglyph": {
+    "message": "იყენებს მსგავს სიმბოლოებს, რომ მოიჩვენოს როგორც $1",
+    "description": "S2 IDN/homoglyph signal; $1 = imitated brand name"
+  },
+  "reasonBrandSubdomain": {
+    "message": "ახსენებს $1-ს, მაგრამ $1-ის დომენი არ არის",
+    "description": "S3 brand-in-subdomain signal; $1 = brand name"
+  },
+  "reasonIp": {
+    "message": "მისამართი სუფთა IP-რიცხვია — ნამდვილი საიტები იშვიათად ასე იქცევიან",
+    "description": "S4 IP-address URL signal"
+  },
+  "reasonAtSign": {
+    "message": "ბრაუზერი მისამართში @-მდე ნაწილს იგნორირებას უკეთებს",
+    "description": "S5 user@host trick signal"
+  },
+  "reasonTld": {
+    "message": "იყენებს სარისკო დომენურ დაბოლოებას (.$1)",
+    "description": "S6 suspicious TLD signal; $1 = TLD"
+  },
+  "reasonKeyword": {
+    "message": "შეიცავს სიტყვას, რომელსაც ფიშინგური გვერდები ხშირად იყენებენ ($1)",
+    "description": "S7 phishy keyword signal; $1 = keyword"
+  },
+  "reasonSubdomains": {
+    "message": "ქვედომენების არაბუნებრივად გრძელი ჯაჭვი ($1 ნაწილი)",
+    "description": "S8 deep subdomain signal; $1 = label count"
+  },
+  "reasonHttp": {
+    "message": "კავშირი არ არის დაშიფრული (https-ის ნაცვლად http)",
+    "description": "S9 plaintext connection signal"
+  },
+  "reasonDigits": {
+    "message": "დომენს ციფრებისა და დეფისების არაბუნებრივი ნაზავი აქვს",
+    "description": "S10 generated-domain signal"
+  },
+  "reasonShort": {
+    "message": "ძალიან მოკლე, შემთხვევითი სახის დომენი",
+    "description": "S11 short random domain signal"
   }
 }

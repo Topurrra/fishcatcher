@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "suffixes": [
+    "co.uk", "org.uk", "ac.uk", "gov.uk", "net.uk",
+    "com.au", "net.au", "org.au", "edu.au", "gov.au",
+    "com.br", "net.br", "org.br",
+    "com.mx", "com.ar", "com.co", "com.pe", "com.ve",
+    "co.jp", "ne.jp", "or.jp", "ac.jp", "go.jp",
+    "co.kr", "or.kr", "go.kr",
+    "com.cn", "net.cn", "org.cn", "gov.cn",
+    "com.tw", "com.hk", "com.sg", "com.my", "com.ph", "com.vn", "com.id", "com.th", "com.kh",
+    "co.in", "net.in", "org.in", "gov.in", "ac.in",
+    "co.nz", "net.nz", "org.nz",
+    "co.za", "org.za", "net.za",
+    "com.ua", "net.ua", "org.ua", "gov.ua",
+    "com.tr", "com.eg", "com.sa", "com.ae", "net.ae", "org.ae",
+    "com.pl", "net.pl", "org.pl",
+    "com.pt", "com.gr", "com.ro", "com.bg", "com.rs",
+    "co.il", "org.il", "net.il", "gov.il",
+    "com.ge", "net.ge", "org.ge", "gov.ge", "edu.ge",
+    "com.az", "com.am", "com.kz", "com.uz",
+    "co.ke", "com.ng", "com.gh", "co.tz", "co.ug",
+    "com.pk", "com.bd", "com.lk", "com.np",
+    "eu.org", "us.com", "uk.com", "ru.com", "sa.com"
+  ]
+}

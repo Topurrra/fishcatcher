@@ -18,5 +18,49 @@
   "panelHint": {
     "message": "When you visit a page, FishCatcher will show its verdict here and explain every warning sign it finds.",
     "description": "Panel placeholder explaining the future behavior"
+  },
+  "reasonBrand": {
+    "message": "Domain looks like a misspelling of $1",
+    "description": "S1 typo-squat signal; $1 = real brand domain"
+  },
+  "reasonHomoglyph": {
+    "message": "Uses look-alike characters to imitate $1",
+    "description": "S2 IDN/homoglyph signal; $1 = imitated brand name"
+  },
+  "reasonBrandSubdomain": {
+    "message": "Mentions $1 but is not a $1 domain",
+    "description": "S3 brand-in-subdomain signal; $1 = brand name"
+  },
+  "reasonIp": {
+    "message": "Address is a raw IP number — legitimate sites rarely do this",
+    "description": "S4 IP-address URL signal"
+  },
+  "reasonAtSign": {
+    "message": "Everything before @ in the address is ignored by the browser",
+    "description": "S5 user@host trick signal"
+  },
+  "reasonTld": {
+    "message": "Uses a high-abuse domain ending (.$1)",
+    "description": "S6 suspicious TLD signal; $1 = TLD"
+  },
+  "reasonKeyword": {
+    "message": "Contains a word often used in phishing pages ($1)",
+    "description": "S7 phishy keyword signal; $1 = keyword"
+  },
+  "reasonSubdomains": {
+    "message": "Unusually deep chain of subdomains ($1 parts)",
+    "description": "S8 deep subdomain signal; $1 = label count"
+  },
+  "reasonHttp": {
+    "message": "Connection is not encrypted (http instead of https)",
+    "description": "S9 plaintext connection signal"
+  },
+  "reasonDigits": {
+    "message": "Domain has an unusual mix of digits and hyphens",
+    "description": "S10 generated-domain signal"
+  },
+  "reasonShort": {
+    "message": "Very short, random-looking domain",
+    "description": "S11 short random domain signal"
   }
 }
