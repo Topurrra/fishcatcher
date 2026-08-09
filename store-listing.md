@@ -25,7 +25,8 @@ FishCatcher never blocks, redirects, or modifies pages. An optional strict
 mode (off by default) can show a dismissible warning banner on risky pages.
 
 Privacy by design: analysis happens entirely on your device. No accounts, no
-analytics, no data leaving your browser. English and Georgian included.
+analytics, no data leaving your browser. Open source (MIT) — the privacy
+promise is verifiable by reading the code. English and Georgian included.
 
 This tool uses transparent URL pattern analysis. No tool can guarantee a site
 is safe — always stay alert when entering passwords.

@@ -171,7 +171,8 @@ The engine has **zero extension-API dependencies** → unit-testable in plain No
 | **M2** Passive protection | background scoring + badge + popup with reasons + trust action | Manual browse: typosquat test domains turn badge orange/red |
 | **M3** UX complete | strict-mode banner, options, side panel, EN+KA _locales | Non-technical person test: can they explain the warning back? |
 | **M4** Firefox | Firefox manifest variant + sidebar + store-ready packaging | Loads as temporary add-on in Firefox, same corpus passes |
-| **M5** Release | Chrome Web Store + AMO listings, privacy policy text, screenshots | Published |
+| **M5** Friend-review gaps | Blocklist (S12), login-form probe (S13), device-code protection (S14), QR tools, MIT open-source | §10a; 44-check suite green |
+| **M6** Release | Chrome Web Store + AMO listings, privacy policy text, screenshots | Published |
 
 ### End-to-end verification (every milestone)
 1. `node tests/verify.mjs` — engine corpus green.
@@ -179,6 +180,29 @@ The engine has **zero extension-API dependencies** → unit-testable in plain No
 3. Visit google.com/microsoft.com/bank sites → green, zero false positives.
 
 ---
+
+## 10a. M5 — Closing the FR_IDEA.txt gaps
+
+Gap review of the friend analysis (`FR_IDEA.txt`): offline heuristics, transparent
+explanations, low false positives, minimal permissions and opt-in cloud are already
+shipped. Four supportable gaps remain, in build order:
+
+| Slice | What | Signal |
+|---|---|---|
+| **M5a** Local blocklist | `data/blocklist.json` (curated seed of known-bad registrable domains) + remote channel already delivers updates | S12 exact/subdomain match → weight 60 |
+| **M5b** Login-form probe | Content script at `document_idle` on http(s) pages: `input[type=password]` present on a domain that is neither safe-listed nor trusted → extra reason | S13 weight 20 (one `querySelector`, negligible cost) |
+| **M5c** Device-code phishing | (1) Always-on educational notice on known device-code entry pages (`microsoft.com/link`, `/devicelogin`, `google.com/device`): "only enter codes you requested yourself"; (2) strict-mode content heuristic on other pages: text offering a code to enter at a device-login URL → critical banner | S14 (pure text matcher, unit-testable) |
+| **M5d** QR codes | Panel "QR check" tool (pick image file or use camera) + right-click "Check QR in this image" (single-image fetch under `activeTab`, re-adds `contextMenus` permission). Decode locally, then run the normal engine on the extracted URL. Decoder: vendored **jsQR** (Apache-2.0, single file, zero runtime deps) | result shown like a link check |
+
+Not supportable offline / deferred to ROADMAP.md: visual-similarity or on-device ML
+checks, WHOIS/domain-age lookups, AiTM proxy detection, and automatic scanning of
+all images on pages/emails (cross-origin canvas taint + broad host permissions make
+it infeasible without betraying the privacy promise; the right-click check covers
+the realistic case).
+
+"Users who never opt in to updates get outdated protection" is mitigated by design:
+heuristics (S1–S14) catch unknown/zero-day patterns; the blocklist only adds known
+threats on top.
 
 ## 10. Roadmap (post-v1, deferred)
 

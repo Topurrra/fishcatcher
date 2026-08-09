@@ -22,7 +22,14 @@
   "side_panel": { "default_path": "panel/panel.html" },
   "options_ui": { "page": "options/options.html", "open_in_tab": true },
   "background": { "service_worker": "background.js" },
-  "permissions": ["storage", "tabs", "scripting", "activeTab", "sidePanel"],
+  "permissions": ["storage", "tabs", "scripting", "activeTab", "sidePanel", "contextMenus"],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["probe.js"],
+      "run_at": "document_idle"
+    }
+  ],
   "commands": {
     "open_panel": {
       "suggested_key": { "default": "Ctrl+Shift+F" },

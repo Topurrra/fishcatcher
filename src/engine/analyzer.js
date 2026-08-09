@@ -9,8 +9,9 @@ export function levelForScore(score) {
   return 'low';
 }
 
-// data: { safeList: Set<string>, brands, tlds, keywords, psl }
-export function analyzeUrl(input, data) {
+// data: { safeList: Set<string>, brands, tlds, keywords, psl, blockList?, trustList? }
+// opts: { hasPasswordForm? } — page-content signals from the probe content script
+export function analyzeUrl(input, data, opts) {
   let url;
   try {
     url = new URL(input);
@@ -25,7 +26,15 @@ export function analyzeUrl(input, data) {
 
   if (data.safeList.has(registrable) || data.trustList?.has(registrable)) return result;
 
-  const { score, reasons } = runSignals({ url, host, registrable }, data);
+  const { score: baseScore, reasons } = runSignals({ url, host, registrable }, data);
+  let score = baseScore;
+
+  // S13 — login form on a domain that is neither safe-listed nor trusted
+  if (opts?.hasPasswordForm) {
+    score += 20;
+    reasons.push({ key: 'reasonPasswordForm', params: [], weight: 20 });
+  }
+
   result.score = Math.min(100, score);
   result.level = levelForScore(result.score);
   result.reasons = reasons;

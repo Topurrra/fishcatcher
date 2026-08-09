@@ -1,21 +1,25 @@
-// FishCatcher background worker (M3).
-// Engine + i18n functions are bundled into this file by scripts/build.mjs —
+// FishCatcher background worker (M5).
+// Engine, i18n and jsQR are bundled into this file by scripts/build.mjs —
 // this source file intentionally has no import/export statements.
 
 const LEVEL_COLORS = { low: '#34d399', elevated: '#fbbf24', high: '#fb923c', critical: '#f87171' };
 const BADGE_TEXT = { low: '', elevated: '!', high: '!!', critical: '!!!' };
 
-const data = { safeList: new Set(), brands: [], tlds: {}, keywords: [], psl: [], trustList: new Set() };
+const data = { safeList: new Set(), brands: [], tlds: {}, keywords: [], psl: [], blockList: new Set(), trustList: new Set() };
 const results = new Map();
+const probeFlags = new Map(); // tabId → page has a password form
 const dismissedBanners = new Set(); // `${tabId} ${url}`
+let pendingResult = null; // one-shot result handed to the panel (QR / link checks)
+let pendingNote = null;
 
 async function loadData() {
-  const [safe, brands, tlds, keywords, psl, stored] = await Promise.all([
+  const [safe, brands, tlds, keywords, psl, block, stored] = await Promise.all([
     fetch(chrome.runtime.getURL('data/safe-list.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/brands.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/tlds.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/keywords.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/psl.json')).then((r) => r.json()),
+    fetch(chrome.runtime.getURL('data/blocklist.json')).then((r) => r.json()),
     chrome.storage.local.get('trust:list')
   ]);
   data.safeList = new Set(safe.domains);
@@ -23,6 +27,7 @@ async function loadData() {
   data.tlds = tlds.tlds;
   data.keywords = keywords.keywords;
   data.psl = psl.suffixes;
+  data.blockList = new Set(block.domains);
   data.trustList = new Set(stored['trust:list'] ? JSON.parse(stored['trust:list']) : []);
   await loadRemoteLists();
 }
@@ -41,6 +46,7 @@ async function loadRemoteLists() {
     if (Array.isArray(bundle.brands)) data.brands = bundle.brands;
     if (bundle.tlds && typeof bundle.tlds === 'object') data.tlds = bundle.tlds;
     if (Array.isArray(bundle.keywords)) data.keywords = bundle.keywords;
+    if (Array.isArray(bundle.blocklist)) data.blockList = new Set(bundle.blocklist);
   } catch {
     // keep bundled lists
   }
@@ -70,7 +76,7 @@ function paint(tabId, result) {
 
 async function scoreTab(tabId, url) {
   await ready;
-  const result = analyzeUrl(url, data);
+  const result = analyzeUrl(url, data, { hasPasswordForm: probeFlags.get(tabId) === true });
   if (!result) {
     results.delete(tabId);
     paint(tabId, null);
@@ -133,6 +139,78 @@ function showBanner(payload) {
   document.documentElement.appendChild(root);
 }
 
+// S14 escalation: page text matches the device-code scam pattern.
+async function flagDeviceCode(tabId, url) {
+  await ready;
+  const base = analyzeUrl(url, data) ?? { url, host: '', registrable: '', score: 0, level: 'low', reasons: [] };
+  const result = {
+    ...base,
+    score: 100,
+    level: 'critical',
+    reasons: [...base.reasons, { key: 'reasonDeviceCode', params: [], weight: 100 }]
+  };
+  result.trusted = false;
+  results.set(tabId, result);
+  paint(tabId, result);
+  broadcast({ type: 'scored', tabId });
+  maybeBanner(tabId, url, result);
+}
+
+// ── QR decoding (fully local) ───────────────────────────────────
+async function decodeQr(blob) {
+  const bmp = await createImageBitmap(blob);
+  try {
+    const canvas = new OffscreenCanvas(bmp.width, bmp.height);
+    const ctx2d = canvas.getContext('2d');
+    ctx2d.drawImage(bmp, 0, 0);
+    const img = ctx2d.getImageData(0, 0, bmp.width, bmp.height);
+    return jsQR(img.data, img.width, img.height)?.data ?? null;
+  } finally {
+    bmp.close?.();
+  }
+}
+
+async function openPanel(windowId) {
+  if (chrome.sidePanel) {
+    chrome.sidePanel.open({ windowId }).catch(() => {});
+  } else if (chrome.sidebarAction) {
+    chrome.sidebarAction.open().catch(() => {});
+  }
+}
+
+async function checkQrImage(srcUrl, windowId) {
+  try {
+    const blob = await (await fetch(srcUrl)).blob();
+    const url = await decodeQr(blob);
+    if (!url) return;
+    await ready;
+    const result = analyzeUrl(url, data);
+    if (!result) return;
+    result.trusted = data.trustList.has(result.registrable);
+    pendingResult = result;
+    pendingNote = 'qrResultNote';
+    if (windowId) openPanel(windowId);
+  } catch {
+    // unfetchable image or no QR — stay silent
+  }
+}
+
+function createMenus() {
+  getMessage('ctxCheckQr').then((title) => {
+    chrome.contextMenus.removeAll(() => {
+      chrome.contextMenus.create({ id: 'check-qr', title, contexts: ['image'] });
+    });
+  });
+}
+chrome.runtime.onInstalled.addListener(createMenus);
+chrome.runtime.onStartup.addListener(createMenus);
+
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === 'check-qr' && info.srcUrl) {
+    checkQrImage(info.srcUrl, tab?.windowId);
+  }
+});
+
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete' && tab.url) scoreTab(tabId, tab.url);
 });
@@ -143,7 +221,10 @@ chrome.tabs.onActivated.addListener(({ tabId }) => {
   });
 });
 
-chrome.tabs.onRemoved.addListener((tabId) => results.delete(tabId));
+chrome.tabs.onRemoved.addListener((tabId) => {
+  results.delete(tabId);
+  probeFlags.delete(tabId);
+});
 
 async function setTrust(domain, trusted) {
   await ready;
@@ -168,6 +249,28 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         sendResponse({ result: results.get(msg.tabId) ?? null });
         break;
       }
+      case 'check-url': {
+        const result = analyzeUrl(msg.url, data);
+        if (result) result.trusted = data.trustList.has(result.registrable);
+        sendResponse({ result });
+        break;
+      }
+      case 'take-pending':
+        sendResponse({ result: pendingResult, note: pendingNote });
+        pendingResult = null;
+        pendingNote = null;
+        break;
+      case 'form-probe':
+        if (sender.tab) {
+          probeFlags.set(sender.tab.id, true);
+          if (sender.tab.url) scoreTab(sender.tab.id, sender.tab.url);
+        }
+        sendResponse({ ok: true });
+        break;
+      case 'devicecode-scam':
+        if (sender.tab?.url) flagDeviceCode(sender.tab.id, sender.tab.url);
+        sendResponse({ ok: true });
+        break;
       case 'trust':
         await setTrust(msg.domain, true);
         sendResponse({ ok: true });

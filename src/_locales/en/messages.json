@@ -146,5 +146,49 @@
   "bannerDismiss": {
     "message": "Dismiss",
     "description": "Strict-mode banner dismiss button"
+  },
+  "reasonBlocklist": {
+    "message": "This domain is on the local blocklist of known-bad sites",
+    "description": "S12 blocklist signal"
+  },
+  "reasonPasswordForm": {
+    "message": "The page asks for a password on a site that isn't a known legitimate domain",
+    "description": "S13 login-form probe signal"
+  },
+  "reasonDeviceCode": {
+    "message": "This page tries to make you enter a device-login code — a known scam pattern",
+    "description": "S14 device-code scam signal"
+  },
+  "deviceCodeNotice": {
+    "message": "Only enter a code here if YOU started the linking process from a trusted app. Scammers show codes on other sites and ask you to type them here.",
+    "description": "Educational notice on legitimate device-code entry pages"
+  },
+  "qrTitle": {
+    "message": "Check a QR code",
+    "description": "Panel QR section heading"
+  },
+  "qrPick": {
+    "message": "Choose image…",
+    "description": "Panel QR file picker button"
+  },
+  "qrCamera": {
+    "message": "Use camera",
+    "description": "Panel QR camera button"
+  },
+  "qrStop": {
+    "message": "Stop camera",
+    "description": "Panel QR camera stop button"
+  },
+  "qrNone": {
+    "message": "No QR code found in that image.",
+    "description": "Panel QR decode failure note"
+  },
+  "qrResultNote": {
+    "message": "Result for the scanned QR code:",
+    "description": "Panel note above a QR check result"
+  },
+  "ctxCheckQr": {
+    "message": "Check QR code with FishCatcher",
+    "description": "Right-click context menu item on images"
   }
 }

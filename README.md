@@ -4,6 +4,10 @@ Browser extension that detects phishing-like URL patterns and explains the warni
 in plain language — without blocking anything. Built for non-technical users.
 Chrome + Brave first, Firefox second. English + Georgian.
 
+**License:** MIT (see [LICENSE](LICENSE)). Vendored third-party code:
+[src/vendor/NOTICE.md](src/vendor/NOTICE.md) (jsQR, Apache-2.0). The privacy promise
+in [privacy-policy.md](privacy-policy.md) is verifiable by reading this source.
+
 Full product plan: [Plan.md](Plan.md)
 
 ## Development
@@ -37,4 +41,4 @@ node scripts/package.mjs      # zip both targets for store submission (run after
 
 ## Status
 
-M0–M4 implemented. See Plan.md §9 for milestones and ROADMAP.md for deferred work.
+M0–M5 implemented. See Plan.md §9 for milestones and ROADMAP.md for deferred work.

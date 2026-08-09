@@ -12,6 +12,7 @@ import { registrableDomain } from '../src/engine/psl.js';
 import { levenshtein } from '../src/engine/signals.js';
 import { format } from '../src/ui/i18n.js';
 import { zipDirectory } from '../scripts/package.mjs';
+import { matchDeviceCodeScam } from '../src/engine/devicecode.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = (p) => JSON.parse(readFileSync(join(root, p), 'utf8'));
@@ -21,7 +22,8 @@ const data = {
   brands: readJson('src/data/brands.json').brands,
   tlds: readJson('src/data/tlds.json').tlds,
   keywords: readJson('src/data/keywords.json').keywords,
-  psl: readJson('src/data/psl.json').suffixes
+  psl: readJson('src/data/psl.json').suffixes,
+  blockList: new Set(readJson('src/data/blocklist.json').domains)
 };
 const enMessages = readJson('src/_locales/en/messages.json');
 
@@ -113,7 +115,9 @@ const phishing = [
   ['https://paypal.com@evil.com/', 'elevated'],
   ['https://secure-verify-account.tk/', 'elevated'],
   ['https://a1b2c3.xyz/', 'elevated'],
-  ['https://microsoft-login-2026.com/', 'high']
+  ['https://microsoft-login-2026.com/', 'high'],
+  ['https://dhl-track-parcel.top/', 'high'],
+  ['https://login.dhl-track-parcel.top/', 'critical']
 ];
 for (const [url, level] of phishing) {
   check(`phishing: ${url} → ${level}`, () => {
@@ -214,11 +218,56 @@ check('locales: M3 options/banner strings present', () => {
 });
 
 // ── M4: manifest hygiene + packaging ────────────────────────────
-check('manifests: no unused contextMenus permission', () => {
+check('manifests: permissions match shipped features', () => {
   const c = readJson('src/manifest.json');
   const f = toFirefoxManifest(c);
-  assert.ok(!c.permissions.includes('contextMenus'));
-  assert.ok(!f.permissions.includes('contextMenus'));
+  // contextMenus returned with the M5 right-click QR check
+  assert.ok(c.permissions.includes('contextMenus'));
+  assert.ok(f.permissions.includes('contextMenus'));
+  assert.ok(!c.permissions.includes('webRequest'), 'no blocking APIs');
+});
+
+// ── M5: blocklist, probes, device-code, QR wiring ───────────────
+check('engine: S13 password-form probe adds weight', () => {
+  const r = analyzeUrl('https://random-unknown-site.com/', data, { hasPasswordForm: true });
+  assert.equal(r.score, 20);
+  assert.equal(r.level, 'elevated');
+  assert.ok(r.reasons.some((x) => x.key === 'reasonPasswordForm'));
+});
+
+check('engine: S14 device-code text matcher', () => {
+  assert.ok(matchDeviceCodeScam('To receive your prize, visit microsoft.com/link and enter the code shown below'));
+  assert.ok(matchDeviceCodeScam('გაიარეთ ავტორიზაცია: devicelogin და შეიყვანეთ code'));
+  assert.ok(!matchDeviceCodeScam('Documentation for microsoft.com/link API'));
+  assert.ok(!matchDeviceCodeScam('Enter your verification code on your bank page'));
+});
+
+check('manifest: probe content script registered', () => {
+  const m = readJson('src/manifest.json');
+  assert.ok(m.content_scripts?.[0].js.includes('probe.js'));
+  assert.ok(m.content_scripts[0].matches.includes('https://*/*'));
+});
+
+check('bundle: probe + background carry M5 code', () => {
+  for (const target of ['chrome', 'firefox']) {
+    const bg = readFileSync(join(root, `dist/${target}/background.js`), 'utf8');
+    assert.ok(bg.includes('jsQR'), `${target}: jsQR bundled`);
+    const probe = readFileSync(join(root, `dist/${target}/probe.js`), 'utf8');
+    assert.ok(probe.includes('function matchDeviceCodeScam'), `${target}: probe has matcher`);
+    assert.ok(!/^import /m.test(probe) && !/^export /m.test(probe), `${target}: probe is classic`);
+  }
+});
+
+check('license: MIT + vendor notice present', () => {
+  assert.ok(existsSync(join(root, 'LICENSE')));
+  assert.ok(existsSync(join(root, 'src/vendor/NOTICE.md')));
+  assert.ok(existsSync(join(root, 'src/vendor/jsQR.js')));
+});
+
+check('locales: M5 strings present', () => {
+  for (const key of ['reasonBlocklist', 'reasonPasswordForm', 'reasonDeviceCode', 'deviceCodeNotice', 'qrTitle', 'qrPick', 'qrCamera', 'qrStop', 'qrNone', 'qrResultNote', 'ctxCheckQr']) {
+    assert.ok(enMessages[key], `en has ${key}`);
+  }
 });
 
 check('zip: valid store package (store method, EOCD intact)', () => {

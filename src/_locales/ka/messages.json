@@ -146,5 +146,49 @@
   "bannerDismiss": {
     "message": "დახურვა",
     "description": "Strict-mode banner dismiss button"
+  },
+  "reasonBlocklist": {
+    "message": "ეს დომენი ცნობილ საშიშ საიტების ლოკალურ ბლოკსიაშია",
+    "description": "S12 blocklist signal"
+  },
+  "reasonPasswordForm": {
+    "message": "გვერდი პაროლს ითხოვს საიტზე, რომელიც ცნობილ ლეგიტიმურ დომენად არ ითვლება",
+    "description": "S13 login-form probe signal"
+  },
+  "reasonDeviceCode": {
+    "message": "გვერდი ცდილობს შეგაყვანინოთ მოწყობილობის შესვლის კოდი — ცნობილი თაღლითობის სქემა",
+    "description": "S14 device-code scam signal"
+  },
+  "deviceCodeNotice": {
+    "message": "კოდი აქ მხოლოდ მაშინ შეიყვანეთ, თუ თქვენ თავად დაიწყეთ მიბმის პროცესი სანდო აპიდან. თაღლითები კოდებს სხვა საიტებზე აჩვენებენ და აქ შეყვანას გთხოვენ.",
+    "description": "Educational notice on legitimate device-code entry pages"
+  },
+  "qrTitle": {
+    "message": "QR-კოდის შემოწმება",
+    "description": "Panel QR section heading"
+  },
+  "qrPick": {
+    "message": "აირჩიეთ სურათი…",
+    "description": "Panel QR file picker button"
+  },
+  "qrCamera": {
+    "message": "კამერის გამოყენება",
+    "description": "Panel QR camera button"
+  },
+  "qrStop": {
+    "message": "კამერის გათიშვა",
+    "description": "Panel QR camera stop button"
+  },
+  "qrNone": {
+    "message": "ამ სურათში QR-კოდი ვერ მოიძებნა.",
+    "description": "Panel QR decode failure note"
+  },
+  "qrResultNote": {
+    "message": "სკანირებული QR-კოდის შედეგი:",
+    "description": "Panel note above a QR check result"
+  },
+  "ctxCheckQr": {
+    "message": "QR-კოდის შემოწმება FishCatcher-ით",
+    "description": "Right-click context menu item on images"
   }
 }

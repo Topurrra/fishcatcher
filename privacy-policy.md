@@ -3,6 +3,11 @@
 FishCatcher is a local-first browser extension. This policy is written to be
 paste-ready for the Chrome Web Store and Mozilla Add-ons listings.
 
+**Verifiable by design:** FishCatcher is open source (MIT). Anyone can read the
+code, and the network behavior can be verified in DevTools: during normal use
+the extension makes zero network requests unless the optional list-update
+feature is explicitly enabled.
+
 ## What we collect
 
 **Nothing.** FishCatcher does not collect, store, transmit, or share any

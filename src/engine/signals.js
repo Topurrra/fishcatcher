@@ -38,6 +38,16 @@ export function runSignals(ctx, data) {
   const foldedRegistrable = registrableDomain(folded, data.psl);
   const sld = sldOf(ctx.registrable);
 
+  // S12 — known-bad domain on the local blocklist (exact or parent of host)
+  if (data.blockList) {
+    for (const blocked of data.blockList) {
+      if (ctx.registrable === blocked || host === blocked || host.endsWith('.' + blocked)) {
+        add(60, 'reasonBlocklist');
+        break;
+      }
+    }
+  }
+
   // S1 — brand impersonation via typo (Levenshtein ≤ 2)
   for (const brand of data.brands) {
     const hit = brand.domains.find((d) => d !== ctx.registrable && levenshtein(ctx.registrable, d) <= 2);

@@ -4,12 +4,15 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="../ui/base.css">
   <link rel="stylesheet" href="panel.css">
+  <script src="../vendor/jsQR.js"></script>
 </head>
 <body>
   <header>
     <img src="../icons/icon32.png" alt="">
     <h1 data-i18n="appName">FishCatcher</h1>
   </header>
+
+  <p id="note" class="note" hidden></p>
 
   <div id="status" class="status level-low">
     <span class="dot"></span>
@@ -29,6 +32,17 @@
     <button id="trust-btn" hidden></button>
     <button id="recheck-btn" data-i18n="recheckButton">Check again</button>
   </div>
+
+  <section id="qr-wrap">
+    <h2 data-i18n="qrTitle">Check a QR code</h2>
+    <div class="actions">
+      <button id="qr-file-btn" data-i18n="qrPick">Choose image…</button>
+      <input type="file" id="qr-file" accept="image/*" hidden>
+      <button id="qr-cam-btn" data-i18n="qrCamera">Use camera</button>
+    </div>
+    <video id="qr-video" hidden playsinline></video>
+    <p id="qr-status" class="note" hidden></p>
+  </section>
 
   <script type="module" src="panel.js"></script>
 </body>

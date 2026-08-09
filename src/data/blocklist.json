@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "note": "Seed list of known-bad registrable domains, illustrative of abuse patterns. Real threat feeds arrive through the optional remote-update channel.",
+  "domains": [
+    "paypal-verify.com",
+    "paypal-secure-verify.tk",
+    "microsoft-login-verify.com",
+    "account-suspended-notice.com",
+    "secure-account-review.com",
+    "mfa-authentication-required.com",
+    "banking-tan-verify.com",
+    "wallet-connect-fix.com",
+    "coinbase-wallet-sync.com",
+    "binance-withdrawal-fix.com",
+    "trezor-suite-sync.com",
+    "crypto-giveaway-2026.xyz",
+    "eth-double-event.xyz",
+    "steamcommunity-gift.ru",
+    "steam-trade-offer.ru",
+    "free-robux-now.tk",
+    "instagram-copyright-appeal.ml",
+    "facebook-copyright-help.ml",
+    "dhl-track-parcel.top",
+    "usps-address-update.top",
+    "royal-mail-redelivery.top",
+    "poste-delivery-failed.top",
+    "voicemail-message-review.click"
+  ]
+}
