@@ -5,12 +5,15 @@ or a scam. It explains the warning signs in plain language, it never blocks a pa
 and it never sends your browsing anywhere. It is built for people who are not
 security experts.
 
-Works on Chrome, Brave, Edge and Opera, plus Firefox. Available in English and Georgian.
+Works on Chrome, Brave, Edge and Opera, plus Firefox. English at launch, more languages coming.
 
 ## What it does
 
 - Checks the page you are visiting for common phishing tricks: fake login pages,
   lookalike domains, confusing links, and known bad sites.
+- Catches brand-new scams too. A small on-device model spots the random,
+  computer-generated web addresses that fresh phishing sites use, and it flags a login
+  or code prompt that appears on a site pretending to be a brand it is not.
 - Colors the toolbar icon green, yellow, orange, or red so you see the risk at a glance.
 - Tells you why a site looks risky in a sentence or two, so you learn to spot it yourself.
 - Checks QR codes before you trust them. Right click any QR image and pick "Check this QR code".
@@ -30,26 +33,34 @@ will go here once it is live. To try it now, see [Build from source](#build-from
 FishCatcher does its checks locally, using lists bundled inside the extension. It works
 with no internet connection.
 
-Two optional features can look something up online, and both stay off until you turn them on:
+A few optional features can look something up online, and each stays off until you turn it on:
 
 - **Threat list updates:** downloads a fresh list of known phishing sites. It only
   downloads, it never uploads.
-- **Domain age check:** asks a public WHOIS service how old a domain is. It sends only
+- **Domain age check:** asks a public directory (RDAP) how old a domain is. It sends only
   the domain name and nothing else.
+- **Google Safe Browsing:** checks a link against Google's list using your own free API
+  key. Off by default, and there is a short guide for getting a key if you want it.
 
-Leave both off and the extension still protects you.
+Leave them all off and the extension still protects you. Nothing is ever sent to us, because
+there is no server: FishCatcher runs no backend of its own.
 
 ## Automatic threat updates
 
 The list of known phishing sites stays current with no manual work. A companion
 repository, [fishcatcher-registry](https://github.com/Topurrra/fishcatcher-registry),
-rebuilds the list every day from the community feed at
-[Phishing.Database](https://github.com/Phishing-Database/Phishing.Database) and publishes
-it as a single compact file. When you turn on threat list updates, the extension fetches
-that file once a day, and only when it has changed.
+rebuilds the list every day from three open community feeds,
+[Phishing.Database](https://github.com/Phishing-Database/Phishing.Database), URLhaus, and
+OpenPhish, and publishes them merged into a single compact file. No API keys are needed.
+When you turn on threat list updates, the extension fetches that file once a day, and only
+when it has changed.
 
 The automation is in [`registry/`](registry/). See [registry/README.md](registry/README.md)
 to set it up.
+
+## What's next
+
+See [ROADMAP.md](ROADMAP.md) for what is shipped and what is planned.
 
 ## Free and open source
 
