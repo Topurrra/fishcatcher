@@ -38,6 +38,25 @@ body {
 
 #hint { margin-top: 12px; }
 
+#links-wrap { margin-top: 12px; }
+
+#links { list-style: none; margin-top: 8px; }
+
+#links li {
+  padding: 7px 0 7px 10px;
+  border-left: 2px solid var(--orange);
+  margin-bottom: 6px;
+}
+
+#links li .lhref {
+  display: block;
+  margin-top: 2px;
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  color: var(--muted);
+  word-break: break-all;
+}
+
 #qr-wrap {
   margin-top: 16px;
   border-top: 1px solid var(--border);

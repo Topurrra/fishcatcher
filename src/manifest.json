@@ -23,6 +23,8 @@
   "background": { "service_worker": "background.js" },
   "permissions": ["storage", "tabs", "scripting", "activeTab", "sidePanel", "contextMenus", "alarms"],
   "optional_permissions": [
+    "downloads",
+    "notifications",
     "https://rdap.org/*",
     "https://rdap.verisign.com/*",
     "https://raw.githubusercontent.com/*"

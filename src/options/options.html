@@ -42,6 +42,14 @@
 
   <section>
     <label class="row">
+      <input type="checkbox" id="downloads">
+      <span data-i18n="downloadGuardLabel">Download guard — warn about disguised or dangerous downloads</span>
+    </label>
+    <p class="hint" data-i18n="downloadGuardHint">Checks each download's real type against its name. Needs download and notification access, requested when you turn it on. Off by default.</p>
+  </section>
+
+  <section>
+    <label class="row">
       <span data-i18n="langLabel">Language</span>
       <select id="lang">
         <option value="auto" data-i18n="langAuto">Automatic (browser language)</option>

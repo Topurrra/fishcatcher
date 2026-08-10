@@ -14,6 +14,37 @@
     send({ type: 'form-probe' });
   }
 
+  // Link intelligence: collect anchors and let the background (which has the
+  // full engine + PSL) judge them. The auto pass sends only candidates worth
+  // checking; the panel's "Scan links" button asks for the full set.
+  function collectLinks(all) {
+    const out = [];
+    const seen = new Set();
+    for (const a of document.querySelectorAll('a[href]')) {
+      const href = a.href;
+      if (!/^https?:/i.test(href)) continue;
+      const download = a.getAttribute('download') || '';
+      const text = (a.textContent || '').trim().slice(0, 120);
+      if (!all && !download && !/[a-z0-9-]+\.[a-z]{2,}/i.test(text)) continue;
+      const key = href + '|' + download;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push({ href, text, download });
+      if (out.length >= (all ? 800 : 100)) break;
+    }
+    return out;
+  }
+
+  const linkCandidates = collectLinks(false);
+  if (linkCandidates.length) send({ type: 'link-scan', links: linkCandidates });
+
+  chrome.runtime.onMessage.addListener((m, _sender, respond) => {
+    if (m.type === 'collect-links') {
+      respond({ links: collectLinks(true) });
+      return true;
+    }
+  });
+
   // S14 probe (strict mode only): device-code scam text on the page.
   chrome.storage.local.get('opt:strict', (stored) => {
     if (!stored['opt:strict']) return;

@@ -60,11 +60,37 @@ async function renderResult(result, noteKey) {
   }
 }
 
+async function renderLinks(findings, showEmpty) {
+  const ul = $('links');
+  ul.textContent = '';
+  for (const f of findings) {
+    const li = document.createElement('li');
+    const label = document.createElement('span');
+    label.textContent = await getMessage(f.key, (f.params || []).map(String));
+    li.appendChild(label);
+    if (f.href) {
+      const href = document.createElement('span');
+      href.className = 'lhref';
+      href.textContent = f.href;
+      li.appendChild(href);
+    }
+    ul.appendChild(li);
+  }
+  $('links-none').hidden = !(showEmpty && findings.length === 0);
+}
+
+async function loadLinks() {
+  if (currentTabId == null) return;
+  const { findings } = await chrome.runtime.sendMessage({ type: 'get-links', tabId: currentTabId });
+  renderLinks(findings || [], false);
+}
+
 async function render() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   currentTabId = tab?.id;
   const { result } = await chrome.runtime.sendMessage({ type: 'get-result', tabId: currentTabId });
   renderResult(result, null);
+  loadLinks();
 }
 
 // ── QR scanning (fully local) ───────────────────────────────────
@@ -164,8 +190,17 @@ $('recheck-btn').addEventListener('click', async () => {
   render();
 });
 
+$('scan-links-btn').addEventListener('click', async (e) => {
+  const btn = e.currentTarget;
+  btn.disabled = true;
+  const { findings } = await chrome.runtime.sendMessage({ type: 'scan-links', tabId: currentTabId });
+  await renderLinks(findings || [], true);
+  btn.disabled = false;
+});
+
 chrome.runtime.onMessage.addListener((msg) => {
   if (msg.type === 'scored') render();
+  if (msg.type === 'links' && msg.tabId === currentTabId) loadLinks();
 });
 
 chrome.tabs.onActivated.addListener(() => render());

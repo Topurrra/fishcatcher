@@ -214,5 +214,57 @@
   "reasonMl": {
     "message": "The domain's letter pattern resembles automatically generated random domains",
     "description": "S17 lexical model signal"
+  },
+  "scanLinksButton": {
+    "message": "Scan links on this page",
+    "description": "Panel button: analyze every link on the current page"
+  },
+  "linksNone": {
+    "message": "No risky links found on this page.",
+    "description": "Panel note when a link scan finds nothing"
+  },
+  "linkTextMismatch": {
+    "message": "Link shows $1 but actually goes to $2",
+    "description": "Link finding: visible text domain differs from destination; $1 shown, $2 real"
+  },
+  "linkDownloadMismatch": {
+    "message": "Saved as .$2 but it is really a .$1 file",
+    "description": "Link finding: download attribute hides the real file type; $1 real ext, $2 claimed ext"
+  },
+  "linkShortener": {
+    "message": "Shortened link ($1) — the real destination is hidden",
+    "description": "Link finding: known URL shortener; $1 = shortener domain"
+  },
+  "linkRisky": {
+    "message": "$1 looks risky",
+    "description": "Link finding: destination scored high/critical by the engine; $1 = domain"
+  },
+  "downloadGuardLabel": {
+    "message": "Download guard — warn about disguised or dangerous downloads",
+    "description": "Options: download guard toggle"
+  },
+  "downloadGuardHint": {
+    "message": "Checks each download's real type against its name. Needs download and notification access, requested when you turn it on. Off by default.",
+    "description": "Options: download guard explanation"
+  },
+  "downloadWarnTitle": {
+    "message": "Risky download",
+    "description": "Download guard notification title"
+  },
+  "downloadMismatchBody": {
+    "message": "\"$1\" is actually a $2, not what its name suggests. Do not open it unless you trust the source.",
+    "description": "Download guard: filename disguises the real type; $1 name, $2 real type"
+  },
+  "downloadDangerousBody": {
+    "message": "\"$1\" is a program ($2), not a document. Only open it if you trust the source.",
+    "description": "Download guard: dangerous executable; $1 name, $2 extension"
+  },
+  "downloadCancel": {
+    "message": "Cancel download",
+    "description": "Download guard notification button"
+  },
+  "downloadKeep": {
+    "message": "Keep",
+    "description": "Download guard notification button"
   }
 }

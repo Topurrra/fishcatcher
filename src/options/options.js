@@ -37,12 +37,13 @@ async function enableWithPermission(checkbox, origins) {
 
 async function init() {
   await applyI18n();
-  const stored = await chrome.storage.local.get(['opt:strict', 'opt:remote', 'opt:remoteUrl', 'opt:cloud', 'ui:lang']);
+  const stored = await chrome.storage.local.get(['opt:strict', 'opt:remote', 'opt:remoteUrl', 'opt:cloud', 'opt:downloads', 'ui:lang']);
 
   $('strict').checked = !!stored['opt:strict'];
   $('remote').checked = !!stored['opt:remote'];
   $('remote-url').value = stored['opt:remoteUrl'] ?? '';
   $('cloud').checked = !!stored['opt:cloud'];
+  $('downloads').checked = !!stored['opt:downloads'];
   $('lang').value = stored['ui:lang'] ?? 'auto';
 
   $('strict').addEventListener('change', (e) => {
@@ -65,6 +66,16 @@ async function init() {
   $('cloud').addEventListener('change', async (e) => {
     if (!(await enableWithPermission(e.target, ['https://rdap.org/*', 'https://rdap.verisign.com/*']))) return;
     chrome.storage.local.set({ 'opt:cloud': e.target.checked });
+  });
+  $('downloads').addEventListener('change', async (e) => {
+    if (e.target.checked) {
+      const granted = await chrome.permissions.request({ permissions: ['downloads', 'notifications'] });
+      if (!granted) {
+        e.target.checked = false;
+        return;
+      }
+    }
+    chrome.storage.local.set({ 'opt:downloads': e.target.checked });
   });
   $('lang').addEventListener('change', (e) => {
     chrome.storage.local.set({ 'ui:lang': e.target.value });

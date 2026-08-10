@@ -214,5 +214,57 @@
   "reasonMl": {
     "message": "დომენის სიმბოლოების ნაკადი ავტოგენერირებულ შემთხვევით დომენებს ჰგავს",
     "description": "S17 lexical model signal"
+  },
+  "scanLinksButton": {
+    "message": "შეამოწმე ამ გვერდის ბმულები",
+    "description": "Panel button: analyze every link on the current page"
+  },
+  "linksNone": {
+    "message": "საეჭვო ბმულები ვერ მოიძებნა.",
+    "description": "Panel note when a link scan finds nothing"
+  },
+  "linkTextMismatch": {
+    "message": "ბმული აჩვენებს $1-ს, მაგრამ რეალურად გადადის $2-ზე",
+    "description": "Link finding: visible text domain differs from destination; $1 shown, $2 real"
+  },
+  "linkDownloadMismatch": {
+    "message": "ინახება როგორც .$2, მაგრამ სინამდვილეში .$1 ფაილია",
+    "description": "Link finding: download attribute hides the real file type; $1 real ext, $2 claimed ext"
+  },
+  "linkShortener": {
+    "message": "შემოკლებული ბმული ($1) — რეალური მისამართი დამალულია",
+    "description": "Link finding: known URL shortener; $1 = shortener domain"
+  },
+  "linkRisky": {
+    "message": "$1 საეჭვოდ გამოიყურება",
+    "description": "Link finding: destination scored high/critical by the engine; $1 = domain"
+  },
+  "downloadGuardLabel": {
+    "message": "ჩამოტვირთვების დაცვა — გააფრთხილე შენიღბული ან საშიში ფაილების შესახებ",
+    "description": "Options: download guard toggle"
+  },
+  "downloadGuardHint": {
+    "message": "ამოწმებს ჩამოტვირთვის რეალურ ტიპს სახელთან შედარებით. ჩართვისას ითხოვს ჩამოტვირთვისა და შეტყობინების ნებართვას. ნაგულისხმევად გამორთულია.",
+    "description": "Options: download guard explanation"
+  },
+  "downloadWarnTitle": {
+    "message": "საშიში ჩამოტვირთვა",
+    "description": "Download guard notification title"
+  },
+  "downloadMismatchBody": {
+    "message": "„$1“ სინამდვილეში $2-ია და არა ის, რასაც სახელი გვთავაზობს. არ გახსნათ, თუ წყაროს არ ენდობით.",
+    "description": "Download guard: filename disguises the real type; $1 name, $2 real type"
+  },
+  "downloadDangerousBody": {
+    "message": "„$1“ არის პროგრამა ($2), და არა დოკუმენტი. გახსენით მხოლოდ იმ შემთხვევაში, თუ წყაროს ენდობით.",
+    "description": "Download guard: dangerous executable; $1 name, $2 extension"
+  },
+  "downloadCancel": {
+    "message": "ჩამოტვირთვის გაუქმება",
+    "description": "Download guard notification button"
+  },
+  "downloadKeep": {
+    "message": "დატოვება",
+    "description": "Download guard notification button"
   }
 }

@@ -351,6 +351,49 @@ check('locales: reasonMl present', () => {
   assert.ok(enMessages.reasonMl);
 });
 
+// ── Link intelligence + download guard ──────────────────────────
+import { classifyLinks, inspectDownload, fileExt } from '../src/engine/links.js';
+
+check('links: text-vs-href mismatch flagged, honest links quiet', () => {
+  const d = { ...data, trustList: new Set() };
+  const bad = classifyLinks([{ href: 'https://evil.example/login', text: 'paypal.com', download: '' }], d, false);
+  assert.equal(bad[0]?.key, 'linkTextMismatch');
+  assert.deepEqual(bad[0].params, ['paypal.com', 'evil.example']);
+  // text matches destination → no finding
+  assert.equal(classifyLinks([{ href: 'https://github.com/a', text: 'github.com', download: '' }], d, false).length, 0);
+  // www vs bare must NOT false-positive (same registrable)
+  assert.equal(classifyLinks([{ href: 'https://www.github.com/', text: 'github.com', download: '' }], d, false).length, 0);
+});
+
+check('links: download-attribute extension disguise flagged', () => {
+  const d = { ...data, trustList: new Set() };
+  const f = classifyLinks([{ href: 'https://x.example/setup.exe', text: '', download: 'invoice.pdf' }], d, false);
+  assert.equal(f[0]?.key, 'linkDownloadMismatch');
+  assert.deepEqual(f[0].params, ['EXE', 'PDF']);
+});
+
+check('links: shortener destination flagged as hidden', () => {
+  const d = { ...data, trustList: new Set() };
+  const f = classifyLinks([{ href: 'https://bit.ly/abc', text: 'click here', download: '' }], d, false);
+  assert.equal(f[0]?.key, 'linkShortener');
+});
+
+check('links: deep scan engine-scores destinations', () => {
+  const d = { ...data, trustList: new Set() };
+  const shallow = classifyLinks([{ href: 'https://paypa1.com/', text: '', download: '' }], d, false);
+  assert.equal(shallow.length, 0, 'no cheap signal');
+  const deep = classifyLinks([{ href: 'https://paypa1.com/', text: '', download: '' }], d, true);
+  assert.ok(deep.some((x) => x.key === 'linkRisky'), 'engine catches the typosquat on deep scan');
+});
+
+check('download guard: disguise + double-extension + honest file', () => {
+  assert.equal(inspectDownload('invoice.pdf', 'application/x-msdownload').body, 'downloadMismatchBody'); // pdf served as exe
+  assert.equal(inspectDownload('photo.jpg.scr', 'application/octet-stream').body, 'downloadMismatchBody'); // double ext
+  assert.equal(inspectDownload('setup.exe', 'application/x-msdownload').body, 'downloadDangerousBody'); // honest but dangerous
+  assert.equal(inspectDownload('report.pdf', 'application/pdf'), null); // real pdf → quiet
+  assert.equal(fileExt('a/b/c.TAR.GZ'), 'gz');
+});
+
 check('zip: valid store package (store method, EOCD intact)', () => {
   const dir = mkdtempSync(join(tmpdir(), 'fc-zip-'));
   try {

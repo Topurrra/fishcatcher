@@ -14,7 +14,11 @@ Works on Chrome, Brave, Edge and Opera, plus Firefox. Available in English and G
 - Colors the toolbar icon green, yellow, orange, or red so you see the risk at a glance.
 - Tells you why a site looks risky in a sentence or two, so you learn to spot it yourself.
 - Checks QR codes before you trust them. Right click any QR image and pick "Check this QR code".
+- Flags links whose visible text does not match where they really go, and warns about shortened links that hide their destination.
+- Optional download guard: warns when a download is disguised, like a program pretending to be a PDF, with a one-click cancel.
 - Runs fully on your device. No account, no tracking, nothing from the page leaves your browser.
+
+On Chrome, Brave, Edge and Opera the toolbar icon opens a side panel. On Firefox it opens a popup.
 
 ## Install
 

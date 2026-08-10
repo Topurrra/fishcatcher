@@ -14,6 +14,8 @@ const probeFlags = new Map(); // tabId → page has a password form
 const cloudFlags = new Map(); // tabId → young-domain age in days (opt-in RDAP)
 const ageCache = new Map(); // registrable → age in days | null
 const dismissedBanners = new Set(); // `${tabId} ${url}`
+const linkFindings = new Map(); // tabId → link-intelligence findings for the panel
+const downloadWarnings = new Map(); // notificationId → downloadId (for the Cancel button)
 let pendingResult = null; // one-shot result handed to the panel (QR / link checks)
 let pendingNote = null;
 let cloudEnabled = false;
@@ -257,6 +259,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'loading') {
     probeFlags.delete(tabId);
     cloudFlags.delete(tabId);
+    linkFindings.delete(tabId);
   }
   if (changeInfo.status === 'complete' && tab.url) scoreTab(tabId, tab.url);
 });
@@ -271,6 +274,7 @@ chrome.tabs.onRemoved.addListener((tabId) => {
   results.delete(tabId);
   probeFlags.delete(tabId);
   cloudFlags.delete(tabId);
+  linkFindings.delete(tabId);
   for (const key of dismissedBanners) {
     if (key.startsWith(`${tabId} `)) dismissedBanners.delete(key);
   }
@@ -285,6 +289,53 @@ async function setTrust(domain, trusted) {
     if (result.registrable === domain) scoreTab(tabId, result.url);
   }
 }
+
+// Link intelligence + download-type logic live in engine/links.js (pure, tested).
+async function storeLinks(tabId, links, deep) {
+  await ready;
+  const findings = classifyLinks(links, data, deep);
+  linkFindings.set(tabId, findings);
+  broadcast({ type: 'links', tabId });
+  return findings;
+}
+
+// ── Download guard (opt-in; needs downloads + notifications permissions) ──
+async function onDownloadCreated(item) {
+  const s = await chrome.storage.local.get('opt:downloads');
+  if (!s['opt:downloads']) return;
+  const name = String(item.filename || item.finalUrl || item.url || '').split(/[\\/]/).pop().split(/[?#]/)[0];
+  const finding = inspectDownload(name, item.mime);
+  if (!finding || !chrome.notifications?.create) return;
+  const nid = `fc-dl-${item.id}`;
+  downloadWarnings.set(nid, item.id);
+  chrome.notifications.create(nid, {
+    type: 'basic',
+    iconUrl: chrome.runtime.getURL('icons/icon48-critical.png'),
+    title: await getMessage('downloadWarnTitle'),
+    message: await getMessage(finding.body, [name, finding.arg]),
+    buttons: [{ title: await getMessage('downloadCancel') }, { title: await getMessage('downloadKeep') }],
+    priority: 2,
+    requireInteraction: true
+  });
+}
+
+function onNotifButton(nid, idx) {
+  const id = downloadWarnings.get(nid);
+  if (id != null && idx === 0) chrome.downloads?.cancel(id).catch(() => {});
+  downloadWarnings.delete(nid);
+  chrome.notifications?.clear(nid);
+}
+
+function setupDownloadGuard() {
+  if (chrome.downloads?.onCreated && !chrome.downloads.onCreated.hasListener(onDownloadCreated)) {
+    chrome.downloads.onCreated.addListener(onDownloadCreated);
+  }
+  if (chrome.notifications?.onButtonClicked && !chrome.notifications.onButtonClicked.hasListener(onNotifButton)) {
+    chrome.notifications.onButtonClicked.addListener(onNotifButton);
+  }
+}
+setupDownloadGuard();
+chrome.permissions?.onAdded?.addListener(setupDownloadGuard);
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   (async () => {
@@ -337,6 +388,23 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         if (sender.tab) dismissedBanners.add(`${sender.tab.id} ${msg.url}`);
         sendResponse({ ok: true });
         break;
+      case 'link-scan':
+        if (sender.tab) await storeLinks(sender.tab.id, msg.links, false);
+        sendResponse({ ok: true });
+        break;
+      case 'get-links':
+        sendResponse({ findings: linkFindings.get(msg.tabId) ?? [] });
+        break;
+      case 'scan-links': {
+        let links = [];
+        try {
+          links = (await chrome.tabs.sendMessage(msg.tabId, { type: 'collect-links' }))?.links ?? [];
+        } catch {
+          // no content script on this page (chrome://, PDF viewer, etc.)
+        }
+        sendResponse({ findings: await storeLinks(msg.tabId, links, true) });
+        break;
+      }
     }
   })();
   return true; // respond asynchronously
