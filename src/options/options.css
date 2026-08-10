@@ -6,8 +6,9 @@ body {
 
 section {
   background: var(--card);
-  border-radius: 10px;
-  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  padding: 14px 16px;
   margin-bottom: 12px;
 }
 
@@ -18,39 +19,25 @@ section {
   cursor: pointer;
 }
 
-.row.url { margin-top: 10px; cursor: default; }
-
-.row.url span { flex: none; color: var(--muted); }
-
 input[type="checkbox"] {
   width: 16px;
   height: 16px;
+  flex: none;
   accent-color: var(--accent);
 }
 
-input[type="url"] {
-  flex: 1;
-  min-width: 0;
-  background: var(--bg);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 6px 8px;
-  font: inherit;
-}
-
 select {
-  background: var(--bg);
+  background: var(--elevated);
   color: var(--text);
   border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 5px 8px;
+  border-radius: var(--r-control);
+  padding: 6px 9px;
   font: inherit;
 }
 
 .hint {
   color: var(--muted);
-  margin-top: 6px;
+  margin: 6px 0 0 26px;
 }
 
 section h2 {
@@ -58,34 +45,32 @@ section h2 {
   margin-bottom: 8px;
 }
 
-#trust-list {
-  list-style: none;
-}
+#trust-list { list-style: none; }
 
 #trust-list li {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 6px 0;
+  padding: 7px 0;
   border-bottom: 1px solid var(--border);
 }
 
 #trust-list li:last-child { border-bottom: none; }
 
 #trust-list .domain {
-  font-family: Consolas, monospace;
+  font-family: var(--mono);
   color: var(--accent);
 }
 
 #trust-list button {
   background: none;
-  color: var(--red);
+  color: var(--risk-critical);
   border: 1px solid transparent;
-  border-radius: 6px;
-  padding: 3px 8px;
+  border-radius: var(--r-control);
+  padding: 3px 9px;
   font: inherit;
   cursor: pointer;
 }
 
-#trust-list button:hover { border-color: var(--red); }
+#trust-list button:hover { border-color: var(--risk-critical); }

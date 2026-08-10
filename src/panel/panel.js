@@ -1,5 +1,6 @@
 import { applyI18n, getMessage } from '../ui/i18n.js';
 import { initSettings } from '../ui/settings.js';
+import { STATUS_ICONS } from '../ui/icons.js';
 
 const LEVEL_LABEL = {
   low: 'levelLow',
@@ -25,7 +26,8 @@ async function renderResult(result, noteKey) {
   }
 
   if (!result) {
-    $('status').className = 'status level-low';
+    document.body.className = '';
+    $('status-icon').innerHTML = STATUS_ICONS.none;
     $('status-label').textContent = await getMessage('noCheck');
     $('domain').hidden = true;
     $('reasons-wrap').hidden = true;
@@ -34,7 +36,8 @@ async function renderResult(result, noteKey) {
     return;
   }
 
-  $('status').className = `status level-${result.level}`;
+  document.body.className = `level-${result.level}`;
+  $('status-icon').innerHTML = STATUS_ICONS[result.level] ?? STATUS_ICONS.none;
   $('status-label').textContent = await getMessage(LEVEL_LABEL[result.level]);
 
   $('domain').hidden = false;

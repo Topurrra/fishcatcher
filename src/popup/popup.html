@@ -11,21 +11,25 @@
     <h1 data-i18n="appName">FishCatcher</h1>
   </header>
 
-  <div id="status" class="status level-low">
-    <span class="dot"></span>
-    <span class="label" id="status-label"></span>
+  <div id="status" class="status">
+    <span class="status-icon" id="status-icon"></span>
+    <div class="status-body">
+      <span class="label" id="status-label"></span>
+      <span id="domain" class="status-domain" hidden></span>
+    </div>
   </div>
 
-  <p id="domain" class="domain" hidden></p>
-
   <section id="reasons-wrap" hidden>
-    <h2 data-i18n="reasonsTitle">Why am I seeing this?</h2>
+    <h2 class="section-label" data-i18n="reasonsTitle">Why am I seeing this?</h2>
     <ul id="reasons"></ul>
   </section>
 
   <div class="actions">
     <button id="trust-btn" hidden></button>
-    <button id="recheck-btn" data-i18n="recheckButton">Check again</button>
+    <button id="recheck-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+      <span data-i18n="recheckButton">Check again</span>
+    </button>
   </div>
 
   <script type="module" src="popup.js"></script>

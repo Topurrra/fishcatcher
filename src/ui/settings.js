@@ -47,7 +47,7 @@ export async function initSettings() {
   $('strict').addEventListener('change', (e) => {
     chrome.storage.local.set({ 'opt:strict': e.target.checked });
   });
-  // Updates always come from the fixed FishCatcher registry — opt in / out only.
+  // Updates always come from the fixed FishCatcher registry: opt in / out only.
   $('remote').addEventListener('change', async (e) => {
     if (!(await requestOnEnable(e.target, { origins: ['https://raw.githubusercontent.com/*'] }))) return;
     chrome.storage.local.set({ 'opt:remote': e.target.checked });

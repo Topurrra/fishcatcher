@@ -14,15 +14,16 @@
 
   <p id="note" class="note" hidden></p>
 
-  <div id="status" class="status level-low">
-    <span class="dot"></span>
-    <span class="label" id="status-label"></span>
+  <div id="status" class="status">
+    <span class="status-icon" id="status-icon"></span>
+    <div class="status-body">
+      <span class="label" id="status-label"></span>
+      <span id="domain" class="status-domain" hidden></span>
+    </div>
   </div>
 
-  <p id="domain" class="domain" hidden></p>
-
   <section id="reasons-wrap" hidden>
-    <h2 data-i18n="reasonsTitle">Why am I seeing this?</h2>
+    <h2 class="section-label" data-i18n="reasonsTitle">Why am I seeing this?</h2>
     <ul id="reasons"></ul>
   </section>
 
@@ -30,21 +31,30 @@
 
   <div class="actions">
     <button id="trust-btn" hidden></button>
-    <button id="recheck-btn" data-i18n="recheckButton">Check again</button>
+    <button id="recheck-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+      <span data-i18n="recheckButton">Check again</span>
+    </button>
   </div>
 
   <section id="links-wrap">
     <div class="actions">
-      <button id="scan-links-btn" data-i18n="scanLinksButton">Scan links on this page</button>
+      <button id="scan-links-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>
+        <span data-i18n="scanLinksButton">Scan links on this page</span>
+      </button>
     </div>
     <ul id="links"></ul>
     <p id="links-none" class="note" hidden data-i18n="linksNone">No risky links found on this page.</p>
   </section>
 
   <section id="qr-wrap">
-    <h2 data-i18n="qrTitle">Check a QR code</h2>
+    <h2 class="section-label" data-i18n="qrTitle">Check a QR code</h2>
     <div class="actions">
-      <button id="qr-file-btn" data-i18n="qrPick">Choose image…</button>
+      <button id="qr-file-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 8h.01" /><path d="M3 6a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-12z" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5" /><path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3" /></svg>
+        <span data-i18n="qrPick">Choose image</span>
+      </button>
       <input type="file" id="qr-file" accept="image/*" hidden>
       <button id="qr-cam-btn" data-i18n="qrCamera">Use camera</button>
     </div>
@@ -53,7 +63,10 @@
   </section>
 
   <details id="settings-wrap" hidden>
-    <summary data-i18n="optionsHeading">Settings</summary>
+    <summary>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /></svg>
+      <span data-i18n="optionsHeading">Settings</span>
+    </summary>
     <div class="settings">
       <label class="row">
         <input type="checkbox" id="strict">

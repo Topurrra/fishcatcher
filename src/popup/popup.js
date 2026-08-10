@@ -1,4 +1,5 @@
 import { applyI18n, getMessage } from '../ui/i18n.js';
+import { STATUS_ICONS } from '../ui/icons.js';
 
 const LEVEL_LABEL = {
   low: 'levelLow',
@@ -17,7 +18,8 @@ async function render() {
   const { result } = await chrome.runtime.sendMessage({ type: 'get-result', tabId: currentTabId });
 
   if (!result) {
-    $('status').className = 'status level-low';
+    document.body.className = '';
+    $('status-icon').innerHTML = STATUS_ICONS.none;
     $('status-label').textContent = await getMessage('noCheck');
     $('domain').hidden = true;
     $('reasons-wrap').hidden = true;
@@ -25,7 +27,8 @@ async function render() {
     return;
   }
 
-  $('status').className = `status level-${result.level}`;
+  document.body.className = `level-${result.level}`;
+  $('status-icon').innerHTML = STATUS_ICONS[result.level] ?? STATUS_ICONS.none;
   $('status-label').textContent = await getMessage(LEVEL_LABEL[result.level]);
 
   $('domain').hidden = false;
