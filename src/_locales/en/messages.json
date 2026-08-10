@@ -318,5 +318,17 @@
   "ageChecking": {
     "message": "Checking domain age…",
     "description": "Panel note while an RDAP age lookup is in progress"
+  },
+  "reasonAitmMismatch": {
+    "message": "This page asks for your $1 sign-in, but $2 is not an official $1 site",
+    "description": "M8 AiTM primary signal: identity interaction + claimed brand + origin mismatch; $1 = brand name, $2 = registrable domain"
+  },
+  "reasonAitmResourceGraph": {
+    "message": "Nearly all of this sign-in page is served from a single unrelated site, a pattern seen in relay attacks",
+    "description": "M8 AiTM corroborator: reverse-proxy resource-origin graph collapse"
+  },
+  "reasonAitmDrift": {
+    "message": "The site icon or app manifest is served from a different domain than the page itself",
+    "description": "M8 AiTM soft boost: favicon/manifest cross-origin drift"
   }
 }

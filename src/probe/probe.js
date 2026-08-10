@@ -9,10 +9,116 @@
     }
   };
 
-  // S13 probe: does the page contain a password form?
-  if (document.querySelector('input[type="password"]')) {
-    send({ type: 'form-probe' });
+  // M8 AiTM probe: report DERIVED FACTS only (interactions, login-proximate
+  // brand hints, resource hostnames) and let the worker+engine own the verdict.
+  // Fires ONE message and only when an ACTIVE identity interaction is present,
+  // so ordinary pages (and passkey-docs pages that merely MENTION the terms)
+  // stay silent. Replaces the S13 form-probe: password now rides inside this as
+  // an interaction kind, and the worker derives probeFlags from it.
+  function collectAitm() {
+    // aitmKindForText comes from the bundled engine/aitm.js; guard in case the
+    // content bundle order isn't updated yet so the rest of the probe survives.
+    const classify = typeof aitmKindForText === 'function' ? aitmKindForText : () => null;
+    const visible = (el) => el.offsetParent !== null && !el.disabled && el.type !== 'hidden';
+    const accText = (el) =>
+      (el.getAttribute('aria-label') || el.value || el.textContent || el.getAttribute('placeholder') || '').trim();
+    const hostOf = (url) => {
+      try {
+        const u = new URL(url, location.href);
+        return /^https?:$/.test(u.protocol) ? u.hostname : null;
+      } catch {
+        return null;
+      }
+    };
+
+    const kinds = new Set();
+
+    // Password: structural, active input only.
+    for (const inp of document.querySelectorAll('input[type="password"]')) {
+      if (visible(inp)) { kinds.add('password'); break; }
+    }
+
+    // OTP: autocomplete=one-time-code is the strong structural tell; other short
+    // numeric fields get text-classified.
+    for (const inp of document.querySelectorAll(
+      'input[autocomplete="one-time-code"], input[inputmode="numeric"][maxlength], input[name*="otp" i], input[id*="otp" i], input[name*="code" i][maxlength]'
+    )) {
+      if (!visible(inp)) continue;
+      if (inp.getAttribute('autocomplete') === 'one-time-code') { kinds.add('otp'); continue; }
+      const k = classify(accText(inp));
+      if (k) kinds.add(k);
+    }
+
+    // passkey/ssoSetup/mfaApproval/mfaMigration/qrAuth/helpdeskUpgrade: classify
+    // ACTIONABLE controls only (buttons, submits, form labels/legends/headings)
+    // so prose mentions don't count as a flow.
+    for (const el of document.querySelectorAll(
+      'form button, input[type="submit"], [role="button"], form legend, form label, form h1, form h2, form h3'
+    )) {
+      if (!visible(el)) continue;
+      const k = classify(accText(el));
+      if (k) kinds.add(k);
+    }
+
+    // Device-code bridge: reuse the S14 matcher over the page body.
+    const body = document.body?.innerText ?? '';
+    if (body && body.length < 200000 && matchDeviceCodeScam(body)) kinds.add('deviceCode');
+
+    if (!kinds.size) return null;
+
+    // Login-proximate brand hints (never whole-body text).
+    const title = (document.title || '').slice(0, 150);
+    const ogSiteName = (
+      document.querySelector('meta[property="og:site_name"], meta[name="og:site_name"]')?.content || ''
+    ).slice(0, 80);
+    const logoAlts = [];
+    for (const img of document.querySelectorAll(
+      'header img[alt], [class*="logo" i] img[alt], img[class*="logo" i][alt], img[id*="logo" i][alt]'
+    )) {
+      const alt = (img.getAttribute('alt') || '').trim().slice(0, 80);
+      if (alt && !logoAlts.includes(alt)) logoAlts.push(alt);
+      if (logoAlts.length >= 10) break;
+    }
+    const brandTokens = [];
+    for (const el of document.querySelectorAll('form legend, form label, form h1, form h2, form h3')) {
+      const t = (el.textContent || '').trim().toLowerCase().slice(0, 80);
+      if (t && !brandTokens.includes(t)) brandTokens.push(t);
+      if (brandTokens.length >= 40) break;
+    }
+
+    // Resource-origin graph: raw hostnames -> count (worker folds to eTLD+1).
+    const resourceHosts = {};
+    const addHost = (h) => {
+      if (!h) return;
+      if (resourceHosts[h] === undefined && Object.keys(resourceHosts).length >= 40) return;
+      resourceHosts[h] = (resourceHosts[h] || 0) + 1;
+    };
+    for (const el of document.querySelectorAll('script[src], img[src], iframe[src]')) addHost(hostOf(el.src));
+    for (const el of document.querySelectorAll('link[href]')) addHost(hostOf(el.href));
+    for (const f of document.querySelectorAll('form[action]')) addHost(hostOf(f.action));
+    try {
+      for (const e of performance.getEntriesByType('resource')) addHost(hostOf(e.name));
+    } catch {
+      // performance API unavailable
+    }
+
+    // Favicon/manifest drift: served from a different host than the page.
+    let faviconCrossOrigin = false;
+    for (const l of document.querySelectorAll('link[rel~="icon"], link[rel="manifest"]')) {
+      const h = hostOf(l.href);
+      if (h && h !== location.hostname) { faviconCrossOrigin = true; break; }
+    }
+
+    return {
+      interactions: [...kinds],
+      identityHints: { title, ogSiteName, logoAlts, brandTokens },
+      resourceHosts,
+      faviconCrossOrigin
+    };
   }
+
+  const aitm = collectAitm();
+  if (aitm) send({ type: 'aitm-scan', payload: aitm });
 
   // Link intelligence: collect anchors and let the background (which has the
   // full engine + PSL) judge them. The auto pass sends only candidates worth

@@ -318,5 +318,17 @@
   "ageChecking": {
     "message": "დომენის ასაკი მოწმდება…",
     "description": "Panel note while an RDAP age lookup is in progress"
+  },
+  "reasonAitmMismatch": {
+    "message": "ეს გვერდი ითხოვს თქვენს $1-ის ავტორიზაციას, მაგრამ $2 არ არის $1-ის ოფიციალური საიტი",
+    "description": "M8 AiTM primary signal: identity interaction + claimed brand + origin mismatch; $1 = brand name, $2 = registrable domain"
+  },
+  "reasonAitmResourceGraph": {
+    "message": "ამ ავტორიზაციის გვერდის თითქმის ყველა ნაწილი ერთი უცხო საიტიდან იტვირთება, რაც გადამისამართების შეტევებისთვის დამახასიათებელია",
+    "description": "M8 AiTM corroborator: reverse-proxy resource-origin graph collapse"
+  },
+  "reasonAitmDrift": {
+    "message": "საიტის ხატულა ან აპლიკაციის მანიფესტი გვერდისგან განსხვავებული დომენიდან იტვირთება",
+    "description": "M8 AiTM soft boost: favicon/manifest cross-origin drift"
   }
 }

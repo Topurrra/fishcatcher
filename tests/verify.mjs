@@ -28,7 +28,9 @@ const data = {
   psl: readJson('src/data/psl.json').suffixes,
   blockList: new Set(readJson('src/data/blocklist.json').domains),
   ml: readJson('src/data/ml-weights.json'),
-  safeBloom: Bloom.fromPayload(readJson('src/data/safe-bloom.json'))
+  safeBloom: Bloom.fromPayload(readJson('src/data/safe-bloom.json')),
+  aitmIdp: new Set(readJson('src/data/aitm-allow.json').idp),
+  aitmMediation: new Set(readJson('src/data/aitm-allow.json').mediation)
 };
 const enMessages = readJson('src/_locales/en/messages.json');
 
@@ -429,6 +431,119 @@ check('zip: valid store package (store method, EOCD intact)', () => {
     assert.equal(zip.readUInt16LE(zip.length - 12), 2, 'two entries');
   } finally {
     rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+// ── M8: AiTM (adversary-in-the-middle) ──────────────────────────
+import { runAitm, aitmKindForText, aitmInferBrands } from '../src/engine/aitm.js';
+
+// A Microsoft-branded credential page. identityHints stay login-proximate.
+const msHints = { title: 'Sign in to your Microsoft account', ogSiteName: 'Microsoft', logoAlts: ['Microsoft'], brandTokens: ['password'] };
+const aitmScan = (over = {}) => ({ interactions: ['password'], identityHints: msHints, resourceHosts: {}, faviconCrossOrigin: false, ...over });
+
+check('aitm: aitmKindForText labels active identity controls', () => {
+  assert.equal(aitmKindForText('Enter your password'), 'password');
+  assert.equal(aitmKindForText('Sign in with a passkey'), 'passkey');
+  assert.equal(aitmKindForText('Enter the verification code'), 'otp');
+  assert.equal(aitmKindForText('Read our latest blog post'), null);
+});
+
+check('aitm: brand inference is login-proximate', () => {
+  assert.deepEqual(aitmInferBrands(msHints, data), ['Microsoft']);
+  // Empty hints infer nothing (conservative).
+  assert.deepEqual(aitmInferBrands({ title: '', ogSiteName: '', logoAlts: [], brandTokens: [] }, data), []);
+  // Federated login: a "Sign in with Microsoft" button (brandTokens) on a SaaS's
+  // OWN page must NOT be read as the page claiming to be Microsoft.
+  assert.deepEqual(aitmInferBrands({ title: 'Acme login', ogSiteName: 'Acme', logoAlts: ['Acme'], brandTokens: ['sign in with microsoft', 'password'] }, data), []);
+});
+
+check('aitm: composite fires reasonAitmMismatch [brand, registrable]', () => {
+  const a = runAitm({ registrable: 'evil.ru', knownLegit: false, aitm: aitmScan() }, data);
+  const primary = a.reasons.find((r) => r.key === 'reasonAitmMismatch');
+  assert.ok(primary, 'primary fired');
+  assert.deepEqual(primary.params, ['Microsoft', 'evil.ru']);
+  assert.ok(a.score >= 45, `score ${a.score} reaches high`);
+});
+
+check('aitm: no interaction stays silent', () => {
+  const a = runAitm({ registrable: 'evil.ru', knownLegit: false, aitm: aitmScan({ interactions: [] }) }, data);
+  assert.equal(a.score, 0);
+  assert.equal(a.reasons.length, 0);
+  assert.deepEqual(runAitm({ registrable: 'evil.ru', knownLegit: false, aitm: null }, data), { score: 0, reasons: [] });
+});
+
+check('aitm: claim on the brand\'s own origin never flags', () => {
+  // microsoft.com IS a Microsoft eTLD+1 → no origin mismatch → nothing fires.
+  const a = runAitm({ registrable: 'microsoft.com', knownLegit: false, aitm: aitmScan() }, data);
+  assert.equal(a.score, 0);
+  assert.equal(a.reasons.length, 0);
+});
+
+check('aitm: knownLegit origin suppresses the composite', () => {
+  const a = runAitm({ registrable: 'obscure-regional-login.example', knownLegit: true, aitm: aitmScan() }, data);
+  assert.equal(a.score, 0);
+  assert.equal(a.reasons.length, 0);
+});
+
+check('aitm: IdP + mediation allowlists are load-bearing (Okta/Zscaler FP guard)', () => {
+  // okta.com and zscaler.net are NOT in any brand's .domains, so a Microsoft-
+  // claiming page on them WOULD mismatch. Prove each allowlist is what suppresses
+  // it: strip the allowlist and the same input must flag.
+  const claim = aitmScan(); // claims Microsoft
+  for (const [origin, key] of [['okta.com', 'aitmIdp'], ['zscaler.net', 'aitmMediation']]) {
+    assert.ok(data[key].has(origin), `${origin} present in ${key}`);
+    assert.equal(runAitm({ registrable: origin, knownLegit: false, aitm: claim }, data).score, 0, `${origin} suppressed`);
+    const stripped = { ...data, [key]: new Set() };
+    assert.ok(runAitm({ registrable: origin, knownLegit: false, aitm: claim }, stripped).score >= 45, `${origin} would flag without ${key}`);
+  }
+});
+
+check('aitm: favicon drift adds a soft boost only on top of the primary', () => {
+  const a = runAitm({ registrable: 'evil.ru', knownLegit: false, aitm: aitmScan({ faviconCrossOrigin: true }) }, data);
+  const drift = a.reasons.find((r) => r.key === 'reasonAitmDrift');
+  assert.ok(drift && drift.weight === 5, 'drift reason fires at weight 5');
+  assert.equal(a.score, 60, '55 primary + 5 drift');
+  // ...and never alone: drift without a claimed-brand mismatch scores nothing.
+  const noBrand = { title: 'Welcome', ogSiteName: '', logoAlts: [], brandTokens: [] };
+  assert.equal(runAitm({ registrable: 'x.example', knownLegit: false, aitm: { interactions: ['password'], identityHints: noBrand, resourceHosts: {}, faviconCrossOrigin: true } }, data).score, 0);
+});
+
+check('aitm: safe-listed origin short-circuits before any aitm signal', () => {
+  // google.com is safe-listed → analyzeUrl returns score 0 at the top, even with
+  // a Microsoft-claiming aitm payload that would otherwise reach high/critical.
+  const r = analyzeUrl('https://google.com/', data, { aitm: aitmScan({ resourceHosts: { 'google.com': 8 }, faviconCrossOrigin: true }) });
+  assert.equal(r.score, 0);
+  assert.ok(!r.reasons.some((x) => x.key.startsWith('reasonAitm')), 'no aitm reason leaks past the short-circuit');
+});
+
+check('aitm: soft signals never fire without the primary (proxy alone = 0)', () => {
+  // Collapsed resource graph + favicon drift but NO claimed brand → composite fails.
+  const noBrand = { title: 'Welcome', ogSiteName: '', logoAlts: [], brandTokens: [] };
+  const a = runAitm({ registrable: 'proxy-only.example', knownLegit: false, aitm: { interactions: ['password'], identityHints: noBrand, resourceHosts: { 'proxy-only.example': 8 }, faviconCrossOrigin: true } }, data);
+  assert.equal(a.score, 0, 'a proxy existing alone scores nothing');
+  assert.equal(a.reasons.length, 0);
+});
+
+check('aitm: resource-graph anomalies corroborate (+15), weight stays soft', () => {
+  // All resources collapsed under evil.ru; Microsoft/IdP origins absent → 2 anomalies.
+  const a = runAitm({ registrable: 'evil.ru', knownLegit: false, aitm: aitmScan({ resourceHosts: { 'cdn.evil.ru': 3, 'evil.ru': 4 } }) }, data);
+  const graph = a.reasons.find((r) => r.key === 'reasonAitmResourceGraph');
+  assert.ok(graph, 'resource-graph reason fired');
+  assert.ok(graph.weight < 45, 'soft signal cannot reach high on its own');
+  assert.equal(a.score, 70, `55 primary + 15 graph, got ${a.score}`);
+});
+
+check('aitm: analyzeUrl wires the composite to high/critical', () => {
+  const r = analyzeUrl('https://evil.ru/login', data, { aitm: aitmScan({ resourceHosts: { 'evil.ru': 6 }, faviconCrossOrigin: true }) });
+  assert.ok(r.reasons.some((x) => x.key === 'reasonAitmMismatch'));
+  assert.ok(r.level === 'high' || r.level === 'critical', `level ${r.level} (score ${r.score})`);
+  // No opts.aitm → legit/phishing corpora unchanged (no regression).
+  assert.equal(analyzeUrl('https://example.com/', data).score, 0);
+});
+
+check('locales: M8 AiTM reason keys present', () => {
+  for (const key of ['reasonAitmMismatch', 'reasonAitmResourceGraph', 'reasonAitmDrift']) {
+    assert.ok(enMessages[key], `en has ${key}`);
   }
 });
 

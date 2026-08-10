@@ -1,5 +1,6 @@
 // Pure URL analysis: string in → {score, level, reasons} out. No extension APIs.
 import { runSignals, isIpAddress } from './signals.js';
+import { runAitm } from './aitm.js';
 import { registrableDomain } from './psl.js';
 
 export function levelForScore(score) {
@@ -10,7 +11,7 @@ export function levelForScore(score) {
 }
 
 // data: { safeList: Set<string>, brands, tlds, keywords, psl, blockList?, trustList? }
-// opts: { hasPasswordForm? } — page-content signals from the probe content script
+// opts: { hasPasswordForm?, youngDomainDays?, aitm? } — page-content signals from the probe content script
 export function analyzeUrl(input, data, opts) {
   let url;
   try {
@@ -43,6 +44,14 @@ export function analyzeUrl(input, data, opts) {
   if (opts?.youngDomainDays != null) {
     score += 25;
     reasons.push({ key: 'reasonYoungDomain', params: [String(opts.youngDomainDays)], weight: 25 });
+  }
+
+  // M8 — AiTM composite (identity interaction + claimed brand + origin mismatch).
+  // No opts.aitm (e.g. the verify.mjs corpora) leaves this untouched → no regression.
+  if (opts?.aitm) {
+    const a = runAitm({ registrable, knownLegit, aitm: opts.aitm }, data);
+    score += a.score;
+    for (const r of a.reasons) reasons.push(r);
   }
 
   result.score = Math.min(100, score);

@@ -8,9 +8,10 @@ const BADGE_TEXT = { low: '', elevated: '!', high: '!!', critical: '!!!' };
 // One-click default update source — same pattern as voli-registry.
 const DEFAULT_REMOTE_URL = 'https://raw.githubusercontent.com/topurrra/fishcatcher-registry/main/fishcatcher-lists.json';
 
-const data = { safeList: new Set(), brands: [], tlds: {}, keywords: [], psl: [], blockList: new Set(), trustList: new Set(), bloom: null };
+const data = { safeList: new Set(), brands: [], tlds: {}, keywords: [], psl: [], blockList: new Set(), trustList: new Set(), bloom: null, aitmIdp: new Set(), aitmMediation: new Set() };
 const results = new Map();
 const probeFlags = new Map(); // tabId → page has a password form
+const aitmFlags = new Map(); // tabId → raw aitm-scan payload (M8)
 const cloudFlags = new Map(); // tabId → young-domain age in days (opt-in RDAP)
 const ageCache = new Map(); // registrable → age in days | null
 const dismissedBanners = new Set(); // `${tabId} ${url}`
@@ -21,7 +22,7 @@ let pendingNote = null;
 let cloudEnabled = false;
 
 async function loadData() {
-  const [safe, brands, tlds, keywords, psl, block, mlw, safeBloom, stored] = await Promise.all([
+  const [safe, brands, tlds, keywords, psl, block, mlw, safeBloom, allow, stored] = await Promise.all([
     fetch(chrome.runtime.getURL('data/safe-list.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/brands.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/tlds.json')).then((r) => r.json()),
@@ -30,6 +31,7 @@ async function loadData() {
     fetch(chrome.runtime.getURL('data/blocklist.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/ml-weights.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/safe-bloom.json')).then((r) => r.json()),
+    fetch(chrome.runtime.getURL('data/aitm-allow.json')).then((r) => r.json()),
     chrome.storage.local.get(['trust:list', 'opt:cloud'])
   ]);
   data.safeList = new Set(safe.domains);
@@ -39,6 +41,8 @@ async function loadData() {
   data.keywords = keywords.keywords;
   data.psl = psl.suffixes;
   data.blockList = new Set(block.domains);
+  data.aitmIdp = new Set(allow.idp);
+  data.aitmMediation = new Set(allow.mediation);
   data.ml = mlw;
   data.trustList = new Set(stored['trust:list'] ? JSON.parse(stored['trust:list']) : []);
   cloudEnabled = !!stored['opt:cloud'];
@@ -136,7 +140,8 @@ async function scoreTab(tabId, url) {
   await ready;
   const result = analyzeUrl(url, data, {
     hasPasswordForm: probeFlags.get(tabId) === true,
-    youngDomainDays: cloudFlags.get(tabId) ?? null
+    youngDomainDays: cloudFlags.get(tabId) ?? null,
+    aitm: aitmFlags.get(tabId) ?? null
   });
   if (!result) {
     results.delete(tabId);
@@ -254,6 +259,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   // inflating the score of every later page in the same tab.
   if (changeInfo.status === 'loading') {
     probeFlags.delete(tabId);
+    aitmFlags.delete(tabId);
     cloudFlags.delete(tabId);
     linkFindings.delete(tabId);
   }
@@ -269,6 +275,7 @@ chrome.tabs.onActivated.addListener(({ tabId }) => {
 chrome.tabs.onRemoved.addListener((tabId) => {
   results.delete(tabId);
   probeFlags.delete(tabId);
+  aitmFlags.delete(tabId);
   cloudFlags.delete(tabId);
   linkFindings.delete(tabId);
   for (const key of dismissedBanners) {
@@ -364,9 +371,11 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         pendingResult = null;
         pendingNote = null;
         break;
-      case 'form-probe':
+      case 'aitm-scan':
+        // Single M8 message; password rides inside it (replaces S13 form-probe).
         if (sender.tab) {
-          probeFlags.set(sender.tab.id, true);
+          aitmFlags.set(sender.tab.id, msg.payload);
+          if (msg.payload?.interactions?.includes('password')) probeFlags.set(sender.tab.id, true);
           if (sender.tab.url) scoreTab(sender.tab.id, sender.tab.url);
         }
         sendResponse({ ok: true });
