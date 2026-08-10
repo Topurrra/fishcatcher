@@ -2,8 +2,8 @@
 // Engine, i18n and jsQR are bundled into this file by scripts/build.mjs —
 // this source file intentionally has no import/export statements.
 
-const LEVEL_COLORS = { low: '#34d399', elevated: '#fbbf24', high: '#fb923c', critical: '#f87171' };
-const BADGE_TEXT = { low: '', elevated: '!', high: '!!', critical: '!!!' };
+const LEVEL_COLORS = { low: '#34d399', elevated: '#fbbf24', high: '#fb923c', critical: '#f87171', idle: '#6b7280' };
+const BADGE_TEXT = { low: '', elevated: '!', high: '!!', critical: '!!!', idle: '' };
 
 // One-click default update source — same pattern as voli-registry.
 const DEFAULT_REMOTE_URL = 'https://raw.githubusercontent.com/topurrra/fishcatcher-registry/main/fishcatcher-lists.json';
@@ -160,7 +160,7 @@ function iconPaths(level) {
 }
 
 function paint(tabId, result) {
-  const level = result?.level ?? 'low';
+  const level = result?.level ?? 'idle';
   chrome.action.setIcon({ path: iconPaths(level), tabId });
   chrome.action.setBadgeText({ text: BADGE_TEXT[level], tabId });
   chrome.action.setBadgeBackgroundColor({ color: LEVEL_COLORS[level], tabId });

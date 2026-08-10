@@ -12,10 +12,8 @@ async function loadMessages(lang) {
 }
 
 export async function currentLang() {
-  const stored = await chrome.storage.local.get('ui:lang');
-  const pref = stored['ui:lang'] ?? 'auto';
-  if (pref === 'en' || pref === 'ka') return pref;
-  return (chrome.i18n.getUILanguage() || 'en').startsWith('ka') ? 'ka' : 'en';
+  // Language switching is disabled for now; the UI ships in English.
+  return 'en';
 }
 
 export function format(template, params) {

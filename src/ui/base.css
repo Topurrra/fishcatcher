@@ -75,10 +75,38 @@ header {
 
 header img { width: 22px; height: 22px; border-radius: 6px; }
 
+/* ── verdict mascot (lives inside the status card) ──────── */
+.status-fish { width: 48px; height: 44px; flex: none; display: block; }
+
 header h1 {
   font-size: 14px;
   font-weight: 650;
   letter-spacing: -0.01em;
+}
+
+/* wordmark: hover "Fish" to glitch-swap into "Phish" (matches the website) */
+.wm-swap { position: relative; }
+.wm-phish { display: none; }
+.wm-swap:hover .wm-fish { display: none; }
+.wm-swap:hover .wm-phish { display: inline-block; position: relative; color: var(--accent); }
+.wm-phish::before, .wm-phish::after {
+  content: attr(data-text); position: absolute; left: 0; top: 0; opacity: 0; pointer-events: none;
+}
+.wm-swap:hover .wm-phish::before { color: #ff2d6f; opacity: 0.85; z-index: -1; animation: fc-glitch-1 0.3s ease infinite; }
+.wm-swap:hover .wm-phish::after { color: var(--accent); opacity: 0.85; z-index: -2; animation: fc-glitch-2 0.3s ease infinite; }
+@keyframes fc-glitch-1 {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(2px, -2px); }
+  60% { transform: translate(-1px, 1px); }
+  80% { transform: translate(1px, -1px); }
+}
+@keyframes fc-glitch-2 {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(2px, -2px); }
+  40% { transform: translate(-2px, 2px); }
+  60% { transform: translate(1px, -1px); }
+  80% { transform: translate(-1px, 1px); }
 }
 
 /* ── status hero ────────────────────────────────────────── */
@@ -187,4 +215,5 @@ a:hover { text-decoration: none; }
   button { transition: none; }
   button:active { transform: none; }
   .spinner { animation: none; }
+  .wm-swap:hover .wm-phish::before, .wm-swap:hover .wm-phish::after { animation: none; }
 }

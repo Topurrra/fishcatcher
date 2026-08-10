@@ -19,7 +19,6 @@ async function render() {
 
   if (!result) {
     document.body.className = '';
-    $('status-icon').innerHTML = STATUS_ICONS.none;
     $('status-label').textContent = await getMessage('noCheck');
     $('domain').hidden = true;
     $('reasons-wrap').hidden = true;
@@ -28,7 +27,6 @@ async function render() {
   }
 
   document.body.className = `level-${result.level}`;
-  $('status-icon').innerHTML = STATUS_ICONS[result.level] ?? STATUS_ICONS.none;
   $('status-label').textContent = await getMessage(LEVEL_LABEL[result.level]);
 
   $('domain').hidden = false;
