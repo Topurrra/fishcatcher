@@ -1,13 +1,30 @@
+/* Real light + real dark, following the OS. No gradients, no navy. */
 :root {
-  --bg: #0b1d2e;
-  --card: #122a40;
-  --text: #e8f1f8;
-  --muted: #8fa8bd;
-  --accent: #2dd4bf;
-  --green: #34d399;
-  --yellow: #fbbf24;
-  --orange: #fb923c;
-  --red: #f87171;
+  --bg: #ffffff;
+  --card: #f3f4f6;
+  --text: #1b1b1b;
+  --muted: #5f6672;
+  --border: #e3e5e9;
+  --accent: #0e7490;
+  --green: #16a34a;
+  --yellow: #d97706;
+  --orange: #ea580c;
+  --red: #dc2626;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919;
+    --card: #242424;
+    --text: #ededed;
+    --muted: #a0a0a0;
+    --border: #363636;
+    --accent: #2dd4bf;
+    --green: #34d399;
+    --yellow: #fbbf24;
+    --orange: #fb923c;
+    --red: #f87171;
+  }
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,7 +43,7 @@ header {
   gap: 8px;
   padding-bottom: 10px;
   margin-bottom: 10px;
-  border-bottom: 1px solid #1d3a54;
+  border-bottom: 1px solid var(--border);
 }
 
 header img { width: 24px; height: 24px; }
@@ -42,6 +59,7 @@ header h1 {
   align-items: center;
   gap: 10px;
   background: var(--card);
+  border: 1px solid var(--border);
   border-radius: 10px;
   padding: 12px;
   margin-bottom: 10px;

@@ -40,7 +40,7 @@ body {
 
 #qr-wrap {
   margin-top: 16px;
-  border-top: 1px solid #1d3a54;
+  border-top: 1px solid var(--border);
   padding-top: 12px;
 }
 
@@ -70,7 +70,7 @@ body {
 button {
   background: var(--card);
   color: var(--text);
-  border: 1px solid #1d3a54;
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 6px 12px;
   font: inherit;

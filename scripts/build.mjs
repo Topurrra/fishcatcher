@@ -11,6 +11,8 @@ const dist = join(root, 'dist');
 export function toFirefoxManifest(m) {
   const f = structuredClone(m);
   delete f.side_panel;
+  // Firefox keeps the toolbar popup (Chromium opens the side panel on click instead).
+  f.action = { ...f.action, default_popup: 'popup/popup.html' };
   if (f.background?.service_worker) {
     f.background = { scripts: [f.background.service_worker] };
   }

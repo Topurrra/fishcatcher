@@ -50,7 +50,7 @@ async function renderResult(result, noteKey) {
   $('hint').hidden = result.reasons.length > 0 || !!noteKey;
 
   const trustBtn = $('trust-btn');
-  if (result.level === 'low') {
+  if (result.level === 'low' && !result.trusted) {
     trustBtn.hidden = true;
   } else {
     trustBtn.hidden = false;

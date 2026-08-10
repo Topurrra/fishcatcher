@@ -148,14 +148,14 @@ function showBanner(payload) {
   const colors = { high: '#fb923c', critical: '#f87171' };
   const root = document.createElement('div');
   root.id = 'fishcatcher-banner';
-  root.style.cssText = `position:fixed;top:0;left:0;right:0;z-index:2147483647;background:#0b1d2e;color:#e8f1f8;border-bottom:2px solid ${colors[payload.level]};font:13px/1.5 system-ui,sans-serif;padding:10px 14px;display:flex;gap:12px;align-items:flex-start;`;
+  root.style.cssText = `position:fixed;top:0;left:0;right:0;z-index:2147483647;background:#1c1c1c;color:#f2f2f2;border-bottom:2px solid ${colors[payload.level]};font:13px/1.5 system-ui,sans-serif;padding:10px 14px;display:flex;gap:12px;align-items:flex-start;`;
   const main = document.createElement('div');
   main.style.cssText = 'flex:1;min-width:0';
   const title = document.createElement('strong');
   title.textContent = `FishCatcher — ${payload.title}`;
   main.appendChild(title);
   const domain = document.createElement('div');
-  domain.style.cssText = 'color:#2dd4bf;font-family:monospace;font-size:12px';
+  domain.style.cssText = 'color:#5eead4;font-family:monospace;font-size:12px';
   domain.textContent = payload.domain;
   main.appendChild(domain);
   const ul = document.createElement('ul');
@@ -168,7 +168,7 @@ function showBanner(payload) {
   main.appendChild(ul);
   const btn = document.createElement('button');
   btn.textContent = payload.dismiss;
-  btn.style.cssText = 'background:#122a40;color:#e8f1f8;border:1px solid #1d3a54;border-radius:6px;padding:4px 10px;cursor:pointer;font:inherit';
+  btn.style.cssText = 'background:#2a2a2a;color:#f2f2f2;border:1px solid #444;border-radius:6px;padding:4px 10px;cursor:pointer;font:inherit';
   btn.addEventListener('click', () => {
     root.remove();
     chrome.runtime.sendMessage({ type: 'banner-dismissed', url: location.href });
@@ -251,6 +251,13 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  // A new navigation invalidates the previous page's per-tab signals,
+  // otherwise a password form (or young-domain age) on page A keeps
+  // inflating the score of every later page in the same tab.
+  if (changeInfo.status === 'loading') {
+    probeFlags.delete(tabId);
+    cloudFlags.delete(tabId);
+  }
   if (changeInfo.status === 'complete' && tab.url) scoreTab(tabId, tab.url);
 });
 
@@ -263,6 +270,10 @@ chrome.tabs.onActivated.addListener(({ tabId }) => {
 chrome.tabs.onRemoved.addListener((tabId) => {
   results.delete(tabId);
   probeFlags.delete(tabId);
+  cloudFlags.delete(tabId);
+  for (const key of dismissedBanners) {
+    if (key.startsWith(`${tabId} `)) dismissedBanners.delete(key);
+  }
 });
 
 async function setTrust(domain, trusted) {
@@ -283,8 +294,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         sendResponse({ result: results.get(msg.tabId) ?? null });
         break;
       case 'rescore': {
-        const tab = await chrome.tabs.get(msg.tabId);
-        if (tab?.url) await scoreTab(msg.tabId, tab.url);
+        try {
+          const tab = await chrome.tabs.get(msg.tabId);
+          if (tab?.url) await scoreTab(msg.tabId, tab.url);
+        } catch {
+          // tab closed or not accessible — fall through to the last known result
+        }
         sendResponse({ result: results.get(msg.tabId) ?? null });
         break;
       }
@@ -336,6 +351,9 @@ chrome.storage.onChanged.addListener((changes, area) => {
 // Chromium-only: keyboard command opens the side panel.
 // Firefox has no sidePanel API — its sidebar opens from the toolbar/view menu.
 if (chrome.sidePanel) {
+  // Chromium: clicking the toolbar icon opens the side panel (there is no popup
+  // in the Chromium manifest). Firefox keeps its popup + sidebar_action instead.
+  chrome.sidePanel.setPanelBehavior?.({ openPanelOnActionClick: true }).catch(() => {});
   chrome.commands?.onCommand.addListener((command, tab) => {
     if (command === 'open_panel' && tab) {
       chrome.sidePanel.open({ windowId: tab.windowId });

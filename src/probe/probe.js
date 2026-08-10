@@ -36,13 +36,13 @@
       const dismiss = await getMessage('bannerDismiss');
       const root = document.createElement('div');
       root.id = 'fishcatcher-devicecode';
-      root.style.cssText = 'position:fixed;bottom:12px;right:12px;z-index:2147483647;max-width:340px;background:#0b1d2e;color:#e8f1f8;border:1px solid #2dd4bf;border-radius:10px;font:13px/1.5 system-ui,sans-serif;padding:10px 12px;';
+      root.style.cssText = 'position:fixed;bottom:12px;right:12px;z-index:2147483647;max-width:340px;background:#1c1c1c;color:#f2f2f2;border:1px solid #2dd4bf;border-radius:10px;font:13px/1.5 system-ui,sans-serif;padding:10px 12px;';
       const p = document.createElement('p');
       p.style.cssText = 'margin:0 0 8px';
       p.textContent = text;
       const btn = document.createElement('button');
       btn.textContent = dismiss;
-      btn.style.cssText = 'background:#122a40;color:#e8f1f8;border:1px solid #1d3a54;border-radius:6px;padding:3px 10px;cursor:pointer;font:inherit';
+      btn.style.cssText = 'background:#2a2a2a;color:#f2f2f2;border:1px solid #444;border-radius:6px;padding:3px 10px;cursor:pointer;font:inherit';
       btn.addEventListener('click', () => root.remove());
       root.append(p, btn);
       document.documentElement.appendChild(root);

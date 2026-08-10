@@ -33,7 +33,7 @@ input[type="url"] {
   min-width: 0;
   background: var(--bg);
   color: var(--text);
-  border: 1px solid #1d3a54;
+  border: 1px solid var(--border);
   border-radius: 6px;
   padding: 6px 8px;
   font: inherit;
@@ -42,7 +42,7 @@ input[type="url"] {
 select {
   background: var(--bg);
   color: var(--text);
-  border: 1px solid #1d3a54;
+  border: 1px solid var(--border);
   border-radius: 6px;
   padding: 5px 8px;
   font: inherit;
@@ -68,7 +68,7 @@ section h2 {
   justify-content: space-between;
   gap: 10px;
   padding: 6px 0;
-  border-bottom: 1px solid #1d3a54;
+  border-bottom: 1px solid var(--border);
 }
 
 #trust-list li:last-child { border-bottom: none; }
