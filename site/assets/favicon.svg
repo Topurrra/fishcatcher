@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Glitch fish: a red fish with a cyan/pink RGB split, echoing the hero
+       "catch" reveal and the wordmark glitch. Vector, so it stays crisp at 16px. -->
+  <defs>
+    <g id="f">
+      <ellipse cx="17.5" cy="16" rx="8" ry="6"/>
+      <path d="M10 16 L2 8.5 L5 16 L2 23.5 Z"/>
+      <path d="M14 10.5 L17 6.5 L20 10.5 Z"/>
+      <path d="M15 21.5 L17 25 L19 21.5 Z"/>
+    </g>
+  </defs>
+  <use href="#f" x="-1" y="-1" fill="#22d3ee" opacity="0.5"/>
+  <use href="#f" x="1" fill="#ff2d6f" opacity="0.55"/>
+  <use href="#f" fill="#e5383b"/>
+  <circle cx="21" cy="14.2" r="1.8" fill="#ffffff"/>
+  <circle cx="21.4" cy="14.4" r="0.9" fill="#141414"/>
+</svg>

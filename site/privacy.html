@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Privacy policy: FishCatcher</title>
 <meta name="description" content="FishCatcher does its checks on your device. No account, no tracking, nothing from the pages you visit leaves your browser. Optional online features are off by default.">
-<link rel="icon" href="assets/logo.png" type="image/png">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/site.css">
 <link rel="stylesheet" href="assets/docs.css">
 <script>(function(){try{var t=localStorage.getItem('fc-theme');if(!t)t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
@@ -17,9 +17,9 @@
     <a class="brand" href="index.html"><span class="wm"><span class="wm-swap"><span class="wm-fish">Fish</span><span class="wm-phish" data-text="Phish">Phish</span></span> Catcher</span></a>
     <div class="nav-links">
       <a href="index.html">Home</a>
-      <a href="learn.html">Learn</a>
       <a href="docs.html">Docs</a>
-      <a href="https://github.com/Topurrra/fishcatcher">GitHub</a>
+      <a class="hide-sm" href="https://github.com/Topurrra/fishcatcher">GitHub</a>
+      <a class="btn btn-primary nav-cta" href="index.html#install">Install</a>
       <button class="theme-toggle" onclick="fcToggleTheme()" aria-label="Switch light or dark theme">
         <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
         <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
@@ -30,35 +30,40 @@
 
 <div class="docs">
   <aside class="docs-side">
-    <div class="group">
-      <h5>Privacy</h5>
-      <ul>
-        <li><a href="#summary" class="active">Summary</a></li>
-        <li><a href="#local">What stays local</a></li>
-        <li><a href="#optional">Optional online features</a></li>
-        <li><a href="#stored">What is stored</a></li>
-        <li><a href="#permissions">Permissions</a></li>
-        <li><a href="#no">What we never do</a></li>
-        <li><a href="#changes">Changes and contact</a></li>
-      </ul>
+    <div class="filter">
+      <input id="docFilter" type="text" placeholder="Filter" aria-label="Filter navigation" autocomplete="off">
+      <kbd>/</kbd>
     </div>
-    <div class="group">
-      <h5>More</h5>
-      <ul>
-        <li><a href="docs.html">Docs</a></li>
-        <li><a href="learn.html">Learn</a></li>
-      </ul>
-    </div>
+    <nav class="tree" aria-label="Privacy navigation">
+      <a class="area" href="index.html">Home</a>
+      <a class="area" href="docs.html">Documentation</a>
+      <a class="area" href="learn.html">Learn</a>
+      <a class="area current" href="privacy.html">Privacy</a>
+      <div class="sub">
+        <a href="#summary" class="active">Summary</a>
+        <a href="#local">What stays local</a>
+        <a href="#optional">Optional online features</a>
+        <a href="#stored">What is stored</a>
+        <a href="#permissions">Permissions</a>
+        <a href="#no">What we never do</a>
+        <a href="#changes">Changes and contact</a>
+      </div>
+    </nav>
   </aside>
 
   <main class="docs-main">
     <div class="breadcrumb"><a href="index.html">Home</a> / Privacy</div>
     <h1>Privacy policy</h1>
     <p class="sub">FishCatcher works for you, not on you.</p>
-    <div class="meta">Applies to the FishCatcher browser extension.</div>
+    <div class="meta-row">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Applies to the FishCatcher extension</span>
+      <span class="sep"></span>
+      <a href="https://github.com/Topurrra/fishcatcher"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11 11 0 0 1 6 0C17 4.6 18 4.9 18 4.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg> View source</a>
+    </div>
+    <div class="rule"><span class="line"></span><span class="pill-mono">On your device</span><span class="line"></span></div>
 
     <h2 id="summary">Summary</h2>
-    <p class="lead-p">FishCatcher does its checks on your device. There is no account, no tracking, and nothing from the pages you visit is sent anywhere. Two optional features can look something up online, and both are off until you turn them on.</p>
+    <p class="lead-p">FishCatcher does its checks on your device. There is no account, no tracking, and nothing from the pages you visit is sent anywhere by default. A few optional features can look something up online, and each is off until you turn it on.</p>
 
     <h2 id="local">What stays on your device</h2>
     <p>By default, FishCatcher runs entirely locally, using detection lists that ship inside the extension. It works with no internet connection.</p>
@@ -70,11 +75,15 @@
 
     <h2 id="optional">Optional online features</h2>
     <p>These are off by default. When enabled, each does exactly one thing and nothing more.</p>
-    <h3>Keep threat lists updated</h3>
-    <p>Downloads a single file of known phishing sites from a fixed public location on GitHub, once a day. It only downloads. It never uploads anything about you or the pages you visit. As with any web request, the host can see your IP address and that a file was requested.</p>
-    <h3>Cloud age check</h3>
-    <p>Asks a public directory service (RDAP) how old a domain is. It sends only the domain name of the site being checked, and nothing else.</p>
-    <div class="callout"><p>You can leave both off and FishCatcher still protects you with its local checks.</p></div>
+    <h3>Threat-list updates</h3>
+    <p>Downloads a single Bloom-filter file once a day from the FishCatcher registry, which merges three keyless public feeds: Phishing.Database, URLhaus by abuse.ch, and OpenPhish. It only downloads, it never uploads, and every check against the list happens on your device. As with any web request, the host can see your IP address and that a file was requested.</p>
+    <h3>Domain-age check (RDAP)</h3>
+    <p>Asks a public directory service how old a domain is. It sends only the domain name of the site being checked, and nothing else.</p>
+    <h3>Google Safe Browsing</h3>
+    <p>Off by default. When you turn it on, FishCatcher sends the address you visit to Google Safe Browsing, and it requires your own free Google API key. Leave it off to keep every check on your device.</p>
+    <h3>Download guard</h3>
+    <p>Local. When enabled, it needs download and notification access so it can warn you about a disguised download. Nothing is uploaded.</p>
+    <div class="callout"><p>You can leave all of these off and FishCatcher still protects you with its local checks.</p></div>
 
     <h2 id="stored">What is stored on your device</h2>
     <p>FishCatcher stores a small amount of data in your browser's local storage, on your device only:</p>
@@ -110,31 +119,45 @@
     </div>
   </main>
 
-  <nav class="docs-toc" aria-label="On this page">
-    <h5>On this page</h5>
-    <ul>
-      <li><a href="#summary">Summary</a></li>
-      <li><a href="#local">What stays local</a></li>
-      <li><a href="#optional">Optional features</a></li>
-      <li><a href="#stored">What is stored</a></li>
-      <li><a href="#permissions">Permissions</a></li>
-      <li><a href="#no">What we never do</a></li>
-      <li><a href="#changes">Changes</a></li>
-    </ul>
-  </nav>
 </div>
 
 <footer class="site-foot">
   <div class="wrap">
-    <a class="brand" href="index.html"><span class="wm"><span class="wm-swap"><span class="wm-fish">Fish</span><span class="wm-phish" data-text="Phish">Phish</span></span> Catcher</span></a>
-    <div class="cols">
-      <div><h4>Product</h4><ul><li><a href="index.html#how">How it works</a></li><li><a href="index.html#install">Install</a></li><li><a href="privacy.html">Privacy</a></li></ul></div>
-      <div><h4>Learn</h4><ul><li><a href="learn.html">Lessons</a></li><li><a href="docs.html">Docs</a></li></ul></div>
-      <div><h4>Open source</h4><ul><li><a href="https://github.com/Topurrra/fishcatcher">GitHub</a></li><li><a href="https://github.com/Topurrra/fishcatcher-registry">Registry</a></li></ul></div>
+    <div class="about">
+      <a class="brand" href="index.html"><span class="wm"><span class="wm-swap"><span class="wm-fish">Fish</span><span class="wm-phish" data-text="Phish">Phish</span></span> Catcher</span></a>
+      <p>Free, open-source phishing protection for people who are not security experts.</p>
     </div>
+    <div>
+      <h4>Product</h4>
+      <ul>
+        <li><a href="index.html#how">How it works</a></li>
+        <li><a href="index.html#install">Install</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Learn</h4>
+      <ul>
+        <li><a href="learn.html">Lessons</a></li>
+        <li><a href="docs.html">Docs</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Open source</h4>
+      <ul>
+        <li><a href="https://github.com/Topurrra/fishcatcher">GitHub</a></li>
+        <li><a href="https://github.com/Topurrra/fishcatcher-registry">Threat registry</a></li>
+        <li><a href="https://github.com/Topurrra/fishcatcher/blob/main/LICENSE">MIT license</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot-base">
+    <span>Built in the open. MIT licensed.</span>
+    <span>No account. No tracking. Nothing leaves your browser.</span>
   </div>
 </footer>
 
 <script src="assets/theme.js"></script>
+<script src="assets/docs.js"></script>
 </body>
 </html>
