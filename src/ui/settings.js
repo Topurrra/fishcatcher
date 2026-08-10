@@ -84,12 +84,14 @@ async function setActive(id, on, key) {
 
 export async function initSettings() {
   const $ = (id) => document.getElementById(id);
-  const stored = await chrome.storage.local.get(['opt:strict', 'opt:remote', 'opt:cloud', 'opt:downloads', 'ui:lang']);
+  const stored = await chrome.storage.local.get(['opt:strict', 'opt:remote', 'opt:cloud', 'opt:downloads', 'opt:gsb', 'gsb:key', 'ui:lang']);
 
   $('strict').checked = !!stored['opt:strict'];
   $('remote').checked = !!stored['opt:remote'];
   $('cloud').checked = !!stored['opt:cloud'];
   $('downloads').checked = !!stored['opt:downloads'];
+  $('gsb').checked = !!stored['opt:gsb'];
+  $('gsb-key').value = stored['gsb:key'] ?? '';
   $('lang').value = stored['ui:lang'] ?? 'auto';
 
   $('strict').addEventListener('change', (e) => {
@@ -120,12 +122,24 @@ export async function initSettings() {
     chrome.storage.local.set({ 'opt:downloads': e.target.checked });
     setActive('download-status', e.target.checked, 'downloadActive');
   });
+  $('gsb').addEventListener('change', async (e) => {
+    if (!(await requestOnEnable(e.target, { origins: ['https://safebrowsing.googleapis.com/*'] }))) {
+      setActive('gsb-status', false, 'gsbActive');
+      return;
+    }
+    chrome.storage.local.set({ 'opt:gsb': e.target.checked });
+    setActive('gsb-status', e.target.checked, 'gsbActive');
+  });
+  $('gsb-key').addEventListener('change', (e) => {
+    chrome.storage.local.set({ 'gsb:key': e.target.value.trim() });
+  });
   $('lang').addEventListener('change', (e) => {
     chrome.storage.local.set({ 'ui:lang': e.target.value });
   });
 
   setActive('cloud-status', !!stored['opt:cloud'], 'cloudActive');
   setActive('download-status', !!stored['opt:downloads'], 'downloadActive');
+  setActive('gsb-status', !!stored['opt:gsb'], 'gsbActive');
 
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area === 'local' && changes['trust:list']) renderTrustList();

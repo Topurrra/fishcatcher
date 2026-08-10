@@ -14,12 +14,16 @@ const probeFlags = new Map(); // tabId → page has a password form
 const aitmFlags = new Map(); // tabId → raw aitm-scan payload (M8)
 const cloudFlags = new Map(); // tabId → young-domain age in days (opt-in RDAP)
 const ageCache = new Map(); // registrable → age in days | null
+const gsbFlags = new Map(); // tabId → Safe Browsing reason key (opt-in GSB)
+const gsbCache = new Map(); // url → reason key | null
 const dismissedBanners = new Set(); // `${tabId} ${url}`
 const linkFindings = new Map(); // tabId → link-intelligence findings for the panel
 const downloadWarnings = new Map(); // notificationId → downloadId (for the Cancel button)
 let pendingResult = null; // one-shot result handed to the panel (QR / link checks)
 let pendingNote = null;
 let cloudEnabled = false;
+let gsbEnabled = false;
+let gsbKey = '';
 
 async function loadData() {
   const [safe, brands, tlds, keywords, psl, block, mlw, safeBloom, allow, stored] = await Promise.all([
@@ -32,7 +36,7 @@ async function loadData() {
     fetch(chrome.runtime.getURL('data/ml-weights.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/safe-bloom.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/aitm-allow.json')).then((r) => r.json()),
-    chrome.storage.local.get(['trust:list', 'opt:cloud'])
+    chrome.storage.local.get(['trust:list', 'opt:cloud', 'opt:gsb', 'gsb:key'])
   ]);
   data.safeList = new Set(safe.domains);
   data.safeBloom = Bloom.fromPayload(safeBloom);
@@ -46,6 +50,8 @@ async function loadData() {
   data.ml = mlw;
   data.trustList = new Set(stored['trust:list'] ? JSON.parse(stored['trust:list']) : []);
   cloudEnabled = !!stored['opt:cloud'];
+  gsbEnabled = !!stored['opt:gsb'];
+  gsbKey = stored['gsb:key'] || '';
   await loadRemoteLists();
 }
 const ready = loadData();
@@ -114,6 +120,30 @@ async function checkAge(tabId, url, domain) {
   }
 }
 
+// Opt-in Google Safe Browsing lookup. Sends the visited URL to Google using the
+// user's own API key; result cached per URL. A bad key / quota / network error
+// is treated as clean (fails open, never a false alarm).
+async function checkGsb(tabId, url) {
+  gsbCache.set(url, null); // mark in-flight so a re-score doesn't double-fetch
+  try {
+    const res = await fetch(`${GSB_ENDPOINT}?key=${encodeURIComponent(gsbKey)}`, {
+      method: 'POST',
+      cache: 'no-store',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(gsbBody(url))
+    });
+    if (!res.ok) return;
+    const reasonKey = gsbReasonKey(await res.json());
+    gsbCache.set(url, reasonKey);
+    if (reasonKey) {
+      gsbFlags.set(tabId, reasonKey);
+      scoreTab(tabId, url);
+    }
+  } catch {
+    // network error: leave cache null (clean)
+  }
+}
+
 // Popup/panel may be closed — a broadcast with no receiver must not throw.
 function broadcast(msg) {
   try {
@@ -141,7 +171,8 @@ async function scoreTab(tabId, url) {
   const result = analyzeUrl(url, data, {
     hasPasswordForm: probeFlags.get(tabId) === true,
     youngDomainDays: cloudFlags.get(tabId) ?? null,
-    aitm: aitmFlags.get(tabId) ?? null
+    aitm: aitmFlags.get(tabId) ?? null,
+    gsbThreat: gsbFlags.get(tabId) ?? null
   });
   if (!result) {
     results.delete(tabId);
@@ -154,6 +185,10 @@ async function scoreTab(tabId, url) {
   broadcast({ type: 'scored', tabId });
   maybeBanner(tabId, url, result);
   if (cloudEnabled && !ageCache.has(result.registrable)) checkAge(tabId, url, result.registrable);
+  if (gsbEnabled && gsbKey && !gsbCache.has(url) &&
+      !data.safeList.has(result.registrable) && !data.trustList.has(result.registrable)) {
+    checkGsb(tabId, url);
+  }
 }
 
 // Strict mode (opt-in): informational, dismissible top banner on high/critical.
@@ -261,6 +296,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     probeFlags.delete(tabId);
     aitmFlags.delete(tabId);
     cloudFlags.delete(tabId);
+    gsbFlags.delete(tabId);
     linkFindings.delete(tabId);
   }
   if (changeInfo.status === 'complete' && tab.url) scoreTab(tabId, tab.url);
@@ -277,6 +313,7 @@ chrome.tabs.onRemoved.addListener((tabId) => {
   probeFlags.delete(tabId);
   aitmFlags.delete(tabId);
   cloudFlags.delete(tabId);
+  gsbFlags.delete(tabId);
   linkFindings.delete(tabId);
   for (const key of dismissedBanners) {
     if (key.startsWith(`${tabId} `)) dismissedBanners.delete(key);
@@ -437,6 +474,8 @@ chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'local') return;
   if (changes['opt:remote']) loadRemoteLists();
   if (changes['opt:cloud']) cloudEnabled = !!changes['opt:cloud'].newValue;
+  if (changes['opt:gsb']) { gsbEnabled = !!changes['opt:gsb'].newValue; gsbCache.clear(); }
+  if (changes['gsb:key']) { gsbKey = changes['gsb:key'].newValue || ''; gsbCache.clear(); }
 });
 
 // Chromium-only: keyboard command opens the side panel.

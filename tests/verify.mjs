@@ -547,6 +547,41 @@ check('locales: M8 AiTM reason keys present', () => {
   }
 });
 
+// ── S18: Google Safe Browsing (opt-in) ──────────────────────────
+import { gsbBody, gsbReasonKey } from '../src/engine/gsb.js';
+
+check('gsb: request body targets the URL and the four threat types', () => {
+  const b = gsbBody('https://evil.example/malware');
+  assert.equal(b.threatInfo.threatEntries[0].url, 'https://evil.example/malware');
+  assert.equal(b.threatInfo.threatEntryTypes[0], 'URL');
+  for (const t of ['MALWARE', 'SOCIAL_ENGINEERING', 'UNWANTED_SOFTWARE', 'POTENTIALLY_HARMFUL_APPLICATION']) {
+    assert.ok(b.threatInfo.threatTypes.includes(t), `requests ${t}`);
+  }
+});
+
+check('gsb: response maps to a reason key, clean → null', () => {
+  assert.equal(gsbReasonKey({ matches: [{ threatType: 'SOCIAL_ENGINEERING' }] }), 'reasonGsbDeceptive');
+  assert.equal(gsbReasonKey({ matches: [{ threatType: 'MALWARE' }] }), 'reasonGsbMalware');
+  assert.equal(gsbReasonKey({ matches: [{ threatType: 'SOMETHING_NEW' }] }), 'reasonGsbUnsafe');
+  assert.equal(gsbReasonKey({}), null);
+  assert.equal(gsbReasonKey({ matches: [] }), null);
+});
+
+check('gsb: analyzeUrl adds the GSB verdict at high weight (and safe-list wins)', () => {
+  const r = analyzeUrl('https://neutral-unknown-site.com/', data, { gsbThreat: 'reasonGsbMalware' });
+  assert.ok(r.reasons.some((x) => x.key === 'reasonGsbMalware'));
+  assert.ok(r.score >= 45, `GSB verdict reaches high (score ${r.score})`);
+  // A safe-listed origin short-circuits before the GSB verdict is applied.
+  const s = analyzeUrl('https://google.com/', data, { gsbThreat: 'reasonGsbMalware' });
+  assert.equal(s.score, 0);
+});
+
+check('locales: S18 Google Safe Browsing keys present', () => {
+  for (const key of ['reasonGsbDeceptive', 'reasonGsbMalware', 'reasonGsbUnwanted', 'reasonGsbHarmfulApp', 'reasonGsbUnsafe', 'gsbLabel', 'gsbHint', 'gsbKeyLabel', 'gsbActive']) {
+    assert.ok(enMessages[key], `en has ${key}`);
+  }
+});
+
 // ── report ──────────────────────────────────────────────────────
 let failed = 0;
 for (const c of checks) {

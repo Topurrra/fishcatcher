@@ -330,5 +330,41 @@
   "reasonAitmDrift": {
     "message": "საიტის ხატულა ან აპლიკაციის მანიფესტი გვერდისგან განსხვავებული დომენიდან იტვირთება",
     "description": "M8 AiTM soft boost: favicon/manifest cross-origin drift"
+  },
+  "reasonGsbDeceptive": {
+    "message": "Google Safe Browsing მას მოტყუებით (ფიშინგ) საიტად აღნიშნავს",
+    "description": "S18 Google Safe Browsing: SOCIAL_ENGINEERING"
+  },
+  "reasonGsbMalware": {
+    "message": "Google Safe Browsing მას მავნე პროგრამის საიტად აღნიშნავს",
+    "description": "S18 Google Safe Browsing: MALWARE"
+  },
+  "reasonGsbUnwanted": {
+    "message": "Google Safe Browsing აღნიშნავს, რომ ის არასასურველ პროგრამას მასპინძლობს",
+    "description": "S18 Google Safe Browsing: UNWANTED_SOFTWARE"
+  },
+  "reasonGsbHarmfulApp": {
+    "message": "Google Safe Browsing მას საზიანო აპლიკაციად აღნიშნავს",
+    "description": "S18 Google Safe Browsing: POTENTIALLY_HARMFUL_APPLICATION"
+  },
+  "reasonGsbUnsafe": {
+    "message": "Google Safe Browsing ამ საიტს საშიშად აღნიშნავს",
+    "description": "S18 Google Safe Browsing: unknown threat type fallback"
+  },
+  "gsbLabel": {
+    "message": "Google Safe Browsing შემოწმება",
+    "description": "Options: GSB toggle"
+  },
+  "gsbHint": {
+    "message": "ამოწმებს თქვენ მიერ მონახულებულ მისამართს Google Safe Browsing-თან. ის აგზავნის მისამართს Google-ში და საჭიროებს თქვენს პირად უფასო Google API-გასაღებს. ნაგულისხმევად გამორთულია.",
+    "description": "Options: GSB explanation"
+  },
+  "gsbKeyLabel": {
+    "message": "Google API-გასაღები",
+    "description": "Options: GSB API key field label"
+  },
+  "gsbActive": {
+    "message": "საიტები მოწმდება Google Safe Browsing-ით.",
+    "description": "Options status when GSB is on"
   }
 }

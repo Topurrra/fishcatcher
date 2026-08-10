@@ -49,6 +49,19 @@
 
   <section>
     <label class="row">
+      <input type="checkbox" id="gsb">
+      <span data-i18n="gsbLabel">Google Safe Browsing check</span>
+    </label>
+    <p class="hint" data-i18n="gsbHint">Checks the address you visit against Google Safe Browsing. It sends the address to Google and needs your own free Google API key. Off by default.</p>
+    <label class="row url">
+      <span data-i18n="gsbKeyLabel">Google API key</span>
+      <input type="password" id="gsb-key" autocomplete="off" spellcheck="false" placeholder="AIza...">
+    </label>
+    <div id="gsb-status" class="statusline" hidden><span class="si-icon"></span><span class="si-text"></span></div>
+  </section>
+
+  <section>
+    <label class="row">
       <span data-i18n="langLabel">Language</span>
       <select id="lang">
         <option value="auto" data-i18n="langAuto">Automatic (browser language)</option>

@@ -46,6 +46,13 @@ export function analyzeUrl(input, data, opts) {
     reasons.push({ key: 'reasonYoungDomain', params: [String(opts.youngDomainDays)], weight: 25 });
   }
 
+  // S18 — Google Safe Browsing (opt-in): authoritative third-party verdict.
+  // opts.gsbThreat is the pre-mapped reason key (reasonGsbMalware, etc.).
+  if (opts?.gsbThreat) {
+    score += 60;
+    reasons.push({ key: opts.gsbThreat, params: [], weight: 60 });
+  }
+
   // M8 — AiTM composite (identity interaction + claimed brand + origin mismatch).
   // No opts.aitm (e.g. the verify.mjs corpora) leaves this untouched → no regression.
   if (opts?.aitm) {

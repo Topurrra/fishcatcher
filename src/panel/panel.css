@@ -85,7 +85,12 @@ body {
   accent-color: var(--accent);
 }
 
-#settings-wrap select {
+#settings-wrap .row.url span { flex: none; color: var(--muted); }
+#settings-wrap .row.url input { flex: 1; min-width: 0; }
+
+#settings-wrap select,
+#settings-wrap input[type="password"],
+#settings-wrap input[type="text"] {
   background: var(--elevated);
   color: var(--text);
   border: 1px solid var(--border);

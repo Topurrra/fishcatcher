@@ -330,5 +330,41 @@
   "reasonAitmDrift": {
     "message": "The site icon or app manifest is served from a different domain than the page itself",
     "description": "M8 AiTM soft boost: favicon/manifest cross-origin drift"
+  },
+  "reasonGsbDeceptive": {
+    "message": "Google Safe Browsing flags this as a deceptive (phishing) site",
+    "description": "S18 Google Safe Browsing: SOCIAL_ENGINEERING"
+  },
+  "reasonGsbMalware": {
+    "message": "Google Safe Browsing flags this as a malware site",
+    "description": "S18 Google Safe Browsing: MALWARE"
+  },
+  "reasonGsbUnwanted": {
+    "message": "Google Safe Browsing flags this as hosting unwanted software",
+    "description": "S18 Google Safe Browsing: UNWANTED_SOFTWARE"
+  },
+  "reasonGsbHarmfulApp": {
+    "message": "Google Safe Browsing flags this as a harmful app",
+    "description": "S18 Google Safe Browsing: POTENTIALLY_HARMFUL_APPLICATION"
+  },
+  "reasonGsbUnsafe": {
+    "message": "Google Safe Browsing flags this site as unsafe",
+    "description": "S18 Google Safe Browsing: unknown threat type fallback"
+  },
+  "gsbLabel": {
+    "message": "Google Safe Browsing check",
+    "description": "Options: GSB toggle"
+  },
+  "gsbHint": {
+    "message": "Checks the address you visit against Google Safe Browsing. It sends the address to Google and needs your own free Google API key. Off by default.",
+    "description": "Options: GSB explanation"
+  },
+  "gsbKeyLabel": {
+    "message": "Google API key",
+    "description": "Options: GSB API key field label"
+  },
+  "gsbActive": {
+    "message": "Checking sites against Google Safe Browsing.",
+    "description": "Options status when GSB is on"
   }
 }

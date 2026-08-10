@@ -27,7 +27,8 @@
     "notifications",
     "https://rdap.org/*",
     "https://rdap.verisign.com/*",
-    "https://raw.githubusercontent.com/*"
+    "https://raw.githubusercontent.com/*",
+    "https://safebrowsing.googleapis.com/*"
   ],
   "content_scripts": [
     {

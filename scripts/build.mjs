@@ -44,6 +44,7 @@ const BACKGROUND_MODULES = [
   'engine/remote.js',
   'engine/rdap.js',
   'engine/ml.js',
+  'engine/gsb.js',
   'ui/i18n.js',
   'background.js'
 ];

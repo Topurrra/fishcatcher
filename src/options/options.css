@@ -19,6 +19,10 @@ section {
   cursor: pointer;
 }
 
+.row.url { margin-top: 10px; cursor: default; }
+.row.url span { flex: none; color: var(--muted); font-size: 13px; }
+.row.url input { flex: 1; min-width: 0; }
+
 input[type="checkbox"] {
   width: 16px;
   height: 16px;
@@ -26,7 +30,9 @@ input[type="checkbox"] {
   accent-color: var(--accent);
 }
 
-select {
+select,
+input[type="password"],
+input[type="text"] {
   background: var(--elevated);
   color: var(--text);
   border: 1px solid var(--border);
