@@ -51,6 +51,9 @@ body.level-critical { --level: var(--risk-critical); }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* The hidden attribute must beat display:flex/inline-flex on buttons etc. */
+[hidden] { display: none !important; }
+
 body {
   background: var(--bg);
   color: var(--text);
