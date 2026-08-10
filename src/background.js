@@ -86,6 +86,7 @@ chrome.alarms?.onAlarm.addListener((alarm) => {
 
 // Opt-in RDAP domain-age check: sends only the registrable domain, nothing else.
 async function checkAge(tabId, url, domain) {
+  broadcast({ type: 'age-status', tabId, state: 'checking' });
   try {
     const res = await fetch(`https://rdap.org/domain/${domain}`, { cache: 'no-store' });
     if (!res.ok) {
@@ -100,6 +101,8 @@ async function checkAge(tabId, url, domain) {
     }
   } catch {
     ageCache.set(domain, null);
+  } finally {
+    broadcast({ type: 'age-status', tabId, state: 'done' });
   }
 }
 
@@ -309,7 +312,10 @@ async function storeLinks(tabId, links, deep) {
   await ready;
   const findings = classifyLinks(links, data, deep);
   linkFindings.set(tabId, findings);
-  broadcast({ type: 'links', tabId });
+  // A deep scan is answered directly to the caller; only broadcast the
+  // automatic pass so an already-open panel refreshes without clobbering
+  // a manual scan's on-screen summary.
+  if (!deep) broadcast({ type: 'links', tabId });
   return findings;
 }
 

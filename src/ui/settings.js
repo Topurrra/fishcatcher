@@ -65,6 +65,20 @@ async function requestOnEnable(checkbox, request) {
   return granted;
 }
 
+// A simple "this feature is on and working" line under a toggle.
+async function setActive(id, on, key) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (!on) {
+    el.hidden = true;
+    return;
+  }
+  el.hidden = false;
+  el.className = 'statusline is-ready';
+  el.querySelector('.si-icon').innerHTML = UI_ICONS.check;
+  el.querySelector('.si-text').textContent = await getMessage(key);
+}
+
 export async function initSettings() {
   const $ = (id) => document.getElementById(id);
   const stored = await chrome.storage.local.get(['opt:strict', 'opt:remote', 'opt:cloud', 'opt:downloads', 'ui:lang']);
@@ -88,16 +102,27 @@ export async function initSettings() {
     setRemoteStatus(e.target.checked ? 'downloading' : 'off');
   });
   $('cloud').addEventListener('change', async (e) => {
-    if (!(await requestOnEnable(e.target, { origins: ['https://rdap.org/*', 'https://rdap.verisign.com/*'] }))) return;
+    if (!(await requestOnEnable(e.target, { origins: ['https://rdap.org/*', 'https://rdap.verisign.com/*'] }))) {
+      setActive('cloud-status', false, 'cloudActive');
+      return;
+    }
     chrome.storage.local.set({ 'opt:cloud': e.target.checked });
+    setActive('cloud-status', e.target.checked, 'cloudActive');
   });
   $('downloads').addEventListener('change', async (e) => {
-    if (!(await requestOnEnable(e.target, { permissions: ['downloads', 'notifications'] }))) return;
+    if (!(await requestOnEnable(e.target, { permissions: ['downloads', 'notifications'] }))) {
+      setActive('download-status', false, 'downloadActive');
+      return;
+    }
     chrome.storage.local.set({ 'opt:downloads': e.target.checked });
+    setActive('download-status', e.target.checked, 'downloadActive');
   });
   $('lang').addEventListener('change', (e) => {
     chrome.storage.local.set({ 'ui:lang': e.target.value });
   });
+
+  setActive('cloud-status', !!stored['opt:cloud'], 'cloudActive');
+  setActive('download-status', !!stored['opt:downloads'], 'downloadActive');
 
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area === 'local' && changes['trust:list']) renderTrustList();

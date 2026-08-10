@@ -22,6 +22,8 @@
     </div>
   </div>
 
+  <div id="age-status" class="statusline is-downloading" hidden><span class="si-icon"></span><span class="si-text"></span></div>
+
   <section id="reasons-wrap" hidden>
     <h2 class="section-label" data-i18n="reasonsTitle">Why am I seeing this?</h2>
     <ul id="reasons"></ul>
@@ -37,13 +39,9 @@
     </button>
   </div>
 
+  <div id="action-note" class="statusline is-ready" hidden><span class="si-icon"></span><span class="si-text"></span></div>
+
   <section id="links-wrap">
-    <div class="actions">
-      <button id="scan-links-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>
-        <span data-i18n="scanLinksButton">Scan links on this page</span>
-      </button>
-    </div>
     <p id="links-summary" class="note" hidden></p>
     <ul id="links"></ul>
     <p id="links-none" class="note" hidden data-i18n="linksNone">No risky links found on this page.</p>
@@ -88,12 +86,14 @@
         <span data-i18n="cloudLabel">Cloud age check: ask public RDAP how old the domain is</span>
       </label>
       <p class="hint" data-i18n="cloudHint">Sends only the registrable domain to rdap.org. Off by default.</p>
+      <div id="cloud-status" class="statusline" hidden><span class="si-icon"></span><span class="si-text"></span></div>
 
       <label class="row">
         <input type="checkbox" id="downloads">
         <span data-i18n="downloadGuardLabel">Download guard: warn about disguised or dangerous downloads</span>
       </label>
       <p class="hint" data-i18n="downloadGuardHint">Checks each download's real type against its name. Needs download and notification access, requested when you turn it on. Off by default.</p>
+      <div id="download-status" class="statusline" hidden><span class="si-icon"></span><span class="si-text"></span></div>
 
       <label class="row">
         <span data-i18n="langLabel">Language</span>

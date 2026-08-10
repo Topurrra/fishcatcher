@@ -286,5 +286,29 @@
   "linksChecked": {
     "message": "Checked $1 links on this page.",
     "description": "Shown after a link scan; $1 = number of links checked"
+  },
+  "checkingLabel": {
+    "message": "Checking…",
+    "description": "Button label while re-checking the page and its links"
+  },
+  "trustConfirm": {
+    "message": "Now trusting $1",
+    "description": "Confirmation after trusting a site; $1 = domain"
+  },
+  "untrustConfirm": {
+    "message": "No longer trusting $1",
+    "description": "Confirmation after removing trust; $1 = domain"
+  },
+  "downloadActive": {
+    "message": "Watching downloads for disguised files.",
+    "description": "Settings status when the download guard is on"
+  },
+  "cloudActive": {
+    "message": "Checking domain age on risky sites.",
+    "description": "Settings status when the cloud age check is on"
+  },
+  "ageChecking": {
+    "message": "Checking domain age…",
+    "description": "Panel note while an RDAP age lookup is in progress"
   }
 }

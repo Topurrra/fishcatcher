@@ -180,38 +180,60 @@ $('qr-cam-btn').addEventListener('click', async () => {
 });
 
 // ── wiring ──────────────────────────────────────────────────────
+let checking = false; // suppress auto-render while a manual check is on screen
+
+async function flashNote(key, params) {
+  const el = $('action-note');
+  el.querySelector('.si-icon').innerHTML = UI_ICONS.check;
+  el.querySelector('.si-text').textContent = await getMessage(key, params);
+  el.hidden = false;
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => { el.hidden = true; }, 2600);
+}
+
+async function showAge(on) {
+  const el = $('age-status');
+  if (!on) { el.hidden = true; return; }
+  el.querySelector('.si-icon').innerHTML = UI_ICONS.spinner;
+  el.querySelector('.si-text').textContent = await getMessage('ageChecking');
+  el.hidden = false;
+}
+
 $('trust-btn').addEventListener('click', async (e) => {
   const btn = e.currentTarget;
-  await chrome.runtime.sendMessage({
-    type: btn.dataset.trusted ? 'untrust' : 'trust',
-    domain: btn.dataset.domain
-  });
+  const untrusting = !!btn.dataset.trusted;
+  const domain = btn.dataset.domain;
+  await chrome.runtime.sendMessage({ type: untrusting ? 'untrust' : 'trust', domain });
   await chrome.runtime.sendMessage({ type: 'rescore', tabId: currentTabId });
-  render();
+  await render();
+  flashNote(untrusting ? 'untrustConfirm' : 'trustConfirm', [domain]);
 });
 
-$('recheck-btn').addEventListener('click', async () => {
-  await chrome.runtime.sendMessage({ type: 'rescore', tabId: currentTabId });
-  render();
-});
-
-$('scan-links-btn').addEventListener('click', async (e) => {
+// One action: re-score the page AND deep-scan every link, with a spinner.
+$('recheck-btn').addEventListener('click', async (e) => {
   const btn = e.currentTarget;
   const original = btn.innerHTML;
+  checking = true;
   btn.disabled = true;
-  btn.innerHTML = `${UI_ICONS.spinner}<span>${await getMessage('linksScanning')}</span>`;
+  btn.innerHTML = `${UI_ICONS.spinner}<span>${await getMessage('checkingLabel')}</span>`;
+  await chrome.runtime.sendMessage({ type: 'rescore', tabId: currentTabId });
   const { findings, scanned } = await chrome.runtime.sendMessage({ type: 'scan-links', tabId: currentTabId });
+  const { result } = await chrome.runtime.sendMessage({ type: 'get-result', tabId: currentTabId });
+  renderResult(result, null);
   btn.innerHTML = original;
   btn.disabled = false;
   const summary = $('links-summary');
   summary.hidden = false;
   summary.textContent = await getMessage('linksChecked', [String(scanned ?? 0)]);
   await renderLinks(findings || [], true);
+  checking = false;
 });
 
 chrome.runtime.onMessage.addListener((msg) => {
+  if (checking) return;
   if (msg.type === 'scored') render();
   if (msg.type === 'links' && msg.tabId === currentTabId) loadLinks();
+  if (msg.type === 'age-status' && msg.tabId === currentTabId) showAge(msg.state === 'checking');
 });
 
 chrome.tabs.onActivated.addListener(() => render());

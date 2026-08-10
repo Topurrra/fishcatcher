@@ -1,5 +1,5 @@
 import { applyI18n, getMessage } from '../ui/i18n.js';
-import { STATUS_ICONS } from '../ui/icons.js';
+import { STATUS_ICONS, UI_ICONS } from '../ui/icons.js';
 
 const LEVEL_LABEL = {
   low: 'levelLow',
@@ -54,19 +54,34 @@ async function render() {
   }
 }
 
+async function flashNote(key, params) {
+  const el = $('action-note');
+  el.querySelector('.si-icon').innerHTML = UI_ICONS.check;
+  el.querySelector('.si-text').textContent = await getMessage(key, params);
+  el.hidden = false;
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => { el.hidden = true; }, 2600);
+}
+
 $('trust-btn').addEventListener('click', async (e) => {
   const btn = e.currentTarget;
-  await chrome.runtime.sendMessage({
-    type: btn.dataset.trusted ? 'untrust' : 'trust',
-    domain: btn.dataset.domain
-  });
+  const untrusting = !!btn.dataset.trusted;
+  const domain = btn.dataset.domain;
+  await chrome.runtime.sendMessage({ type: untrusting ? 'untrust' : 'trust', domain });
   await chrome.runtime.sendMessage({ type: 'rescore', tabId: currentTabId });
-  render();
+  await render();
+  flashNote(untrusting ? 'untrustConfirm' : 'trustConfirm', [domain]);
 });
 
-$('recheck-btn').addEventListener('click', async () => {
+$('recheck-btn').addEventListener('click', async (e) => {
+  const btn = e.currentTarget;
+  const original = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = `${UI_ICONS.spinner}<span>${await getMessage('checkingLabel')}</span>`;
   await chrome.runtime.sendMessage({ type: 'rescore', tabId: currentTabId });
-  render();
+  await render();
+  btn.innerHTML = original;
+  btn.disabled = false;
 });
 
 chrome.runtime.onMessage.addListener((msg) => {

@@ -286,5 +286,29 @@
   "linksChecked": {
     "message": "შემოწმდა $1 ბმული ამ გვერდზე.",
     "description": "Shown after a link scan; $1 = number of links checked"
+  },
+  "checkingLabel": {
+    "message": "მოწმდება…",
+    "description": "Button label while re-checking the page and its links"
+  },
+  "trustConfirm": {
+    "message": "$1 ახლა სანდოა",
+    "description": "Confirmation after trusting a site; $1 = domain"
+  },
+  "untrustConfirm": {
+    "message": "$1 აღარ არის სანდო",
+    "description": "Confirmation after removing trust; $1 = domain"
+  },
+  "downloadActive": {
+    "message": "ვამოწმებ ჩამოტვირთვებს შენიღბულ ფაილებზე.",
+    "description": "Settings status when the download guard is on"
+  },
+  "cloudActive": {
+    "message": "ვამოწმებ დომენის ასაკს სარისკო საიტებზე.",
+    "description": "Settings status when the cloud age check is on"
+  },
+  "ageChecking": {
+    "message": "დომენის ასაკი მოწმდება…",
+    "description": "Panel note while an RDAP age lookup is in progress"
   }
 }
