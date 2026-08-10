@@ -23,6 +23,12 @@
 
   <div id="age-status" class="statusline is-downloading" hidden><span class="si-icon"></span><span class="si-text"></span></div>
 
+  <div id="helper-alert" class="helper-alert" hidden>
+    <span class="ha-title" data-i18n="seniorAlertTitle">This site looks dangerous</span>
+    <span id="helper-alert-domain" class="status-domain"></span>
+    <button id="tell-helper-btn" data-i18n="seniorTellHelper" hidden>Tell my helper</button>
+  </div>
+
   <section id="reasons-wrap" hidden>
     <h2 class="section-label" data-i18n="reasonsTitle">Why am I seeing this?</h2>
     <ul id="reasons"></ul>
@@ -35,6 +41,10 @@
     <button id="recheck-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
       <span data-i18n="recheckButton">Check again</span>
+    </button>
+    <button id="report-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z" /><path d="M5 21v-7" /></svg>
+      <span data-i18n="reportButton">Report this site</span>
     </button>
   </div>
 
@@ -105,6 +115,17 @@
       </label>
       <p class="hint"><a href="https://developers.google.com/safe-browsing/v4/get-started" target="_blank" rel="noopener noreferrer" data-i18n="gsbKeyGuide">How to get a free key</a></p>
       <div id="gsb-status" class="statusline" hidden><span class="si-icon"></span><span class="si-text"></span></div>
+
+      <label class="row">
+        <input type="checkbox" id="senior">
+        <span data-i18n="seniorLabel">Family mode: bigger text and a clear alert on dangerous sites</span>
+      </label>
+      <p class="hint" data-i18n="seniorHint">A larger, simpler view for anyone who wants it. You can add a helper to be told when a site looks dangerous.</p>
+      <label class="row url">
+        <span data-i18n="seniorHelperLabel">Helper email (optional)</span>
+        <input type="email" id="senior-helper" autocomplete="off" spellcheck="false" placeholder="name@example.com">
+      </label>
+      <p class="hint" data-i18n="seniorHelperHint">On a dangerous site, one tap opens an email to this person. Nothing is sent until you press send.</p>
 
       <label class="row" hidden>
         <span data-i18n="langLabel">Language</span>

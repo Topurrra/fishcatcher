@@ -211,6 +211,32 @@ a:hover { text-decoration: none; }
 .statusline.is-ready .si-icon { color: var(--risk-low); }
 .statusline.is-error .si-icon { color: var(--risk-high); }
 
+/* ── senior / family mode: bigger text, simpler, one clear action ── */
+body.senior { font-size: 15px; }
+body.senior header h1 { font-size: 17px; }
+body.senior .status { padding: 16px; gap: 14px; }
+body.senior .status .label { font-size: 16px; }
+body.senior .status-fish { width: 60px; height: 56px; }
+body.senior #reasons li { font-size: 14px; padding: 10px 13px; }
+body.senior button { padding: 11px 16px; font-size: 15px; }
+/* In senior mode, tuck the more technical panels away so the verdict leads. */
+body.senior #links-wrap, body.senior #qr-wrap { opacity: 0.72; }
+
+/* Big "tell my helper" alert, shown only on high/critical in senior mode. */
+.helper-alert {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 14px;
+  border: 2px solid var(--level);
+  border-radius: var(--r-card);
+  background: color-mix(in srgb, var(--level) 12%, var(--card));
+}
+.helper-alert .ha-title { font-weight: 700; font-size: 15.5px; }
+.helper-alert button { background: var(--level); color: #fff; border-color: transparent; font-weight: 650; }
+.helper-alert button:hover { border-color: transparent; filter: brightness(1.05); }
+
 @media (prefers-reduced-motion: reduce) {
   button { transition: none; }
   button:active { transform: none; }

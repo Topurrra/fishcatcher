@@ -370,5 +370,61 @@
   "gsbActive": {
     "message": "საიტები მოწმდება Google Safe Browsing-ით.",
     "description": "Options status when GSB is on"
+  },
+  "reasonCryptoSeed": {
+    "message": "ეს გვერდი გთხოვთ შეიყვანოთ თქვენი საფულის აღდგენის ფრაზა ან პირადი გასაღები. ნამდვილი საფულეები ამას არასდროს ითხოვენ",
+    "description": "Crypto scam pack: imperative request to enter a seed/recovery phrase or private key"
+  },
+  "reasonTechSupport": {
+    "message": "ეს გვერდი ცდილობს დაგაშინოთ, რომ დარეკოთ ნომერზე კომპიუტერის განსაბლოკად. ეს ცნობილი თაღლითობაა",
+    "description": "Tech-support / browser-locker scam pack: scare text plus a phone or fullscreen lock"
+  },
+  "seniorLabel": {
+    "message": "საოჯახო რეჟიმი: დიდი ტექსტი და მკაფიო გაფრთხილება საშიშ საიტებზე",
+    "description": "Options: family/senior mode toggle"
+  },
+  "seniorHint": {
+    "message": "უფრო დიდი და მარტივი ხედი ყველასთვის. შეგიძლიათ დაამატოთ დამხმარე, რომელსაც შეატყობინებთ, როცა საიტი საშიშად გამოიყურება.",
+    "description": "Options: family mode explanation"
+  },
+  "seniorHelperLabel": {
+    "message": "დამხმარის ელფოსტა (არასავალდებულო)",
+    "description": "Options: family mode helper email field label"
+  },
+  "seniorHelperHint": {
+    "message": "საშიშ საიტზე ერთი შეხებით იხსნება ამ ადამიანისთვის წერილი. არაფერი იგზავნება, სანამ თავად არ დააჭერთ გაგზავნას.",
+    "description": "Options: family mode helper email explanation"
+  },
+  "seniorTellHelper": {
+    "message": "დამხმარეს შევატყობინო",
+    "description": "Button that opens a pre-filled email to the chosen helper"
+  },
+  "seniorAlertTitle": {
+    "message": "ეს საიტი საშიშად გამოიყურება",
+    "description": "Family mode: big in-panel alert title on high/critical sites"
+  },
+  "seniorNotifyTitle": {
+    "message": "FishCatcher: ეს საიტი საშიშად გამოიყურება",
+    "description": "Family mode: system notification title on a dangerous site"
+  },
+  "seniorNotifyBody": {
+    "message": "$1 ავლენს თაღლითობის ძლიერ ნიშნებს. არ შეიყვანოთ პაროლები ან კოდები.",
+    "description": "Family mode: system notification body; $1 = domain"
+  },
+  "seniorMailSubject": {
+    "message": "ვებსაიტი საშიშად გამოიყურებოდა",
+    "description": "Subject of the pre-filled helper email"
+  },
+  "seniorMailBody": {
+    "message": "FishCatcher-მა გამაფრთხილა, რომ ეს ვებსაიტი საშიშად გამოიყურება:\n$1\n\nდამეხმარები შემოწმებაში, სანამ რამეს გავაკეთებ?",
+    "description": "Body of the pre-filled helper email; $1 = domain"
+  },
+  "reportButton": {
+    "message": "ამ საიტის დაფიქსირება",
+    "description": "Panel button: report the current site to the community registry"
+  },
+  "reportOpening": {
+    "message": "დაფიქსირების ფორმა იხსნება ახალ ჩანართში.",
+    "description": "Confirmation shown after the report button is pressed"
   }
 }

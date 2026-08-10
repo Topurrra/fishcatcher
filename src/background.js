@@ -12,6 +12,7 @@ const data = { safeList: new Set(), brands: [], tlds: {}, keywords: [], psl: [],
 const results = new Map();
 const probeFlags = new Map(); // tabId → page has a password form
 const aitmFlags = new Map(); // tabId → raw aitm-scan payload (M8)
+const scamFlags = new Map(); // tabId → scam-pack facts from the probe (crypto/tech-support)
 const cloudFlags = new Map(); // tabId → young-domain age in days (opt-in RDAP)
 const ageCache = new Map(); // registrable → age in days | null
 const gsbFlags = new Map(); // tabId → Safe Browsing reason key (opt-in GSB)
@@ -19,11 +20,15 @@ const gsbCache = new Map(); // url → reason key | null
 const dismissedBanners = new Set(); // `${tabId} ${url}`
 const linkFindings = new Map(); // tabId → link-intelligence findings for the panel
 const downloadWarnings = new Map(); // notificationId → downloadId (for the Cancel button)
+const seniorNotifs = new Map(); // notificationId → mailto URL (family-mode "Tell my helper")
+const seniorNotified = new Set(); // `${tabId} ${url}` already alerted in family mode
 let pendingResult = null; // one-shot result handed to the panel (QR / link checks)
 let pendingNote = null;
 let cloudEnabled = false;
 let gsbEnabled = false;
 let gsbKey = '';
+let seniorEnabled = false;
+let seniorHelper = '';
 
 async function loadData() {
   const [safe, brands, tlds, keywords, psl, block, mlw, safeBloom, allow, stored] = await Promise.all([
@@ -36,7 +41,7 @@ async function loadData() {
     fetch(chrome.runtime.getURL('data/ml-weights.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/safe-bloom.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/aitm-allow.json')).then((r) => r.json()),
-    chrome.storage.local.get(['trust:list', 'opt:cloud', 'opt:gsb', 'gsb:key'])
+    chrome.storage.local.get(['trust:list', 'opt:cloud', 'opt:gsb', 'gsb:key', 'opt:senior', 'senior:helper'])
   ]);
   data.safeList = new Set(safe.domains);
   data.safeBloom = Bloom.fromPayload(safeBloom);
@@ -52,6 +57,8 @@ async function loadData() {
   cloudEnabled = !!stored['opt:cloud'];
   gsbEnabled = !!stored['opt:gsb'];
   gsbKey = stored['gsb:key'] || '';
+  seniorEnabled = !!stored['opt:senior'];
+  seniorHelper = stored['senior:helper'] || '';
   await loadRemoteLists();
 }
 const ready = loadData();
@@ -172,6 +179,7 @@ async function scoreTab(tabId, url) {
     hasPasswordForm: probeFlags.get(tabId) === true,
     youngDomainDays: cloudFlags.get(tabId) ?? null,
     aitm: aitmFlags.get(tabId) ?? null,
+    scam: scamFlags.get(tabId) ?? null,
     gsbThreat: gsbFlags.get(tabId) ?? null
   });
   if (!result) {
@@ -184,6 +192,7 @@ async function scoreTab(tabId, url) {
   paint(tabId, result);
   broadcast({ type: 'scored', tabId });
   maybeBanner(tabId, url, result);
+  maybeSeniorNotify(tabId, url, result);
   if (cloudEnabled && !ageCache.has(result.registrable)) checkAge(tabId, url, result.registrable);
   if (gsbEnabled && gsbKey && !gsbCache.has(url) &&
       !data.safeList.has(result.registrable) && !data.trustList.has(result.registrable)) {
@@ -214,6 +223,34 @@ async function maybeBanner(tabId, url, result) {
   // Rendered by the content script (probe.js) so it works without host
   // permissions on automatic page loads, not just after a user gesture.
   chrome.tabs.sendMessage(tabId, { type: 'show-banner', payload: await bannerPayload(result) }).catch(() => {});
+}
+
+// Family mode: a prominent system notification on a dangerous page, so a warning
+// is seen even when the panel is closed. Opt-in; uses the notifications
+// permission (requested when family mode is enabled). Never blocks the page.
+async function maybeSeniorNotify(tabId, url, result) {
+  if (!seniorEnabled || !chrome.notifications?.create) return;
+  if (result.level !== 'high' && result.level !== 'critical') return;
+  const key = `${tabId} ${url}`;
+  if (seniorNotified.has(key)) return;
+  seniorNotified.add(key);
+
+  const nid = `fc-senior-${tabId}-${Date.now()}`;
+  const opts = {
+    type: 'basic',
+    iconUrl: chrome.runtime.getURL(`icons/icon48-${result.level}.png`),
+    title: await getMessage('seniorNotifyTitle'),
+    message: await getMessage('seniorNotifyBody', [result.registrable]),
+    priority: 2,
+    requireInteraction: true
+  };
+  if (seniorHelper) {
+    const subject = await getMessage('seniorMailSubject');
+    const body = await getMessage('seniorMailBody', [result.registrable]);
+    seniorNotifs.set(nid, `mailto:${seniorHelper}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+    opts.buttons = [{ title: await getMessage('seniorTellHelper') }];
+  }
+  chrome.notifications.create(nid, opts);
 }
 
 // S14 escalation: page text matches the device-code scam pattern.
@@ -295,9 +332,11 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'loading') {
     probeFlags.delete(tabId);
     aitmFlags.delete(tabId);
+    scamFlags.delete(tabId);
     cloudFlags.delete(tabId);
     gsbFlags.delete(tabId);
     linkFindings.delete(tabId);
+    for (const k of seniorNotified) if (k.startsWith(`${tabId} `)) seniorNotified.delete(k);
   }
   if (changeInfo.status === 'complete' && tab.url) scoreTab(tabId, tab.url);
 });
@@ -312,11 +351,15 @@ chrome.tabs.onRemoved.addListener((tabId) => {
   results.delete(tabId);
   probeFlags.delete(tabId);
   aitmFlags.delete(tabId);
+  scamFlags.delete(tabId);
   cloudFlags.delete(tabId);
   gsbFlags.delete(tabId);
   linkFindings.delete(tabId);
   for (const key of dismissedBanners) {
     if (key.startsWith(`${tabId} `)) dismissedBanners.delete(key);
+  }
+  for (const key of seniorNotified) {
+    if (key.startsWith(`${tabId} `)) seniorNotified.delete(key);
   }
 });
 
@@ -363,9 +406,15 @@ async function onDownloadCreated(item) {
 }
 
 function onNotifButton(nid, idx) {
-  const id = downloadWarnings.get(nid);
-  if (id != null && idx === 0) chrome.downloads?.cancel(id).catch(() => {});
-  downloadWarnings.delete(nid);
+  if (downloadWarnings.has(nid)) {
+    const id = downloadWarnings.get(nid);
+    if (id != null && idx === 0) chrome.downloads?.cancel(id).catch(() => {});
+    downloadWarnings.delete(nid);
+  } else if (seniorNotifs.has(nid)) {
+    // "Tell my helper" — open the pre-filled email; the user still presses send.
+    if (idx === 0) chrome.tabs.create({ url: seniorNotifs.get(nid) }).catch(() => {});
+    seniorNotifs.delete(nid);
+  }
   chrome.notifications?.clear(nid);
 }
 
@@ -413,6 +462,14 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         if (sender.tab) {
           aitmFlags.set(sender.tab.id, msg.payload);
           if (msg.payload?.interactions?.includes('password')) probeFlags.set(sender.tab.id, true);
+          if (sender.tab.url) scoreTab(sender.tab.id, sender.tab.url);
+        }
+        sendResponse({ ok: true });
+        break;
+      case 'scam-scan':
+        // Crypto seed-phrase / tech-support locker facts derived by the probe.
+        if (sender.tab) {
+          scamFlags.set(sender.tab.id, msg.scam);
           if (sender.tab.url) scoreTab(sender.tab.id, sender.tab.url);
         }
         sendResponse({ ok: true });
@@ -476,6 +533,8 @@ chrome.storage.onChanged.addListener((changes, area) => {
   if (changes['opt:cloud']) cloudEnabled = !!changes['opt:cloud'].newValue;
   if (changes['opt:gsb']) { gsbEnabled = !!changes['opt:gsb'].newValue; gsbCache.clear(); }
   if (changes['gsb:key']) { gsbKey = changes['gsb:key'].newValue || ''; gsbCache.clear(); }
+  if (changes['opt:senior']) seniorEnabled = !!changes['opt:senior'].newValue;
+  if (changes['senior:helper']) seniorHelper = changes['senior:helper'].newValue || '';
 });
 
 // Chromium-only: keyboard command opens the side panel.

@@ -38,6 +38,7 @@ const BACKGROUND_MODULES = [
   'engine/psl.js',
   'engine/signals.js',
   'engine/aitm.js',
+  'engine/scampacks.js',
   'engine/analyzer.js',
   'engine/links.js',
   'engine/bloom.js',
@@ -52,6 +53,7 @@ const BACKGROUND_MODULES = [
 const CONTENT_MODULES = [
   'engine/devicecode.js',
   'engine/aitm.js',
+  'engine/scampacks.js',
   'ui/i18n.js',
   'probe/probe.js'
 ];

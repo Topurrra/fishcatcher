@@ -61,6 +61,19 @@
     <div id="gsb-status" class="statusline" hidden><span class="si-icon"></span><span class="si-text"></span></div>
   </section>
 
+  <section>
+    <label class="row">
+      <input type="checkbox" id="senior">
+      <span data-i18n="seniorLabel">Family mode: bigger text and a clear alert on dangerous sites</span>
+    </label>
+    <p class="hint" data-i18n="seniorHint">A larger, simpler view for anyone who wants it. You can add a helper to be told when a site looks dangerous.</p>
+    <label class="row url">
+      <span data-i18n="seniorHelperLabel">Helper email (optional)</span>
+      <input type="email" id="senior-helper" autocomplete="off" spellcheck="false" placeholder="name@example.com">
+    </label>
+    <p class="hint" data-i18n="seniorHelperHint">On a dangerous site, one tap opens an email to this person. Nothing is sent until you press send.</p>
+  </section>
+
   <section hidden>
     <label class="row">
       <span data-i18n="langLabel">Language</span>

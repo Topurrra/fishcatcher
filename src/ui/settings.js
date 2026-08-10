@@ -84,7 +84,7 @@ async function setActive(id, on, key) {
 
 export async function initSettings() {
   const $ = (id) => document.getElementById(id);
-  const stored = await chrome.storage.local.get(['opt:strict', 'opt:remote', 'opt:cloud', 'opt:downloads', 'opt:gsb', 'gsb:key', 'ui:lang']);
+  const stored = await chrome.storage.local.get(['opt:strict', 'opt:remote', 'opt:cloud', 'opt:downloads', 'opt:gsb', 'gsb:key', 'opt:senior', 'senior:helper', 'ui:lang']);
 
   $('strict').checked = !!stored['opt:strict'];
   $('remote').checked = !!stored['opt:remote'];
@@ -92,6 +92,8 @@ export async function initSettings() {
   $('downloads').checked = !!stored['opt:downloads'];
   $('gsb').checked = !!stored['opt:gsb'];
   $('gsb-key').value = stored['gsb:key'] ?? '';
+  $('senior').checked = !!stored['opt:senior'];
+  $('senior-helper').value = stored['senior:helper'] ?? '';
   $('lang').value = stored['ui:lang'] ?? 'auto';
 
   $('strict').addEventListener('change', (e) => {
@@ -132,6 +134,16 @@ export async function initSettings() {
   });
   $('gsb-key').addEventListener('change', (e) => {
     chrome.storage.local.set({ 'gsb:key': e.target.value.trim() });
+  });
+  // Family mode. The big-text view needs no permission; the optional helper
+  // notification uses notifications, requested best-effort so the mode still
+  // works (in-panel alert) even if that request is declined.
+  $('senior').addEventListener('change', (e) => {
+    chrome.storage.local.set({ 'opt:senior': e.target.checked });
+    if (e.target.checked) chrome.permissions.request({ permissions: ['notifications'] }).catch(() => {});
+  });
+  $('senior-helper').addEventListener('change', (e) => {
+    chrome.storage.local.set({ 'senior:helper': e.target.value.trim() });
   });
   $('lang').addEventListener('change', (e) => {
     chrome.storage.local.set({ 'ui:lang': e.target.value });

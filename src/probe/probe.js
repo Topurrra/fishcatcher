@@ -120,6 +120,60 @@
   const aitm = collectAitm();
   if (aitm) send({ type: 'aitm-scan', payload: aitm });
 
+  // Scam packs (crypto-drainer + tech-support locker). Report DERIVED FACTS only;
+  // the worker+engine own the verdict. Matchers come from the bundled
+  // engine/scampacks.js; guard the calls in case the content bundle order lags.
+  function collectScam() {
+    const cryptoText = typeof scamCryptoSeedText === 'function' ? scamCryptoSeedText : () => false;
+    const techText = typeof scamTechSupportText === 'function' ? scamTechSupportText : () => false;
+
+    const body = document.body?.innerText ?? '';
+    const text = body.length < 200000 ? body : body.slice(0, 200000);
+
+    const cryptoSeed = cryptoText(text);
+    const techScare = techText(text);
+
+    // seedInput: a visible field whose label / accessible text names a wallet secret.
+    // Require the phrase form, not a bare "seed" (Minecraft world seeds, RNG tools and
+    // database seed panels use id/name "seed" and must not be flagged).
+    const secretRe = /seed phrase|recovery phrase|mnemonic|private key|secret phrase/i;
+    let seedInput = false;
+    for (const el of document.querySelectorAll('input:not([type=hidden]), textarea')) {
+      if (el.offsetParent === null || el.disabled) continue;
+      const lbl = el.labels?.[0]?.textContent || el.closest('label')?.textContent || '';
+      const near = `${el.getAttribute('aria-label') || ''} ${el.placeholder || ''} ${el.name || ''} ${el.id || ''} ${lbl}`;
+      if (secretRe.test(near)) { seedInput = true; break; }
+    }
+
+    // Cheap precondition — stay silent on ordinary pages.
+    if (!(cryptoSeed || seedInput || techScare)) return null;
+
+    // Corroborators matter only for the tech branch → compute the heavier DOM
+    // scan (getComputedStyle over overlays) only once techScare has tripped.
+    let phone = false, fullscreen = false;
+    if (techScare) {
+      // A toll-free number in the page text is the scam-locker tell. A bare tel: link
+      // is not (most legitimate sites have one in the header/footer), so we don't count it.
+      phone = /\b1[\s.\-]?\(?8(?:00|88|77|66|55|44|33)\)?[\s.\-]?\d{3}[\s.\-]?\d{4}\b/.test(text);
+      fullscreen = !!document.fullscreenElement;
+      if (!fullscreen) {
+        const vw = window.innerWidth, vh = window.innerHeight;
+        for (const el of document.querySelectorAll('div,section,main,dialog,[class*="overlay" i],[class*="modal" i]')) {
+          const s = getComputedStyle(el);
+          if (s.position !== 'fixed' && s.position !== 'absolute') continue;
+          if (s.display === 'none' || s.visibility === 'hidden') continue;
+          const r = el.getBoundingClientRect();
+          if (r.width >= vw * 0.9 && r.height >= vh * 0.9) { fullscreen = true; break; }
+        }
+      }
+    }
+
+    return { cryptoSeed, seedInput, techScare, phone, fullscreen };
+  }
+
+  const scam = collectScam();
+  if (scam) send({ type: 'scam-scan', scam });
+
   // Link intelligence: collect anchors and let the background (which has the
   // full engine + PSL) judge them. The auto pass sends only candidates worth
   // checking; the panel's "Scan links" button asks for the full set.

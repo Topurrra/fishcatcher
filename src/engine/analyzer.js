@@ -1,6 +1,7 @@
 // Pure URL analysis: string in → {score, level, reasons} out. No extension APIs.
 import { runSignals, isIpAddress } from './signals.js';
 import { runAitm } from './aitm.js';
+import { runScamPacks } from './scampacks.js';
 import { registrableDomain } from './psl.js';
 
 export function levelForScore(score) {
@@ -59,6 +60,14 @@ export function analyzeUrl(input, data, opts) {
     const a = runAitm({ registrable, knownLegit, aitm: opts.aitm }, data);
     score += a.score;
     for (const r of a.reasons) reasons.push(r);
+  }
+
+  // Scam packs — crypto seed-phrase request, or tech-support locker scare.
+  // No opts.scam (e.g. the verify.mjs corpora) leaves this untouched → no regression.
+  if (opts?.scam) {
+    const s = runScamPacks({ scam: opts.scam, knownLegit }, data);
+    score += s.score;
+    for (const r of s.reasons) reasons.push(r);
   }
 
   result.score = Math.min(100, score);

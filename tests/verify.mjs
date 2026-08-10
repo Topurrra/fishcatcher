@@ -582,6 +582,58 @@ check('locales: S18 Google Safe Browsing keys present', () => {
   }
 });
 
+// ── Scam packs: crypto seed + tech-support locker ────────────────
+import { runScamPacks, scamCryptoSeedText, scamTechSupportText } from '../src/engine/scampacks.js';
+
+check('scam: crypto seed matcher needs an action verb, not just the noun', () => {
+  assert.ok(scamCryptoSeedText('Enter your 12-word seed phrase to restore your wallet.'));
+  assert.ok(scamCryptoSeedText('Please confirm your recovery phrase to continue.'));
+  assert.ok(scamCryptoSeedText('Paste your private key here to sync your wallet.'));
+  // Educational / negated prose must stay quiet.
+  assert.ok(!scamCryptoSeedText('Never share your recovery phrase with anyone.'));
+  assert.ok(!scamCryptoSeedText('What is a seed phrase?'));
+  assert.ok(!scamCryptoSeedText('We will never ask you to enter your seed phrase.'));
+});
+
+check('scam: tech-support matcher needs scare AND call-to-action together', () => {
+  assert.ok(scamTechSupportText('Your computer has been locked due to suspicious activity. Call Microsoft support at 1-800-555-0100.'));
+  assert.ok(scamTechSupportText('Windows Defender Alert: your PC is infected. Do not restart. Call our technicians now to remove the virus.'));
+  assert.ok(scamTechSupportText('Critical alert: your system is blocked. Contact Apple support immediately at this toll-free number.'));
+  // One half alone is not enough.
+  assert.ok(!scamTechSupportText('Our office is closed. Call support during business hours.'));
+  assert.ok(!scamTechSupportText('This article explains how ransomware locks your computer.'));
+  assert.ok(!scamTechSupportText('Microsoft released a security update today.'));
+});
+
+check('scam: runScamPacks gating (seed OR seedInput; scare AND phone/fullscreen)', () => {
+  assert.equal(runScamPacks({ scam: { cryptoSeed: true } }, data).score, 60);
+  assert.equal(runScamPacks({ scam: { seedInput: true } }, data).score, 60);
+  assert.equal(runScamPacks({ scam: { techScare: true, fullscreen: true } }, data).score, 55);
+  assert.equal(runScamPacks({ scam: { techScare: true, phone: true } }, data).score, 55);
+  // Scare without a corroborator (phone/fullscreen) must NOT fire.
+  assert.equal(runScamPacks({ scam: { techScare: true } }, data).score, 0);
+  // Null/undefined scam is a no-op.
+  assert.deepEqual(runScamPacks({ scam: null }, data), { score: 0, reasons: [] });
+  assert.deepEqual(runScamPacks({}, data), { score: 0, reasons: [] });
+});
+
+check('scam: analyzeUrl wires each pack to high (and no opts.scam = no regression)', () => {
+  const crypto = analyzeUrl('https://neutral-unknown-site.com/', data, { scam: { cryptoSeed: true } });
+  assert.ok(crypto.reasons.some((x) => x.key === 'reasonCryptoSeed'));
+  assert.ok(crypto.level === 'high' || crypto.level === 'critical', `crypto level ${crypto.level} (score ${crypto.score})`);
+  const tech = analyzeUrl('https://neutral-unknown-site.com/', data, { scam: { techScare: true, phone: true } });
+  assert.ok(tech.reasons.some((x) => x.key === 'reasonTechSupport'));
+  assert.ok(tech.level === 'high' || tech.level === 'critical', `tech level ${tech.level} (score ${tech.score})`);
+  // No opts.scam → corpora unchanged.
+  assert.equal(analyzeUrl('https://example.com/', data).score, 0);
+});
+
+check('locales: scam-pack reason keys present', () => {
+  for (const key of ['reasonCryptoSeed', 'reasonTechSupport']) {
+    assert.ok(enMessages[key], `en has ${key}`);
+  }
+});
+
 // ── report ──────────────────────────────────────────────────────
 let failed = 0;
 for (const c of checks) {

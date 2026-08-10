@@ -370,5 +370,61 @@
   "gsbActive": {
     "message": "Checking sites against Google Safe Browsing.",
     "description": "Options status when GSB is on"
+  },
+  "reasonCryptoSeed": {
+    "message": "This page asks you to type your wallet recovery phrase or private key. Real wallets never ask for this",
+    "description": "Crypto scam pack: imperative request to enter a seed/recovery phrase or private key"
+  },
+  "reasonTechSupport": {
+    "message": "This page tries to scare you into calling a number to unlock your computer. That is a known scam",
+    "description": "Tech-support / browser-locker scam pack: scare text plus a phone or fullscreen lock"
+  },
+  "seniorLabel": {
+    "message": "Family mode: bigger text and a clear alert on dangerous sites",
+    "description": "Options: family/senior mode toggle"
+  },
+  "seniorHint": {
+    "message": "A larger, simpler view for anyone who wants it. You can add a helper to be told when a site looks dangerous.",
+    "description": "Options: family mode explanation"
+  },
+  "seniorHelperLabel": {
+    "message": "Helper email (optional)",
+    "description": "Options: family mode helper email field label"
+  },
+  "seniorHelperHint": {
+    "message": "On a dangerous site, one tap opens an email to this person. Nothing is sent until you press send.",
+    "description": "Options: family mode helper email explanation"
+  },
+  "seniorTellHelper": {
+    "message": "Tell my helper",
+    "description": "Button that opens a pre-filled email to the chosen helper"
+  },
+  "seniorAlertTitle": {
+    "message": "This site looks dangerous",
+    "description": "Family mode: big in-panel alert title on high/critical sites"
+  },
+  "seniorNotifyTitle": {
+    "message": "FishCatcher: this site looks dangerous",
+    "description": "Family mode: system notification title on a dangerous site"
+  },
+  "seniorNotifyBody": {
+    "message": "$1 shows strong signs of a scam. Do not enter passwords or codes.",
+    "description": "Family mode: system notification body; $1 = domain"
+  },
+  "seniorMailSubject": {
+    "message": "A website looked dangerous",
+    "description": "Subject of the pre-filled helper email"
+  },
+  "seniorMailBody": {
+    "message": "FishCatcher warned me that this website looks dangerous:\n$1\n\nCan you help me check it before I do anything?",
+    "description": "Body of the pre-filled helper email; $1 = domain"
+  },
+  "reportButton": {
+    "message": "Report this site",
+    "description": "Panel button: report the current site to the community registry"
+  },
+  "reportOpening": {
+    "message": "Opening a report form in a new tab.",
+    "description": "Confirmation shown after the report button is pressed"
   }
 }

@@ -29,7 +29,8 @@ Required:
 Optional (requested only when the user enables the matching feature):
 
 - **downloads**, **notifications** — the download guard checks a download's real file
-  type against its name and shows a warning with a one-click cancel.
+  type against its name and shows a warning with a one-click cancel. Family mode also
+  uses notifications to show a plain alert on a dangerous page.
 - **https://rdap.org/**, **https://rdap.verisign.com/** — the opt-in domain-age check
   asks a public directory how old a domain is. It sends only the domain name.
 - **https://raw.githubusercontent.com/** — downloads the opt-in threat-list file (a
@@ -39,8 +40,9 @@ Optional (requested only when the user enables the matching feature):
 
 Content script on `http(s)://*/*` (`probe.js`, at document idle): runs the on-page
 checks on the site the user is viewing (detects a login/identity form, reads the page's
-links and resource origins, detects device-code scam text). It sends the worker only
-small derived facts and hostnames, never page content, and everything is scored locally.
+links and resource origins, detects device-code scam text, a wallet recovery-phrase
+request, and fake tech-support scare text). It sends the worker only small derived facts
+and hostnames, never page content, and everything is scored locally.
 
 ## Chrome data-use disclosure
 

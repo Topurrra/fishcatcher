@@ -13,6 +13,15 @@ const $ = (id) => document.getElementById(id);
 let currentTabId;
 let cameraStream = null;
 let cameraTimer = null;
+let seniorMode = false;
+let helperEmail = '';
+
+async function loadSenior() {
+  const s = await chrome.storage.local.get(['opt:senior', 'senior:helper']);
+  seniorMode = !!s['opt:senior'];
+  helperEmail = s['senior:helper'] || '';
+  document.body.classList.toggle('senior', seniorMode);
+}
 
 async function renderResult(result, noteKey) {
   await applyI18n();
@@ -26,16 +35,30 @@ async function renderResult(result, noteKey) {
   }
 
   if (!result) {
-    document.body.className = '';
+    document.body.className = seniorMode ? 'senior' : '';
     $('status-label').textContent = await getMessage('noCheck');
     $('domain').hidden = true;
     $('reasons-wrap').hidden = true;
     $('hint').hidden = false;
     $('trust-btn').hidden = true;
+    $('helper-alert').hidden = true;
     return;
   }
 
-  document.body.className = `level-${result.level}`;
+  document.body.className = `level-${result.level}${seniorMode ? ' senior' : ''}`;
+
+  // Family mode: a big, plain alert (and a one-tap email to a helper) on danger.
+  const dangerous = result.level === 'high' || result.level === 'critical';
+  const alert = $('helper-alert');
+  if (seniorMode && dangerous) {
+    alert.hidden = false;
+    $('helper-alert-domain').textContent = result.registrable;
+    const tell = $('tell-helper-btn');
+    tell.hidden = !helperEmail;
+    tell.dataset.domain = result.registrable;
+  } else {
+    alert.hidden = true;
+  }
   $('status-label').textContent = await getMessage(LEVEL_LABEL[result.level]);
 
   $('domain').hidden = false;
@@ -236,11 +259,45 @@ $('recheck-btn').addEventListener('click', async (e) => {
   checking = false;
 });
 
+// Report the current site to the community registry (opens a pre-filled issue
+// form; a maintainer confirms before anything reaches the threat feed).
+$('report-btn').addEventListener('click', async () => {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  let host = '';
+  try { host = new URL(tab.url).hostname.replace(/^www\./, ''); } catch { /* non-URL tab */ }
+  // Only the hostname is prefilled, never the full URL: phishing links often carry
+  // the victim's email or a one-time token in the query string, and this opens a
+  // public issue. The reporter can add detail themselves.
+  const params = new URLSearchParams({
+    template: 'report-site.yml',
+    title: `[Report] ${host}`,
+    domain: host
+  });
+  chrome.tabs.create({ url: `https://github.com/Topurrra/fishcatcher-registry/issues/new?${params.toString()}` });
+  flashNote('reportOpening', []);
+});
+
+// Family mode: open a pre-filled email to the chosen helper. Nothing sends until
+// the user presses send in their own mail app.
+$('tell-helper-btn').addEventListener('click', async (e) => {
+  const domain = e.currentTarget.dataset.domain || '';
+  const subject = await getMessage('seniorMailSubject');
+  const body = await getMessage('seniorMailBody', [domain]);
+  chrome.tabs.create({ url: `mailto:${helperEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}` });
+});
+
 chrome.runtime.onMessage.addListener((msg) => {
   if (checking) return;
   if (msg.type === 'scored') render();
   if (msg.type === 'links' && msg.tabId === currentTabId) loadLinks();
   if (msg.type === 'age-status' && msg.tabId === currentTabId) showAge(msg.state === 'checking');
+});
+
+// Keep family mode live if it is toggled while the panel is open.
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === 'local' && (changes['opt:senior'] || changes['senior:helper'])) {
+    loadSenior().then(render);
+  }
 });
 
 chrome.tabs.onActivated.addListener(() => render());
@@ -253,6 +310,7 @@ if (chrome.sidePanel) {
 }
 
 (async () => {
+  await loadSenior();
   const { result, note } = await chrome.runtime.sendMessage({ type: 'take-pending' });
   if (result) renderResult(result, note);
   else render();
