@@ -1,10 +1,9 @@
 # FishCatcher roadmap
 
-Status: **v1.0.0, feature-complete, preparing for store submission.**
-83/83 checks green, both builds passing.
+**v1.0.0, feature-complete, getting ready for the stores.**
 
-FishCatcher's identity guides every item here: warn, never block; explain in plain
-language; run on-device by default; teach while it protects; free and open forever.
+FishCatcher warns, it never blocks. It runs on your device, and it is free and open.
+Everything below keeps to that.
 
 ## Shipped (v1.0)
 

@@ -1,4 +1,6 @@
-<h1 align="center">Fish Catcher</h1>
+<p align="center">
+  <img src="assets/wordmark.gif" alt="Fish Catcher" width="480">
+</p>
 
 FishCatcher watches the website you are on and warns you when it looks like phishing
 or a scam. It explains the warning signs in plain language, it never blocks a page,
