@@ -27,7 +27,8 @@ const data = {
   keywords: readJson('src/data/keywords.json').keywords,
   psl: readJson('src/data/psl.json').suffixes,
   blockList: new Set(readJson('src/data/blocklist.json').domains),
-  ml: readJson('src/data/ml-weights.json')
+  ml: readJson('src/data/ml-weights.json'),
+  safeBloom: Bloom.fromPayload(readJson('src/data/safe-bloom.json'))
 };
 const enMessages = readJson('src/_locales/en/messages.json');
 
@@ -286,6 +287,26 @@ check('bloom: no false negatives, base64 round-trip', () => {
   const restored = Bloom.fromPayload({ m: 1024, k: 4, seed: 7, bits: b.toBase64() });
   assert.ok(restored.has('bad.example'));
   assert.ok(!restored.has('github.com'));
+});
+
+check('bloom: no false negatives at scale (regression: signed-hash index bug)', () => {
+  // The signed Math.imul bug made ~1% of items silently absent. Adding many
+  // items and requiring every one back catches it (e.g. redhat.com missed).
+  const b = new Bloom(200000, 10, 1);
+  const items = ['redhat.com', 'google.ca', 'github.io', 'wikimedia.org'];
+  for (let i = 0; i < 3000; i++) items.push(`site-${i}.example`);
+  for (const it of items) b.add(it);
+  for (const it of items) assert.ok(b.has(it), `${it} must be present`);
+});
+
+check('safe-bloom: allowlist suppresses brand FPs, keeps typosquats flagged', () => {
+  // Known-legit brand-owned / near-collision domains must not be flagged...
+  for (const d of ['google.ca', 'github.io', 'redhat.com', 'goo.gl']) {
+    const r = analyzeUrl(`https://${d}/`, data);
+    assert.ok(r.level === 'low' || r.level === 'elevated', `${d} should not be high/critical (was ${r.level})`);
+  }
+  // ...but a real typosquat not on the allowlist still fires.
+  assert.equal(analyzeUrl('https://paypa1.com/', data).level, 'high');
 });
 
 check('rdap: registration date parsing + age', () => {

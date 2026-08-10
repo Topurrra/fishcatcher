@@ -52,32 +52,40 @@ export function runSignals(ctx, data) {
   if (blockedHit) add(60, 'reasonBlocklist');
   else if (data.bloom?.has(ctx.registrable) || data.bloom?.has(host)) add(45, 'reasonBloom'); // S16 — community feed (probabilistic)
 
-  // S1 — brand impersonation via typo (Levenshtein ≤ 2)
-  for (const brand of data.brands) {
-    const hit = brand.domains.find((d) => d !== ctx.registrable && levenshtein(ctx.registrable, d) <= 2);
-    if (hit) {
-      add(45, 'reasonBrand', [hit, ctx.registrable]);
-      break;
+  // Brand-impersonation signals (S1–S3) are suppressed for domains on the
+  // known-legitimate allowlist, and S1 for very short SLDs (edit-distance ≤ 2
+  // collides with real brands by chance, e.g. ft.com, go.com, box.com).
+  // Without this guard, google.ca / github.io / goo.gl / redhat.com all fire.
+  if (!ctx.knownLegit) {
+    // S1 — brand impersonation via typo (Levenshtein ≤ 2)
+    if (sld.length >= 5) {
+      for (const brand of data.brands) {
+        const hit = brand.domains.find((d) => d !== ctx.registrable && levenshtein(ctx.registrable, d) <= 2);
+        if (hit) {
+          add(45, 'reasonBrand', [hit, ctx.registrable]);
+          break;
+        }
+      }
     }
-  }
 
-  // S2 — homoglyph / IDN attack
-  if (decoded !== host) {
-    const brandHit = data.brands.find((b) =>
-      b.domains.some((d) => levenshtein(foldedRegistrable, d) <= 2)
-    );
-    if (brandHit || hasMixedScripts(decoded)) {
-      add(45, 'reasonHomoglyph', [brandHit?.name ?? '']);
+    // S2 — homoglyph / IDN attack
+    if (decoded !== host) {
+      const brandHit = data.brands.find((b) =>
+        b.domains.some((d) => levenshtein(foldedRegistrable, d) <= 2)
+      );
+      if (brandHit || hasMixedScripts(decoded)) {
+        add(45, 'reasonHomoglyph', [brandHit?.name ?? '']);
+      }
     }
-  }
 
-  // S3 — brand name present but registrable domain is not the brand's
-  for (const brand of data.brands) {
-    if (brand.domains.includes(ctx.registrable)) continue;
-    const kw = brand.keywords.find((k) => host.includes(k));
-    if (kw) {
-      add(40, 'reasonBrandSubdomain', [brand.name]);
-      break;
+    // S3 — brand name present but registrable domain is not the brand's
+    for (const brand of data.brands) {
+      if (brand.domains.includes(ctx.registrable)) continue;
+      const kw = brand.keywords.find((k) => host.includes(k));
+      if (kw) {
+        add(40, 'reasonBrandSubdomain', [brand.name]);
+        break;
+      }
     }
   }
 

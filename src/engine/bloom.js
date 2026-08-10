@@ -24,7 +24,9 @@ export class Bloom {
   add(s) {
     const [h1, h2] = this._hashes(s);
     for (let i = 0; i < this.k; i++) {
-      const bit = (h1 + Math.imul(i, h2)) % this.m;
+      // >>> 0 keeps the index unsigned: Math.imul returns a signed 32-bit int,
+      // and a negative bit would silently no-op the write (false negatives).
+      const bit = ((h1 + Math.imul(i, h2)) >>> 0) % this.m;
       this.bits[bit >> 3] |= 1 << (bit & 7);
     }
   }
@@ -32,7 +34,7 @@ export class Bloom {
   has(s) {
     const [h1, h2] = this._hashes(s);
     for (let i = 0; i < this.k; i++) {
-      const bit = (h1 + Math.imul(i, h2)) % this.m;
+      const bit = ((h1 + Math.imul(i, h2)) >>> 0) % this.m;
       if (!(this.bits[bit >> 3] & (1 << (bit & 7)))) return false;
     }
     return true;

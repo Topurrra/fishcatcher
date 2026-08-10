@@ -26,7 +26,11 @@ export function analyzeUrl(input, data, opts) {
 
   if (data.safeList.has(registrable) || data.trustList?.has(registrable)) return result;
 
-  const { score: baseScore, reasons } = runSignals({ url, host, registrable }, data);
+  // Softer allowlist: known-legitimate domains still get scored, but brand-
+  // impersonation signals are suppressed (see signals.js) to avoid flagging
+  // sites like google.ca or github.io. A blocklist/ML/TLD hit can still fire.
+  const knownLegit = !!data.safeBloom?.has(registrable);
+  const { score: baseScore, reasons } = runSignals({ url, host, registrable, knownLegit }, data);
   let score = baseScore;
 
   // S13 — login form on a domain that is neither safe-listed nor trusted

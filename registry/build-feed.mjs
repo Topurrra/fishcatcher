@@ -31,7 +31,8 @@ class Bloom {
   add(s) {
     const [h1, h2] = this._hashes(s);
     for (let i = 0; i < this.k; i++) {
-      const bit = (h1 + Math.imul(i, h2)) % this.m;
+      // >>> 0 keeps the index unsigned (matches src/engine/bloom.js).
+      const bit = ((h1 + Math.imul(i, h2)) >>> 0) % this.m;
       this.bits[bit >> 3] |= 1 << (bit & 7);
     }
   }

@@ -21,7 +21,7 @@ let pendingNote = null;
 let cloudEnabled = false;
 
 async function loadData() {
-  const [safe, brands, tlds, keywords, psl, block, mlw, stored] = await Promise.all([
+  const [safe, brands, tlds, keywords, psl, block, mlw, safeBloom, stored] = await Promise.all([
     fetch(chrome.runtime.getURL('data/safe-list.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/brands.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/tlds.json')).then((r) => r.json()),
@@ -29,9 +29,11 @@ async function loadData() {
     fetch(chrome.runtime.getURL('data/psl.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/blocklist.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/ml-weights.json')).then((r) => r.json()),
+    fetch(chrome.runtime.getURL('data/safe-bloom.json')).then((r) => r.json()),
     chrome.storage.local.get(['trust:list', 'opt:cloud'])
   ]);
   data.safeList = new Set(safe.domains);
+  data.safeBloom = Bloom.fromPayload(safeBloom);
   data.brands = brands.brands;
   data.tlds = tlds.tlds;
   data.keywords = keywords.keywords;
