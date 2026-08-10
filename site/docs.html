@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FishCatcher docs</title>
+<meta name="description" content="How to install and use FishCatcher: what it checks, the risk levels, settings, automatic updates, and building from source.">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/docs.css">
+<script>(function(){try{var t=localStorage.getItem('fc-theme');if(!t)t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="assets/logo.svg" alt=""> FishCatcher</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="learn.html">Learn</a>
+      <a href="docs.html">Docs</a>
+      <a href="https://github.com/Topurrra/fishcatcher">GitHub</a>
+      <button class="theme-toggle" onclick="fcToggleTheme()" aria-label="Switch light or dark theme">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="docs">
+  <aside class="docs-side">
+    <div class="group">
+      <h5>Getting started</h5>
+      <ul>
+        <li><a href="#overview" class="active">Overview</a></li>
+        <li><a href="#install">Install</a></li>
+        <li><a href="#settings">Settings</a></li>
+      </ul>
+    </div>
+    <div class="group">
+      <h5>How it works</h5>
+      <ul>
+        <li><a href="#checks">What it checks</a></li>
+        <li><a href="#levels">Risk levels</a></li>
+        <li><a href="#updates">Automatic updates</a></li>
+      </ul>
+    </div>
+    <div class="group">
+      <h5>More</h5>
+      <ul>
+        <li><a href="#build">Build from source</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="privacy.html">Privacy policy</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="docs-main">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Docs</div>
+    <h1>Documentation</h1>
+    <p class="sub">Install FishCatcher, understand what it checks, and make it your own.</p>
+    <div class="meta">Built for people who are not security experts.</div>
+
+    <h2 id="overview">Overview</h2>
+    <p class="lead-p">FishCatcher is a browser extension that looks at the site you are on and warns you, in plain language, when it looks like phishing or a scam. It never blocks a page, and it does its checks on your device.</p>
+    <p>Click the toolbar icon to see the current site's verdict and why. On Chrome, Brave, Edge and Opera it opens a side panel; on Firefox it opens a popup.</p>
+
+    <h2 id="install">Install</h2>
+    <p>Store listings are on the way. Until then you can load it from source in about a minute.</p>
+    <div class="step-cards">
+      <div class="c"><b>Chrome, Brave, Edge, Opera</b><span>Open the extensions page, turn on Developer mode, choose Load unpacked, and pick the <code>dist/chrome</code> folder.</span></div>
+      <div class="c"><b>Firefox</b><span>Open <code>about:debugging</code>, choose This Firefox, Load Temporary Add-on, and pick <code>dist/firefox/manifest.json</code>.</span></div>
+    </div>
+    <p>To produce those folders from the source:</p>
+    <pre data-lang="bash"><code>git clone https://github.com/Topurrra/fishcatcher.git
+cd fishcatcher
+node scripts/build.mjs</code></pre>
+    <div class="callout"><p>Nothing to configure. FishCatcher works the moment it is loaded, fully offline.</p></div>
+
+    <h2 id="settings">Settings</h2>
+    <p>Open Settings from the side panel (Chrome family) or the extension's options page (Firefox). Everything is off by default except the on-device checks.</p>
+    <ul>
+      <li><b>Strict mode.</b> Shows a dismissible warning banner on high-risk pages. Never blocks the page.</li>
+      <li><b>Keep threat lists updated.</b> Downloads a fresh list of known phishing sites once a day. It only downloads, never uploads.</li>
+      <li><b>Cloud age check.</b> Asks a public service how old a domain is. Sends only the domain name.</li>
+      <li><b>Download guard.</b> Warns when a download is disguised, like a program pretending to be a PDF. Offers a one-click cancel.</li>
+      <li><b>Language.</b> English or Georgian, or follow the browser.</li>
+      <li><b>Trusted sites.</b> Any site you mark as trusted stops being flagged. You can remove it here anytime.</li>
+    </ul>
+
+    <h2 id="checks">What it checks</h2>
+    <p>FishCatcher combines many small signals into one score. A few examples, all in plain terms:</p>
+    <ul>
+      <li>A domain that looks like a misspelling of a known brand, like <code>paypa1.com</code>.</li>
+      <li>Look-alike characters used to imitate a brand (homoglyphs).</li>
+      <li>A brand's name used on a domain that is not the brand's.</li>
+      <li>A raw IP address instead of a normal domain.</li>
+      <li>High-abuse domain endings, deep subdomain chains, and generated-looking names.</li>
+      <li>A password form on a site that is not a known legitimate domain.</li>
+      <li>The device-code scam pattern, and known-bad sites from the threat list.</li>
+      <li>Links whose visible text does not match where they go, and disguised downloads.</li>
+    </ul>
+    <p>Well-known legitimate sites are recognized so they are not flagged by mistake.</p>
+
+    <h2 id="levels">Risk levels</h2>
+    <div class="step-cards">
+      <div class="c"><b>Green</b><span>No suspicious signs found.</span></div>
+      <div class="c"><b>Yellow</b><span>A little unusual. Double check the address.</span></div>
+      <div class="c"><b>Orange</b><span>Several phishing indicators. Be careful before logging in.</span></div>
+      <div class="c"><b>Red</b><span>Strong signs of a fake. Do not enter passwords.</span></div>
+    </div>
+
+    <h2 id="updates">Automatic updates</h2>
+    <p>The list of known phishing sites stays current with no manual work. A companion repository rebuilds it every day from a community feed and publishes it as one compact file.</p>
+    <p>When you turn on <b>Keep threat lists updated</b>, the extension fetches that file once a day, and only when it has changed. Source: <a href="https://github.com/Topurrra/fishcatcher-registry">the FishCatcher registry on GitHub</a>.</p>
+
+    <h2 id="build">Build from source</h2>
+    <p>Plain vanilla JavaScript, no framework, just Node scripts.</p>
+    <pre data-lang="bash"><code>node scripts/build.mjs      # build dist/chrome and dist/firefox
+node tests/verify.mjs       # run the checks
+node scripts/package.mjs    # zip both builds for the stores</code></pre>
+
+    <h2 id="faq">FAQ</h2>
+    <h3>Does it slow down my browsing?</h3>
+    <p>No. The checks are small string operations that run on your device in a fraction of a second.</p>
+    <h3>Will it block me from a site?</h3>
+    <p>Never. FishCatcher only warns. You always decide what to do.</p>
+    <h3>Does it send my browsing anywhere?</h3>
+    <p>No. See the <a href="privacy.html">privacy policy</a> for exactly what the optional online features send.</p>
+    <h3>It flagged a site I trust. What now?</h3>
+    <p>Open the panel and choose Trust this site. It stops being flagged, and you can undo it in Settings.</p>
+
+    <div class="prevnext">
+      <a href="learn.html"><small>Learn</small>Anti-phishing lessons</a>
+      <a class="nx" href="privacy.html"><small>Next</small>Privacy policy</a>
+    </div>
+  </main>
+
+  <nav class="docs-toc" aria-label="On this page">
+    <h5>On this page</h5>
+    <ul>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#install">Install</a></li>
+      <li><a href="#settings">Settings</a></li>
+      <li><a href="#checks">What it checks</a></li>
+      <li><a href="#levels">Risk levels</a></li>
+      <li><a href="#updates">Automatic updates</a></li>
+      <li><a href="#build">Build from source</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </nav>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="assets/logo.svg" alt=""> FishCatcher</a>
+    <div class="cols">
+      <div><h4>Product</h4><ul><li><a href="index.html#how">How it works</a></li><li><a href="index.html#install">Install</a></li><li><a href="privacy.html">Privacy</a></li></ul></div>
+      <div><h4>Learn</h4><ul><li><a href="learn.html">Lessons</a></li><li><a href="docs.html">Docs</a></li></ul></div>
+      <div><h4>Open source</h4><ul><li><a href="https://github.com/Topurrra/fishcatcher">GitHub</a></li><li><a href="https://github.com/Topurrra/fishcatcher-registry">Registry</a></li></ul></div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/theme.js"></script>
+</body>
+</html>

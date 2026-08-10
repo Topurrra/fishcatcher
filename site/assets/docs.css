@@ -1,0 +1,88 @@
+/* Nimbus-style docs layout: left nav, prose column, right on-this-page TOC. */
+.docs {
+  display: grid;
+  grid-template-columns: 232px minmax(0, 1fr) 190px;
+  gap: 44px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 34px 22px 90px;
+  align-items: start;
+}
+
+/* left nav */
+.docs-side { position: sticky; top: 80px; }
+.docs-side .group { margin-bottom: 22px; }
+.docs-side .group h5 {
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--muted); margin: 0 0 8px; font-weight: 700;
+}
+.docs-side ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.docs-side a {
+  display: block; padding: 6px 10px; border-radius: 8px;
+  color: var(--muted); font-size: 0.9rem; font-weight: 500;
+}
+.docs-side a:hover { color: var(--text); background: var(--bg-soft); text-decoration: none; }
+.docs-side a.active { color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); font-weight: 600; }
+
+/* content */
+.docs-main { min-width: 0; }
+.breadcrumb { color: var(--muted); font-size: 0.85rem; margin-bottom: 14px; }
+.breadcrumb a { color: var(--muted); }
+.docs-main h1 { font-size: 2.1rem; margin-bottom: 8px; }
+.docs-main .sub { color: var(--muted); font-size: 1.08rem; margin-bottom: 14px; }
+.docs-main .meta { color: var(--muted); font-size: 0.82rem; border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 28px; }
+.docs-main h2 { font-size: 1.4rem; margin: 40px 0 12px; scroll-margin-top: 84px; }
+.docs-main h3 { font-size: 1.08rem; margin: 26px 0 8px; scroll-margin-top: 84px; }
+.docs-main p, .docs-main li { color: var(--text); }
+.docs-main .lead-p { color: var(--muted); font-size: 1.05rem; }
+.docs-main ul, .docs-main ol { padding-left: 22px; margin: 0 0 1em; display: grid; gap: 6px; }
+.docs-main :not(pre) > code {
+  background: var(--code-bg); border: 1px solid var(--border);
+  border-radius: 6px; padding: 1px 6px; font-size: 0.86em; color: var(--text);
+}
+.docs-main pre {
+  background: var(--code-bg); border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px 18px; overflow-x: auto; margin: 0 0 1.2em; position: relative;
+}
+.docs-main pre code { font-size: 0.86rem; line-height: 1.6; color: var(--text); }
+.docs-main pre[data-lang]::after {
+  content: attr(data-lang); position: absolute; top: 10px; right: 12px;
+  font-size: 0.66rem; color: var(--muted); font-family: var(--mono); letter-spacing: 0.05em;
+}
+
+.callout {
+  border: 1px solid var(--border); border-left: 3px solid var(--accent);
+  background: var(--bg-soft); border-radius: 10px; padding: 14px 16px; margin: 0 0 1.2em;
+}
+.callout.warn { border-left-color: var(--orange); }
+.callout p { margin: 0; }
+.callout p + p { margin-top: 8px; }
+
+.step-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 0 0 1.2em; }
+.step-cards .c { border: 1px solid var(--border); border-radius: 12px; padding: 16px; background: var(--surface); }
+.step-cards .c b { display: block; margin-bottom: 4px; }
+.step-cards .c span { color: var(--muted); font-size: 0.92rem; }
+
+.prevnext { display: flex; justify-content: space-between; gap: 16px; margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); }
+.prevnext a { display: block; border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; min-width: 0; }
+.prevnext a:hover { border-color: var(--accent); text-decoration: none; }
+.prevnext small { color: var(--muted); display: block; }
+.prevnext .nx { text-align: right; margin-left: auto; }
+
+/* right TOC */
+.docs-toc { position: sticky; top: 80px; font-size: 0.85rem; }
+.docs-toc h5 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 10px; font-weight: 700; }
+.docs-toc ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; border-left: 1px solid var(--border); }
+.docs-toc a { color: var(--muted); padding-left: 12px; margin-left: -1px; border-left: 2px solid transparent; display: block; }
+.docs-toc a:hover { color: var(--text); text-decoration: none; }
+
+@media (max-width: 1080px) {
+  .docs { grid-template-columns: 210px minmax(0,1fr); }
+  .docs-toc { display: none; }
+}
+@media (max-width: 760px) {
+  .docs { grid-template-columns: 1fr; gap: 20px; }
+  .docs-side { position: static; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+  .docs-side .group { margin-bottom: 14px; }
+  .step-cards { grid-template-columns: 1fr; }
+}
