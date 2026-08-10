@@ -4,7 +4,7 @@
     "description": "Extension name"
   },
   "appDescription": {
-    "message": "ამოიცნობს ფიშინგისთვის დამახასიათებელ URL-ნიშნებს და გასაგებად განგიმარტავთ, რატომ გაფრთხილებთ — და არაფერს ბლოკავს.",
+    "message": "ამოიცნობს ფიშინგისთვის დამახასიათებელ URL-ნიშნებს და გასაგებად განგიმარტავთ, რატომ გაფრთხილებთ, და არაფერს ბლოკავს.",
     "description": "Extension description shown in the store and extension manager"
   },
   "m0Status": {
@@ -12,7 +12,7 @@
     "description": "Placeholder status shown until the M1 engine ships"
   },
   "m0Note": {
-    "message": "FishCatcher დაყენებულია. URL-ების ანალიზი შემდეგ განახლებასთან ერთად გამოჩნდება — არაფერი იგზავნება, ყველაფერი თქვენს მოწყობილობაზე რჩება.",
+    "message": "FishCatcher დაყენებულია. URL-ების ანალიზი შემდეგ განახლებასთან ერთად გამოჩნდება. არაფერი იგზავნება, ყველაფერი თქვენს მოწყობილობაზე რჩება.",
     "description": "Placeholder explanation shown in popup and panel"
   },
   "panelHint": {
@@ -32,7 +32,7 @@
     "description": "S3 brand-in-subdomain signal; $1 = brand name"
   },
   "reasonIp": {
-    "message": "მისამართი სუფთა IP-რიცხვია — ნამდვილი საიტები იშვიათად ასე იქცევიან",
+    "message": "მისამართი სუფთა IP-რიცხვია. ნამდვილი საიტები იშვიათად ასე იქცევიან",
     "description": "S4 IP-address URL signal"
   },
   "reasonAtSign": {
@@ -68,15 +68,15 @@
     "description": "Low risk verdict"
   },
   "levelElevated": {
-    "message": "რამდენიმე უჩვეულო ნიშანი — კიდევ ერთხელ შეამოწმეთ მისამართი",
+    "message": "რამდენიმე უჩვეულო ნიშანი. კიდევ ერთხელ შეამოწმეთ მისამართი",
     "description": "Elevated risk verdict"
   },
   "levelHigh": {
-    "message": "ფიშინგის რამდენიმე ნიშანი — სიფრთხილე, სანამ შეხვალთ",
+    "message": "ფიშინგის რამდენიმე ნიშანი. სიფრთხილე, სანამ შეხვალთ",
     "description": "High risk verdict"
   },
   "levelCritical": {
-    "message": "ფიშინგის ძლიერი ნიშნები — ნუ შეიყვანთ აქ პაროლებს",
+    "message": "ფიშინგის ძლიერი ნიშნები. ნუ შეიყვანთ აქ პაროლებს",
     "description": "Critical risk verdict"
   },
   "trustButton": {
@@ -104,7 +104,7 @@
     "description": "Options page heading"
   },
   "strictLabel": {
-    "message": "მკაცრი რეჟიმი — გამაფრთხილებელი ბანერი სარისკო გვერდებზე",
+    "message": "მკაცრი რეჟიმი: გამაფრთხილებელი ბანერი სარისკო გვერდებზე",
     "description": "Options: strict mode toggle"
   },
   "strictHint": {
@@ -112,7 +112,7 @@
     "description": "Options: strict mode explanation"
   },
   "remoteLabel": {
-    "message": "განახლებული სიების ჩამოტვირთვა URL-იდან",
+    "message": "საფრთხის სიების ავტომატური განახლება",
     "description": "Options: remote update toggle"
   },
   "remoteUrlLabel": {
@@ -120,7 +120,7 @@
     "description": "Options: remote update URL field label"
   },
   "remoteHint": {
-    "message": "არასავალდებულო. მხოლოდ JSON-ფაილი იტვირთება — არაფერი გადის თქვენი მოწყობილობიდან.",
+    "message": "არასავალდებულო. მხოლოდ JSON-ფაილი იტვირთება. არაფერი გადის თქვენი მოწყობილობიდან.",
     "description": "Options: remote update privacy note"
   },
   "langLabel": {
@@ -156,7 +156,7 @@
     "description": "S13 login-form probe signal"
   },
   "reasonDeviceCode": {
-    "message": "გვერდი ცდილობს შეგაყვანინოთ მოწყობილობის შესვლის კოდი — ცნობილი თაღლითობის სქემა",
+    "message": "გვერდი ცდილობს შეგაყვანინოთ მოწყობილობის შესვლის კოდი, ცნობილი თაღლითობის სქემა",
     "description": "S14 device-code scam signal"
   },
   "deviceCodeNotice": {
@@ -192,7 +192,7 @@
     "description": "Right-click context menu item on images"
   },
   "reasonYoungDomain": {
-    "message": "დომენი მხოლოდ $1 დღის წინ დარეგისტრირდა — ახალი დომენები ფიშინგში ხშირია",
+    "message": "დომენი მხოლოდ $1 დღის წინ დარეგისტრირდა. ახალი დომენები ფიშინგში ხშირია",
     "description": "S15 opt-in RDAP age check signal; $1 = age in days"
   },
   "reasonBloom": {
@@ -200,7 +200,7 @@
     "description": "S16 bloom-filter community feed signal"
   },
   "cloudLabel": {
-    "message": "ღრუბლოვანი შემოწმება — RDAP-ს ეკითხება დომენის ასაკს",
+    "message": "ღრუბლოვანი შემოწმება: RDAP-ს ეკითხება დომენის ასაკს",
     "description": "Options: RDAP age check toggle"
   },
   "cloudHint": {
@@ -208,7 +208,7 @@
     "description": "Options: RDAP privacy note"
   },
   "remoteDefaultHint": {
-    "message": "ნაგულისხმევი წყარო: topurrra/fishcatcher-registry GitHub-ზე.",
+    "message": "განახლებები მოდის FishCatcher-ის რეესტრიდან GitHub-ზე.",
     "description": "Options: default remote update source"
   },
   "reasonMl": {
@@ -232,7 +232,7 @@
     "description": "Link finding: download attribute hides the real file type; $1 real ext, $2 claimed ext"
   },
   "linkShortener": {
-    "message": "შემოკლებული ბმული ($1) — რეალური მისამართი დამალულია",
+    "message": "შემოკლებული ბმული ($1). რეალური მისამართი დამალულია",
     "description": "Link finding: known URL shortener; $1 = shortener domain"
   },
   "linkRisky": {
@@ -240,7 +240,7 @@
     "description": "Link finding: destination scored high/critical by the engine; $1 = domain"
   },
   "downloadGuardLabel": {
-    "message": "ჩამოტვირთვების დაცვა — გააფრთხილე შენიღბული ან საშიში ფაილების შესახებ",
+    "message": "ჩამოტვირთვების დაცვა: გააფრთხილე შენიღბული ან საშიში ფაილების შესახებ",
     "description": "Options: download guard toggle"
   },
   "downloadGuardHint": {

@@ -8,13 +8,13 @@
 <body>
   <header>
     <img src="../icons/icon32.png" alt="">
-    <h1><span data-i18n="appName">FishCatcher</span> — <span data-i18n="optionsHeading">Settings</span></h1>
+    <h1><span data-i18n="appName">FishCatcher</span> <span data-i18n="optionsHeading">Settings</span></h1>
   </header>
 
   <section>
     <label class="row">
       <input type="checkbox" id="strict">
-      <span data-i18n="strictLabel">Strict mode — show a warning banner on risky pages</span>
+      <span data-i18n="strictLabel">Strict mode: show a warning banner on risky pages</span>
     </label>
     <p class="hint" data-i18n="strictHint">Off by default. The banner never blocks the page and can always be dismissed.</p>
   </section>
@@ -22,20 +22,16 @@
   <section>
     <label class="row">
       <input type="checkbox" id="remote">
-      <span data-i18n="remoteLabel">Fetch updated detection lists</span>
+      <span data-i18n="remoteLabel">Keep threat lists updated automatically</span>
     </label>
-    <label class="row url">
-      <span data-i18n="remoteUrlLabel">Update URL</span>
-      <input type="url" id="remote-url" placeholder="https://raw.githubusercontent.com/topurrra/fishcatcher-registry/main/fishcatcher-lists.json">
-    </label>
-    <p class="hint" data-i18n="remoteHint">Optional. Only a JSON file is downloaded — nothing leaves your device.</p>
-    <p class="hint" data-i18n="remoteDefaultHint">Default source: topurrra/fishcatcher-registry on GitHub.</p>
+    <p class="hint" data-i18n="remoteHint">Optional. Only a JSON file is downloaded. Nothing leaves your device.</p>
+    <p class="hint" data-i18n="remoteDefaultHint">Updates come from the FishCatcher registry on GitHub.</p>
   </section>
 
   <section>
     <label class="row">
       <input type="checkbox" id="cloud">
-      <span data-i18n="cloudLabel">Cloud age check — ask public RDAP how old the domain is</span>
+      <span data-i18n="cloudLabel">Cloud age check: ask public RDAP how old the domain is</span>
     </label>
     <p class="hint" data-i18n="cloudHint">Sends only the registrable domain to rdap.org. Off by default.</p>
   </section>
@@ -43,7 +39,7 @@
   <section>
     <label class="row">
       <input type="checkbox" id="downloads">
-      <span data-i18n="downloadGuardLabel">Download guard — warn about disguised or dangerous downloads</span>
+      <span data-i18n="downloadGuardLabel">Download guard: warn about disguised or dangerous downloads</span>
     </label>
     <p class="hint" data-i18n="downloadGuardHint">Checks each download's real type against its name. Needs download and notification access, requested when you turn it on. Off by default.</p>
   </section>

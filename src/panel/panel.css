@@ -97,3 +97,89 @@ button {
 }
 
 button:hover { border-color: var(--accent); }
+
+#settings-wrap {
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+#settings-wrap summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--muted);
+}
+
+#settings-wrap .settings { margin-top: 10px; }
+
+#settings-wrap .row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+#settings-wrap input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  accent-color: var(--accent);
+}
+
+#settings-wrap select {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 8px;
+  font: inherit;
+}
+
+#settings-wrap .hint {
+  color: var(--muted);
+  margin: 4px 0 0 26px;
+  font-size: 12px;
+}
+
+#settings-wrap h2 {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--muted);
+  margin-top: 16px;
+}
+
+#settings-wrap #trust-list { list-style: none; margin-top: 6px; }
+
+#settings-wrap #trust-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+#settings-wrap #trust-list li:last-child { border-bottom: none; }
+
+#settings-wrap #trust-list .domain {
+  font-family: Consolas, monospace;
+  color: var(--accent);
+  font-size: 12px;
+}
+
+#settings-wrap #trust-list button {
+  background: none;
+  color: var(--red);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 3px 8px;
+  font: inherit;
+  cursor: pointer;
+}
+
+#settings-wrap #trust-list button:hover { border-color: var(--red); }

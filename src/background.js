@@ -47,9 +47,9 @@ const ready = loadData();
 // Optional opt-in update channel: downloads a JSON bundle, never uploads anything.
 // ETag-cached, refreshed daily via alarm. Falls back silently to bundled lists.
 async function loadRemoteLists() {
-  const prefs = await chrome.storage.local.get(['opt:remote', 'opt:remoteUrl', 'data:etag']);
+  const prefs = await chrome.storage.local.get(['opt:remote', 'data:etag']);
   if (!prefs['opt:remote']) return;
-  const url = prefs['opt:remoteUrl'] || DEFAULT_REMOTE_URL;
+  const url = DEFAULT_REMOTE_URL; // single fixed source: the FishCatcher registry
   try {
     const headers = {};
     if (prefs['data:etag']) headers['If-None-Match'] = prefs['data:etag'];
@@ -412,7 +412,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'local') return;
-  if (changes['opt:remote'] || changes['opt:remoteUrl']) loadRemoteLists();
+  if (changes['opt:remote']) loadRemoteLists();
   if (changes['opt:cloud']) cloudEnabled = !!changes['opt:cloud'].newValue;
 });
 

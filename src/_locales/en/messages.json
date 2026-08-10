@@ -4,7 +4,7 @@
     "description": "Extension name"
   },
   "appDescription": {
-    "message": "Detects phishing-like URL patterns and explains the warning signs in plain language — without blocking anything.",
+    "message": "Detects phishing-like URL patterns and explains the warning signs in plain language, without blocking anything.",
     "description": "Extension description shown in the store and extension manager"
   },
   "m0Status": {
@@ -12,7 +12,7 @@
     "description": "Placeholder status shown until the M1 engine ships"
   },
   "m0Note": {
-    "message": "FishCatcher is installed. URL analysis arrives with the next update — nothing is sent anywhere, everything stays on your device.",
+    "message": "FishCatcher is installed. URL analysis arrives with the next update. Nothing is sent anywhere, everything stays on your device.",
     "description": "Placeholder explanation shown in popup and panel"
   },
   "panelHint": {
@@ -32,7 +32,7 @@
     "description": "S3 brand-in-subdomain signal; $1 = brand name"
   },
   "reasonIp": {
-    "message": "Address is a raw IP number — legitimate sites rarely do this",
+    "message": "Address is a raw IP number. Legitimate sites rarely do this",
     "description": "S4 IP-address URL signal"
   },
   "reasonAtSign": {
@@ -68,15 +68,15 @@
     "description": "Low risk verdict"
   },
   "levelElevated": {
-    "message": "Some unusual signs — double-check the address",
+    "message": "Some unusual signs. Double-check the address",
     "description": "Elevated risk verdict"
   },
   "levelHigh": {
-    "message": "Multiple phishing indicators — be careful before logging in",
+    "message": "Multiple phishing indicators. Be careful before logging in",
     "description": "High risk verdict"
   },
   "levelCritical": {
-    "message": "Strong phishing signs — don't enter passwords here",
+    "message": "Strong phishing signs. Don't enter passwords here",
     "description": "Critical risk verdict"
   },
   "trustButton": {
@@ -104,7 +104,7 @@
     "description": "Options page heading"
   },
   "strictLabel": {
-    "message": "Strict mode — show a warning banner on risky pages",
+    "message": "Strict mode: show a warning banner on risky pages",
     "description": "Options: strict mode toggle"
   },
   "strictHint": {
@@ -112,7 +112,7 @@
     "description": "Options: strict mode explanation"
   },
   "remoteLabel": {
-    "message": "Fetch updated detection lists from a URL",
+    "message": "Keep threat lists updated automatically",
     "description": "Options: remote update toggle"
   },
   "remoteUrlLabel": {
@@ -120,7 +120,7 @@
     "description": "Options: remote update URL field label"
   },
   "remoteHint": {
-    "message": "Optional. Only a JSON file is downloaded — nothing leaves your device.",
+    "message": "Optional. Only a JSON file is downloaded. Nothing leaves your device.",
     "description": "Options: remote update privacy note"
   },
   "langLabel": {
@@ -156,7 +156,7 @@
     "description": "S13 login-form probe signal"
   },
   "reasonDeviceCode": {
-    "message": "This page tries to make you enter a device-login code — a known scam pattern",
+    "message": "This page tries to make you enter a device-login code, a known scam pattern",
     "description": "S14 device-code scam signal"
   },
   "deviceCodeNotice": {
@@ -192,7 +192,7 @@
     "description": "Right-click context menu item on images"
   },
   "reasonYoungDomain": {
-    "message": "Domain was registered only $1 days ago — fresh domains are common in phishing",
+    "message": "Domain was registered only $1 days ago. Fresh domains are common in phishing",
     "description": "S15 opt-in RDAP age check signal; $1 = age in days"
   },
   "reasonBloom": {
@@ -200,7 +200,7 @@
     "description": "S16 bloom-filter community feed signal"
   },
   "cloudLabel": {
-    "message": "Cloud age check — ask public RDAP how old the domain is",
+    "message": "Cloud age check: ask public RDAP how old the domain is",
     "description": "Options: RDAP age check toggle"
   },
   "cloudHint": {
@@ -208,7 +208,7 @@
     "description": "Options: RDAP privacy note"
   },
   "remoteDefaultHint": {
-    "message": "Default source: topurrra/fishcatcher-registry on GitHub.",
+    "message": "Updates come from the FishCatcher registry on GitHub.",
     "description": "Options: default remote update source"
   },
   "reasonMl": {
@@ -232,7 +232,7 @@
     "description": "Link finding: download attribute hides the real file type; $1 real ext, $2 claimed ext"
   },
   "linkShortener": {
-    "message": "Shortened link ($1) — the real destination is hidden",
+    "message": "Shortened link ($1). The real destination is hidden",
     "description": "Link finding: known URL shortener; $1 = shortener domain"
   },
   "linkRisky": {
@@ -240,7 +240,7 @@
     "description": "Link finding: destination scored high/critical by the engine; $1 = domain"
   },
   "downloadGuardLabel": {
-    "message": "Download guard — warn about disguised or dangerous downloads",
+    "message": "Download guard: warn about disguised or dangerous downloads",
     "description": "Options: download guard toggle"
   },
   "downloadGuardHint": {

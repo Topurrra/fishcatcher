@@ -1,4 +1,5 @@
 import { applyI18n, getMessage } from '../ui/i18n.js';
+import { initSettings } from '../ui/settings.js';
 
 const LEVEL_LABEL = {
   low: 'levelLow',
@@ -204,6 +205,13 @@ chrome.runtime.onMessage.addListener((msg) => {
 });
 
 chrome.tabs.onActivated.addListener(() => render());
+
+// Settings live in the panel only on Chromium (side panel). Firefox keeps
+// them in its separate options page, so its sidebar stays unchanged.
+if (chrome.sidePanel) {
+  $('settings-wrap').hidden = false;
+  initSettings();
+}
 
 (async () => {
   const { result, note } = await chrome.runtime.sendMessage({ type: 'take-pending' });

@@ -52,6 +52,49 @@
     <p id="qr-status" class="note" hidden></p>
   </section>
 
+  <details id="settings-wrap" hidden>
+    <summary data-i18n="optionsHeading">Settings</summary>
+    <div class="settings">
+      <label class="row">
+        <input type="checkbox" id="strict">
+        <span data-i18n="strictLabel">Strict mode: show a warning banner on risky pages</span>
+      </label>
+      <p class="hint" data-i18n="strictHint">Off by default. The banner never blocks the page and can always be dismissed.</p>
+
+      <label class="row">
+        <input type="checkbox" id="remote">
+        <span data-i18n="remoteLabel">Keep threat lists updated automatically</span>
+      </label>
+      <p class="hint" data-i18n="remoteHint">Optional. Only a JSON file is downloaded. Nothing leaves your device.</p>
+      <p class="hint" data-i18n="remoteDefaultHint">Updates come from the FishCatcher registry on GitHub.</p>
+
+      <label class="row">
+        <input type="checkbox" id="cloud">
+        <span data-i18n="cloudLabel">Cloud age check: ask public RDAP how old the domain is</span>
+      </label>
+      <p class="hint" data-i18n="cloudHint">Sends only the registrable domain to rdap.org. Off by default.</p>
+
+      <label class="row">
+        <input type="checkbox" id="downloads">
+        <span data-i18n="downloadGuardLabel">Download guard: warn about disguised or dangerous downloads</span>
+      </label>
+      <p class="hint" data-i18n="downloadGuardHint">Checks each download's real type against its name. Needs download and notification access, requested when you turn it on. Off by default.</p>
+
+      <label class="row">
+        <span data-i18n="langLabel">Language</span>
+        <select id="lang">
+          <option value="auto" data-i18n="langAuto">Automatic (browser language)</option>
+          <option value="en">English</option>
+          <option value="ka">ქართული</option>
+        </select>
+      </label>
+
+      <h2 data-i18n="trustTitle">Trusted sites</h2>
+      <p id="trust-empty" class="hint" data-i18n="trustEmpty" hidden>No trusted sites yet.</p>
+      <ul id="trust-list"></ul>
+    </div>
+  </details>
+
   <script type="module" src="panel.js"></script>
 </body>
 </html>
