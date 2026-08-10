@@ -292,8 +292,8 @@
     "description": "Shown after a scan that found no links at all"
   },
   "linksUnavailable": {
-    "message": "Could not read this page's links. Reload the page and try again.",
-    "description": "Shown when the content script could not be reached for a link scan"
+    "message": "Could not read this page's links, but the address above was still checked.",
+    "description": "Shown when the page contents cannot be read (error page, browser page, or not loaded)"
   },
   "checkingLabel": {
     "message": "Checking…",

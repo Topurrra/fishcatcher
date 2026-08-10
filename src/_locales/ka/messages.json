@@ -292,8 +292,8 @@
     "description": "Shown after a scan that found no links at all"
   },
   "linksUnavailable": {
-    "message": "ამ გვერდის ბმულების წაკითხვა ვერ მოხერხდა. გადატვირთეთ გვერდი და სცადეთ თავიდან.",
-    "description": "Shown when the content script could not be reached for a link scan"
+    "message": "ამ გვერდის ბმულების წაკითხვა ვერ მოხერხდა, თუმცა ზემოთ მისამართი მაინც შემოწმდა.",
+    "description": "Shown when the page contents cannot be read (error page, browser page, or not loaded)"
   },
   "checkingLabel": {
     "message": "მოწმდება…",

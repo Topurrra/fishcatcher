@@ -38,6 +38,15 @@
   const linkCandidates = collectLinks(false);
   if (linkCandidates.length) send({ type: 'link-scan', links: linkCandidates });
 
+  // Ask whether a strict-mode banner is due now that our listener is ready.
+  try {
+    Promise.resolve(chrome.runtime.sendMessage({ type: 'banner-check' }))
+      .then((res) => { if (res?.payload) showBanner(res.payload); })
+      .catch(() => {});
+  } catch {
+    // extension context not available
+  }
+
   chrome.runtime.onMessage.addListener((m, _sender, respond) => {
     if (m.type === 'collect-links') {
       respond({ links: collectLinks(true) });

@@ -150,20 +150,28 @@ async function scoreTab(tabId, url) {
 }
 
 // Strict mode (opt-in): informational, dismissible top banner on high/critical.
-async function maybeBanner(tabId, url, result) {
-  const strict = (await chrome.storage.local.get('opt:strict'))['opt:strict'];
-  if (!strict || (result.level !== 'high' && result.level !== 'critical')) return;
-  if (dismissedBanners.has(`${tabId} ${url}`)) return;
-  const payload = {
+function bannerAllowed(tabId, url, result, strict) {
+  return !!strict && !!result &&
+    (result.level === 'high' || result.level === 'critical') &&
+    !dismissedBanners.has(`${tabId} ${url}`);
+}
+
+async function bannerPayload(result) {
+  return {
     level: result.level,
     domain: result.registrable,
     title: await getMessage(result.level === 'critical' ? 'levelCritical' : 'levelHigh'),
     reasons: await Promise.all(result.reasons.map((r) => getMessage(r.key, r.params.map(String)))),
     dismiss: await getMessage('bannerDismiss')
   };
+}
+
+async function maybeBanner(tabId, url, result) {
+  const strict = (await chrome.storage.local.get('opt:strict'))['opt:strict'];
+  if (!bannerAllowed(tabId, url, result, strict)) return;
   // Rendered by the content script (probe.js) so it works without host
   // permissions on automatic page loads, not just after a user gesture.
-  chrome.tabs.sendMessage(tabId, { type: 'show-banner', payload }).catch(() => {});
+  chrome.tabs.sendMessage(tabId, { type: 'show-banner', payload: await bannerPayload(result) }).catch(() => {});
 }
 
 // S14 escalation: page text matches the device-code scam pattern.
@@ -384,6 +392,15 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       case 'get-links':
         sendResponse({ findings: linkFindings.get(msg.tabId) ?? [] });
         break;
+      case 'banner-check': {
+        // The content script asks on load, avoiding the race where a pushed
+        // banner arrives before the page's listener is ready.
+        const bTab = sender.tab?.id;
+        const bResult = bTab != null ? results.get(bTab) : null;
+        const bStrict = (await chrome.storage.local.get('opt:strict'))['opt:strict'];
+        sendResponse({ payload: bannerAllowed(bTab, sender.tab?.url, bResult, bStrict) ? await bannerPayload(bResult) : null });
+        break;
+      }
       case 'scan-links': {
         let links = null;
         try {
