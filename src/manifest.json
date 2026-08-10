@@ -21,7 +21,7 @@
   "side_panel": { "default_path": "panel/panel.html" },
   "options_ui": { "page": "options/options.html", "open_in_tab": true },
   "background": { "service_worker": "background.js" },
-  "permissions": ["storage", "tabs", "scripting", "activeTab", "sidePanel", "contextMenus", "alarms"],
+  "permissions": ["storage", "tabs", "activeTab", "sidePanel", "contextMenus", "alarms"],
   "optional_permissions": [
     "downloads",
     "notifications",

@@ -161,42 +161,9 @@ async function maybeBanner(tabId, url, result) {
     reasons: await Promise.all(result.reasons.map((r) => getMessage(r.key, r.params.map(String)))),
     dismiss: await getMessage('bannerDismiss')
   };
-  chrome.scripting.executeScript({ target: { tabId }, func: showBanner, args: [payload] }).catch(() => {});
-}
-
-function showBanner(payload) {
-  if (document.getElementById('fishcatcher-banner')) return;
-  const colors = { high: '#fb923c', critical: '#f87171' };
-  const root = document.createElement('div');
-  root.id = 'fishcatcher-banner';
-  root.style.cssText = `position:fixed;top:0;left:0;right:0;z-index:2147483647;background:#1c1c1c;color:#f2f2f2;border-bottom:2px solid ${colors[payload.level]};font:13px/1.5 system-ui,sans-serif;padding:10px 14px;display:flex;gap:12px;align-items:flex-start;`;
-  const main = document.createElement('div');
-  main.style.cssText = 'flex:1;min-width:0';
-  const title = document.createElement('strong');
-  title.textContent = `FishCatcher — ${payload.title}`;
-  main.appendChild(title);
-  const domain = document.createElement('div');
-  domain.style.cssText = 'color:#5eead4;font-family:monospace;font-size:12px';
-  domain.textContent = payload.domain;
-  main.appendChild(domain);
-  const ul = document.createElement('ul');
-  ul.style.cssText = 'margin:6px 0 0;padding:0 0 0 18px;list-style:disc';
-  for (const text of payload.reasons) {
-    const li = document.createElement('li');
-    li.textContent = text;
-    ul.appendChild(li);
-  }
-  main.appendChild(ul);
-  const btn = document.createElement('button');
-  btn.textContent = payload.dismiss;
-  btn.style.cssText = 'background:#2a2a2a;color:#f2f2f2;border:1px solid #444;border-radius:6px;padding:4px 10px;cursor:pointer;font:inherit';
-  btn.addEventListener('click', () => {
-    root.remove();
-    chrome.runtime.sendMessage({ type: 'banner-dismissed', url: location.href });
-  });
-  root.appendChild(main);
-  root.appendChild(btn);
-  document.documentElement.appendChild(root);
+  // Rendered by the content script (probe.js) so it works without host
+  // permissions on automatic page loads, not just after a user gesture.
+  chrome.tabs.sendMessage(tabId, { type: 'show-banner', payload }).catch(() => {});
 }
 
 // S14 escalation: page text matches the device-code scam pattern.
@@ -418,13 +385,19 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         sendResponse({ findings: linkFindings.get(msg.tabId) ?? [] });
         break;
       case 'scan-links': {
-        let links = [];
+        let links = null;
         try {
-          links = (await chrome.tabs.sendMessage(msg.tabId, { type: 'collect-links' }))?.links ?? [];
+          links = (await chrome.tabs.sendMessage(msg.tabId, { type: 'collect-links' }))?.links ?? null;
         } catch {
-          // no content script on this page (chrome://, PDF viewer, etc.)
+          // content script not reachable (page not reloaded since an update, or a
+          // restricted page). Keep whatever we already have rather than wiping it.
+          links = null;
         }
-        sendResponse({ findings: await storeLinks(msg.tabId, links, true), scanned: links.length });
+        if (links == null) {
+          sendResponse({ findings: linkFindings.get(msg.tabId) ?? [], scanned: null });
+        } else {
+          sendResponse({ findings: await storeLinks(msg.tabId, links, true), scanned: links.length });
+        }
         break;
       }
     }

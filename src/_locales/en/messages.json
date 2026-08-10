@@ -287,6 +287,14 @@
     "message": "Checked $1 links on this page.",
     "description": "Shown after a link scan; $1 = number of links checked"
   },
+  "linksNoneToCheck": {
+    "message": "No links to check on this page.",
+    "description": "Shown after a scan that found no links at all"
+  },
+  "linksUnavailable": {
+    "message": "Could not read this page's links. Reload the page and try again.",
+    "description": "Shown when the content script could not be reached for a link scan"
+  },
   "checkingLabel": {
     "message": "Checking…",
     "description": "Button label while re-checking the page and its links"

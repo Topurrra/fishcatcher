@@ -211,7 +211,9 @@ check('bundle: i18n + banner bundled for both targets', () => {
   for (const target of ['chrome', 'firefox']) {
     const src = readFileSync(join(root, `dist/${target}/background.js`), 'utf8');
     assert.ok(src.includes('function getMessage'), `${target}: i18n bundled`);
-    assert.ok(src.includes('function showBanner'), `${target}: banner bundled`);
+    // The strict-mode banner is rendered in the content script (no host perms needed).
+    const probe = readFileSync(join(root, `dist/${target}/probe.js`), 'utf8');
+    assert.ok(probe.includes('function showBanner'), `${target}: banner in content script`);
   }
 });
 

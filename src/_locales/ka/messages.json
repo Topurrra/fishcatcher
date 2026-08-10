@@ -287,6 +287,14 @@
     "message": "შემოწმდა $1 ბმული ამ გვერდზე.",
     "description": "Shown after a link scan; $1 = number of links checked"
   },
+  "linksNoneToCheck": {
+    "message": "ამ გვერდზე შესამოწმებელი ბმული არ არის.",
+    "description": "Shown after a scan that found no links at all"
+  },
+  "linksUnavailable": {
+    "message": "ამ გვერდის ბმულების წაკითხვა ვერ მოხერხდა. გადატვირთეთ გვერდი და სცადეთ თავიდან.",
+    "description": "Shown when the content script could not be reached for a link scan"
+  },
   "checkingLabel": {
     "message": "მოწმდება…",
     "description": "Button label while re-checking the page and its links"

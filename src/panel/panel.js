@@ -224,8 +224,17 @@ $('recheck-btn').addEventListener('click', async (e) => {
   btn.disabled = false;
   const summary = $('links-summary');
   summary.hidden = false;
-  summary.textContent = await getMessage('linksChecked', [String(scanned ?? 0)]);
-  await renderLinks(findings || [], true);
+  if (scanned == null) {
+    // Could not reach the page's content script; keep prior findings, no false "all clear".
+    summary.textContent = await getMessage('linksUnavailable');
+    await renderLinks(findings || [], false);
+  } else if (scanned === 0) {
+    summary.textContent = await getMessage('linksNoneToCheck');
+    await renderLinks([], false);
+  } else {
+    summary.textContent = await getMessage('linksChecked', [String(scanned)]);
+    await renderLinks(findings || [], true);
+  }
   checking = false;
 });
 

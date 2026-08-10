@@ -43,7 +43,46 @@
       respond({ links: collectLinks(true) });
       return true;
     }
+    if (m.type === 'show-banner') {
+      showBanner(m.payload);
+    }
   });
+
+  // Strict-mode warning banner (payload strings pre-resolved by the worker).
+  function showBanner(payload) {
+    if (document.getElementById('fishcatcher-banner')) return;
+    const colors = { high: '#fb923c', critical: '#f87171' };
+    const root = document.createElement('div');
+    root.id = 'fishcatcher-banner';
+    root.style.cssText = `position:fixed;top:0;left:0;right:0;z-index:2147483647;background:#1c1c1c;color:#f2f2f2;border-bottom:2px solid ${colors[payload.level]};font:13px/1.5 system-ui,sans-serif;padding:10px 14px;display:flex;gap:12px;align-items:flex-start;`;
+    const main = document.createElement('div');
+    main.style.cssText = 'flex:1;min-width:0';
+    const title = document.createElement('strong');
+    title.textContent = `FishCatcher: ${payload.title}`;
+    main.appendChild(title);
+    const domain = document.createElement('div');
+    domain.style.cssText = 'color:#5eead4;font-family:monospace;font-size:12px';
+    domain.textContent = payload.domain;
+    main.appendChild(domain);
+    const ul = document.createElement('ul');
+    ul.style.cssText = 'margin:6px 0 0;padding:0 0 0 18px;list-style:disc';
+    for (const text of payload.reasons) {
+      const li = document.createElement('li');
+      li.textContent = text;
+      ul.appendChild(li);
+    }
+    main.appendChild(ul);
+    const btn = document.createElement('button');
+    btn.textContent = payload.dismiss;
+    btn.style.cssText = 'background:#2a2a2a;color:#f2f2f2;border:1px solid #444;border-radius:6px;padding:4px 10px;cursor:pointer;font:inherit';
+    btn.addEventListener('click', () => {
+      root.remove();
+      send({ type: 'banner-dismissed', url: location.href });
+    });
+    root.appendChild(main);
+    root.appendChild(btn);
+    document.documentElement.appendChild(root);
+  }
 
   // S14 probe (strict mode only): device-code scam text on the page.
   chrome.storage.local.get('opt:strict', (stored) => {
