@@ -54,7 +54,7 @@
 }
 .tree .sub a:hover { color: var(--text); background: var(--surface-2); }
 .tree .sub a.active {
-  color: var(--accent); font-weight: 600; border-left-color: var(--accent);
+  color: var(--accent); font-weight: 600;
   background: var(--accent-soft);
 }
 .tree .filtered-out { display: none; }
@@ -97,10 +97,10 @@
 }
 
 .callout {
-  border: 1px solid var(--border); border-left: 3px solid var(--accent);
-  background: var(--accent-soft); border-radius: 10px; padding: 14px 16px; margin: 0 0 1.2em;
+  border: 1px solid var(--border);
+  background: var(--bg-subtle); border-radius: 10px; padding: 14px 16px; margin: 0 0 1.2em;
 }
-.callout.warn { border-left-color: var(--orange); background: color-mix(in srgb, var(--orange) 10%, transparent); }
+.callout.warn { background: color-mix(in srgb, var(--orange) 10%, transparent); }
 .callout p { margin: 0; }
 .callout p + p { margin-top: 8px; }
 
@@ -109,6 +109,14 @@
 .step-cards .c:hover { border-color: var(--border-strong); }
 .step-cards .c b { display: block; margin-bottom: 6px; }
 .step-cards .c span { color: var(--muted); font-size: 0.92rem; }
+
+/* tables */
+.table-wrap { overflow-x: auto; margin: 0 0 1.4em; }
+.docs-main table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.docs-main th, .docs-main td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+.docs-main thead th { font-weight: 600; color: var(--text); background: var(--bg-subtle); border-bottom: 1px solid var(--border-strong); }
+.docs-main tbody tr:last-child td { border-bottom: none; }
+.docs-main td:last-child, .docs-main th:last-child { font-family: var(--mono); }
 
 .prevnext { display: flex; justify-content: space-between; gap: 16px; margin-top: 52px; padding-top: 24px; border-top: 1px solid var(--border); }
 .prevnext a { display: block; border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; min-width: 0; transition: border-color .2s, background .2s; }

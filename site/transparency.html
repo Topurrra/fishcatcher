@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Privacy policy: Fish Catcher</title>
-<meta name="description" content="Fish Catcher does its checks on your device. No account, no tracking, nothing from the pages you visit leaves your browser. Optional online features are off by default.">
+<title>Transparency: Fish Catcher</title>
+<meta name="description" content="How Fish Catcher measures its false-positive rate, what it detects, and how to reproduce the numbers yourself. A warning tool is only worth trusting if you can check it.">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/site.css">
 <link rel="stylesheet" href="assets/docs.css">
@@ -34,88 +34,85 @@
       <input id="docFilter" type="text" placeholder="Filter" aria-label="Filter navigation" autocomplete="off">
       <kbd>/</kbd>
     </div>
-    <nav class="tree" aria-label="Privacy navigation">
+    <nav class="tree" aria-label="Transparency navigation">
       <a class="area" href="index.html">Home</a>
       <a class="area" href="docs.html">Documentation</a>
       <a class="area" href="learn.html">Learn</a>
-      <a class="area current" href="privacy.html">Privacy</a>
+      <a class="area" href="privacy.html">Privacy</a>
+      <a class="area current" href="transparency.html">Transparency</a>
       <div class="sub">
-        <a href="#summary" class="active">Summary</a>
-        <a href="#local">What stays local</a>
-        <a href="#optional">Optional online features</a>
-        <a href="#stored">What is stored</a>
-        <a href="#permissions">Permissions</a>
-        <a href="#no">What we never do</a>
-        <a href="#changes">Changes and contact</a>
+        <a href="#promises" class="active">Our promises</a>
+        <a href="#detect">What we detect</a>
+        <a href="#fp">Measuring false positives</a>
+        <a href="#reproduce">Reproduce it</a>
+        <a href="#result">Latest result</a>
+        <a href="#report">Report a mistake</a>
       </div>
-      <a class="area" href="transparency.html">Transparency</a>
     </nav>
   </aside>
 
   <main class="docs-main">
-    <div class="breadcrumb"><a href="index.html">Home</a> / Privacy</div>
-    <h1>Privacy policy</h1>
-    <p class="sub">Fish Catcher works for you, not on you.</p>
+    <div class="breadcrumb"><a href="index.html">Home</a> / Transparency</div>
+    <h1>Transparency</h1>
+    <p class="sub">A warning tool is only worth trusting if you can check how often it cries wolf. So we measure that, and show the numbers.</p>
     <div class="meta-row">
-      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Applies to the Fish Catcher extension</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 5-6"/></svg> Numbers you can reproduce</span>
       <span class="sep"></span>
       <a href="https://github.com/Topurrra/fishcatcher"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11 11 0 0 1 6 0C17 4.6 18 4.9 18 4.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg> View source</a>
     </div>
-    <div class="rule"><span class="line"></span><span class="pill-mono">On your device</span><span class="line"></span></div>
+    <div class="rule"><span class="line"></span><span class="pill-mono">Show the numbers</span><span class="line"></span></div>
 
-    <h2 id="summary">Summary</h2>
-    <p class="lead-p">Fish Catcher does its checks on your device. There is no account, no tracking, and nothing from the pages you visit is sent anywhere by default. A few optional features can look something up online, and each is off until you turn it on.</p>
-
-    <h2 id="local">What stays on your device</h2>
-    <p>By default, Fish Catcher runs entirely locally, using detection lists that ship inside the extension. It works with no internet connection.</p>
+    <h2 id="promises">Our promises</h2>
     <ul>
-      <li>The addresses of the pages you visit are analyzed on your device and never uploaded.</li>
-      <li>QR codes you check are decoded on your device.</li>
-      <li>Link and download checks happen in your browser.</li>
+      <li>It warns, it never blocks. You always decide.</li>
+      <li>It runs on your device. The default checks need no internet.</li>
+      <li>There is no server. Nothing about the page you are on reaches us, because there is nowhere for it to go.</li>
+      <li>The online checks (threat-list updates, domain age, Google Safe Browsing) stay off until you turn them on, and each sends only the one domain it needs.</li>
     </ul>
 
-    <h2 id="optional">Optional online features</h2>
-    <p>These are off by default. When enabled, each does exactly one thing and nothing more.</p>
-    <h3>Threat-list updates</h3>
-    <p>Downloads a single Bloom-filter file once a day from the Fish Catcher registry, which merges three keyless public feeds: Phishing.Database, URLhaus by abuse.ch, and OpenPhish. It only downloads, it never uploads, and every check against the list happens on your device. As with any web request, the host can see your IP address and that a file was requested.</p>
-    <h3>Domain-age check (RDAP)</h3>
-    <p>Asks a public directory service how old a domain is. It sends only the domain name of the site being checked, and nothing else.</p>
-    <h3>Google Safe Browsing</h3>
-    <p>Off by default. When you turn it on, Fish Catcher sends the address you visit to Google Safe Browsing, and it requires your own free Google API key. Leave it off to keep every check on your device.</p>
-    <h3>Download guard</h3>
-    <p>Local. When enabled, it needs download and notification access so it can warn you about a disguised download. Nothing is uploaded.</p>
-    <div class="callout"><p>You can leave all of these off and Fish Catcher still protects you with its local checks.</p></div>
-
-    <h2 id="stored">What is stored on your device</h2>
-    <p>Fish Catcher stores a small amount of data in your browser's local storage, on your device only:</p>
+    <h2 id="detect">What we detect</h2>
+    <p class="lead-p">Fish Catcher combines eight families of signal, all in plain terms.</p>
     <ul>
-      <li>Your settings (which features are on, your language choice).</li>
-      <li>Sites you mark as trusted.</li>
-      <li>A cache tag so updates only download when the list has changed.</li>
-    </ul>
-    <p>This never leaves your device and is removed when you uninstall the extension.</p>
-
-    <h2 id="permissions">Permissions</h2>
-    <p>Fish Catcher asks for the minimum it needs. Network permissions for the optional features are requested only at the moment you turn a feature on.</p>
-    <ul>
-      <li><b>Current tab and pages</b>, to read the address and page content of the tab you are on so it can check it.</li>
-      <li><b>Local storage</b>, for your settings and trusted sites.</li>
-      <li><b>Downloads and notifications</b>, requested only if you enable the download guard.</li>
+      <li><b>Brand impersonation.</b> Misspelled or look-alike versions of well-known sites.</li>
+      <li><b>URL tricks.</b> Raw IP addresses, the @ trick, high-abuse endings, long subdomain chains, unencrypted logins, and digit-heavy names.</li>
+      <li><b>Known-bad lists.</b> A bundled blocklist plus a daily community feed, matched on your device.</li>
+      <li><b>Page checks.</b> A login form on a site it does not know, and device-code sign-in scams.</li>
+      <li><b>On-device model.</b> Spots the random, computer-generated addresses fresh phishing uses.</li>
+      <li><b>AiTM.</b> A sign-in or code prompt on a site whose address does not match the brand it looks like, with guardrails so real login providers do not trip it.</li>
+      <li><b>Scam packs.</b> Pages asking for a wallet recovery phrase, and fake tech-support pages.</li>
+      <li><b>Google Safe Browsing.</b> An extra layer, if you add your own free key.</li>
     </ul>
 
-    <h2 id="no">What we never do</h2>
-    <ul>
-      <li>No analytics, no telemetry, no advertising, no third-party trackers.</li>
-      <li>No selling or sharing of any data.</li>
-      <li>No account and no profile.</li>
-    </ul>
-    <p>Because the extension is open source, you can verify all of this by reading the code.</p>
+    <h2 id="fp">Measuring false positives</h2>
+    <p>A false positive is a warning on a site that is fine. The ones that matter are the loud ones, high and critical, so those are what we count.</p>
+    <p>We run the address-only part of the engine over the Majestic Million, a public list of the most-linked sites, and count how many good ones it warns about. The rate is the high and critical warnings divided by the total scanned.</p>
 
-    <h2 id="changes">Changes and contact</h2>
-    <p>If this policy changes, the updated version will be posted here and in the source repository. Questions or concerns can be raised on <a href="https://github.com/Topurrra/fishcatcher">the GitHub project</a>.</p>
+    <h2 id="reproduce">Reproduce it</h2>
+    <p>The audit prints every site it flagged, so you can check the number yourself:</p>
+    <pre data-lang="bash"><code>node scripts/fp-audit.mjs</code></pre>
+    <p>Add <code>--selftest</code> to check the harness on a small built-in set, <code>--limit N</code> to scan fewer domains, or <code>--cache</code> to reuse an already-downloaded corpus.</p>
+
+    <h2 id="result">Latest result</h2>
+    <p>Latest run, 2026-08-11, over 100,000 legitimate sites:</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th scope="col">Measure</th><th scope="col">Value</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Warnings at high</td><td>5</td></tr>
+          <tr><td>Warnings at critical</td><td>0</td></tr>
+          <tr><td>Rate</td><td>0.005% (5 in 100,000)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The five were all very short, digit-heavy names on high-abuse endings, like <code>hy315.cc</code>.</p>
+
+    <h2 id="report">Report a mistake</h2>
+    <p>If Fish Catcher warns about a good site, or misses a bad one, <a href="https://github.com/Topurrra/fishcatcher-registry/issues">open an issue</a>. Real examples make the lists and the model better for everyone.</p>
 
     <div class="prevnext">
-      <a href="docs.html"><small>Docs</small>Documentation</a>
+      <a href="privacy.html"><small>Privacy</small>Privacy policy</a>
       <a class="nx" href="index.html"><small>Home</small>Back to the overview</a>
     </div>
   </main>
@@ -135,6 +132,7 @@
         <li><a href="index.html#how">How it works</a></li>
         <li><a href="index.html#install">Install</a></li>
         <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="transparency.html">Transparency</a></li>
       </ul>
     </div>
     <div>

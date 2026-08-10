@@ -6,3 +6,6 @@ Thumbs.db
 scripts/data/
 docs/
 .gstack/
+
+# voli project memory (local knowledge, not for the repo)
+.voli/

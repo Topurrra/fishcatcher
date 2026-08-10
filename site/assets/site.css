@@ -174,11 +174,20 @@ code, kbd { font-family: var(--mono); font-size: 0.86em; }
 .nav-links a.btn-primary:hover { color: var(--invert-text); background: var(--invert-bg); border-color: var(--invert-border); }
 .theme-toggle {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 34px; height: 34px; border: 1px solid var(--border); border-radius: var(--r-btn);
+  width: 40px; height: 34px; border: 1px solid var(--border); border-radius: var(--r-btn);
   background: var(--surface); color: var(--muted); cursor: pointer; transition: color .15s, border-color .15s;
 }
 .theme-toggle:hover { color: var(--text); border-color: var(--border-strong); }
 .theme-toggle svg { width: 16px; height: 16px; }
+/* header icon buttons (GitHub, Install), same form as the theme toggle */
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 34px; border: 1px solid var(--border); border-radius: var(--r-btn);
+  background: var(--surface); color: var(--muted); cursor: pointer;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.icon-btn:hover { color: var(--text); border-color: var(--border-strong); background: var(--surface-2); text-decoration: none; }
+.icon-btn svg { width: 17px; height: 17px; }
 .theme-toggle .moon { display: none; }
 :root[data-theme="dark"] .theme-toggle .sun { display: none; }
 :root[data-theme="dark"] .theme-toggle .moon { display: block; }
@@ -241,7 +250,8 @@ code, kbd { font-family: var(--mono); font-size: 0.86em; }
   transition: border-color .2s, box-shadow .2s, transform .2s var(--ease);
 }
 .tile:hover { border-color: var(--border-strong); box-shadow: var(--shadow-md); transform: translateY(-2px); }
-.tile.wide { grid-column: span 2; display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: center; }
+.tile.wide { grid-column: span 2;  grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: center; }
+.tile.wide.solo { grid-template-columns: 1fr; }
 .tile .ic { color: var(--accent); display: inline-flex; margin-bottom: 16px; }
 .tile .ic svg { width: 22px; height: 22px; stroke-width: 1.75; }
 .tile h3 { margin-bottom: 8px; }
@@ -293,6 +303,9 @@ code, kbd { font-family: var(--mono); font-size: 0.86em; }
   padding: clamp(28px, 4vw, 44px); display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center;
 }
 .callout .lead { margin-top: 12px; }
+.callout .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn .bicon { display: inline-flex; align-items: center; }
+.btn .bicon svg { width: 17px; height: 17px; }
 
 /* ── final CTA (inverted block) ──────────────────────── */
 .cta-block {
@@ -313,6 +326,7 @@ code, kbd { font-family: var(--mono); font-size: 0.86em; }
 .site-foot .wrap { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; }
 .site-foot .about { max-width: 30ch; }
 .site-foot .about p { margin-top: 12px; color: var(--muted); font-size: 0.9rem; }
+.site-foot .foot-note { margin-top: 14px; color: var(--faint); font-size: 0.82rem; }
 .site-foot h4 { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint); margin-bottom: 14px; font-weight: 600; font-family: var(--mono); }
 .site-foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .site-foot li a { color: var(--muted); font-size: 0.92rem; }
