@@ -1,0 +1,4 @@
+# Only the site and its nginx config go into the image.
+*
+!site
+!deploy

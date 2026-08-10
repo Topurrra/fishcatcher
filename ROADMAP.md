@@ -1,7 +1,7 @@
 # FishCatcher roadmap
 
 Status: **v1.0.0, feature-complete, preparing for store submission.**
-78/78 checks green, both builds passing.
+83/83 checks green, both builds passing.
 
 FishCatcher's identity guides every item here: warn, never block; explain in plain
 language; run on-device by default; teach while it protects; free and open forever.
@@ -22,6 +22,8 @@ language; run on-device by default; teach while it protects; free and open forev
 - AiTM (S/M8): an identity flow (login, MFA, passkey enrollment, device code) on an origin
   that does not match the claimed brand, with guardrails so enterprise proxies and real
   identity providers never false-alarm.
+- Scam packs: a crypto wallet seed-phrase or private-key request, and fake tech-support
+  browser-locker pages (scare text plus a phone number or a full-screen lock).
 - Known-legitimate allowlist (top 100k domains) keeps the high/critical false-positive
   rate near 0.005%.
 - Optional, off by default: RDAP domain-age check (S15), Google Safe Browsing with the
@@ -36,14 +38,23 @@ language; run on-device by default; teach while it protects; free and open forev
   and an on-demand deep scan of every link.
 - QR-code check (image file or camera), fully local.
 - Download guard (opt-in): warns about disguised or dangerous downloads, one-click cancel.
+- Family mode: a bigger, simpler view, a clear alert on dangerous sites, and an optional
+  one-tap email to a helper (no server; the user still presses send).
+- Report this site: opens a pre-filled community report; a maintainer confirms it before
+  it reaches the feed.
 - Strict-mode in-page banner, trusted-sites list, and live progress feedback.
 
 **Systems:**
 
 - Daily keyless threat registry that merges Phishing.Database, URLhaus, and OpenPhish into
-  one Bloom filter, ETag-cached and fetched only on change.
+  one Bloom filter, ETag-cached and fetched only on change. Hardened with fetch timeouts
+  and retries, a drop guard against bad rebuilds, and write-back validation.
+- Human-gated community-report loop: reports become issues, a maintainer labels the real
+  ones, and those domains flow into the next feed rebuild.
+- Reproducible false-positive audit ([scripts/fp-audit.mjs](scripts/fp-audit.mjs)) and a
+  public [TRANSPARENCY.md](TRANSPARENCY.md) with the measured rate.
 - Zero-dependency vanilla-JS build, Manifest V3, minimal permissions (network permissions
-  requested only when an opt-in feature is turned on), a 78-check test suite.
+  requested only when an opt-in feature is turned on), an 83-check test suite.
 - The [fishcatcher.dev](https://fishcatcher.dev) site: landing, docs, education, privacy.
 
 ## Before launch
@@ -58,9 +69,8 @@ language; run on-device by default; teach while it protects; free and open forev
   and others follow (the i18n scaffolding is ready).
 - Right-click "Check this link" on any link.
 - Warning history and a "what you learned" view (education and trust).
-- Community "report this site", feeding the registry.
 - Signed update bundles for feed integrity.
-- More scam packs: crypto and wallet scams, fake tech-support / browser-locker pages.
+- More scam packs: romance and investment scams, fake delivery and invoice pages.
 
 ## Exploring (future)
 
@@ -72,7 +82,6 @@ language; run on-device by default; teach while it protects; free and open forev
 - Visual / logo similarity detection (needs a model-size budget).
 - AiTM Signal 3: cross-origin auth-flow continuity (needs host permissions).
 - Email and webmail link scanning (Gmail, Outlook on the web).
-- Senior / family mode: simplified larger UI, optional guardian alerts.
 - Phishing school: short interactive lessons and practice.
 - Mobile (Firefox for Android first).
 - Enterprise-lite: policy-pushed allowlists for managed deployments.
