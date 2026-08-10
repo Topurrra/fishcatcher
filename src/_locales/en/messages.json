@@ -363,6 +363,10 @@
     "message": "Google API key",
     "description": "Options: GSB API key field label"
   },
+  "gsbKeyGuide": {
+    "message": "How to get a free key",
+    "description": "Options: link to Google's Safe Browsing key guide"
+  },
   "gsbActive": {
     "message": "Checking sites against Google Safe Browsing.",
     "description": "Options status when GSB is on"
