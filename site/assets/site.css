@@ -81,9 +81,9 @@ code { font-family: var(--mono); font-size: 0.9em; }
   border-bottom: 1px solid var(--border);
 }
 .site-nav .wrap { display: flex; align-items: center; gap: 20px; height: 62px; }
-.brand { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 1.05rem; color: var(--text); }
+.brand { display: inline-flex; align-items: center; font-weight: 700; font-size: 1.5rem; letter-spacing: -0.01em; color: var(--text); }
 .brand:hover { text-decoration: none; }
-.brand img { width: 26px; height: 26px; }
+.site-foot .brand { font-size: 1.25rem; }
 .nav-links { display: flex; align-items: center; gap: 22px; margin-left: auto; }
 .nav-links a { color: var(--muted); font-size: 0.95rem; font-weight: 500; }
 .nav-links a:hover { color: var(--text); text-decoration: none; }
