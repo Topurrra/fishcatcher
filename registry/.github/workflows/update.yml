@@ -1,25 +1,56 @@
 name: Update phishing feed
 
-# Rebuilds fishcatcher-lists.json daily from the community feed and commits it
-# only when it changed. No secrets needed: the built-in GITHUB_TOKEN can push
-# because permissions.contents is set to write.
+# Rebuilds fishcatcher-lists.json daily from the community feeds plus any
+# maintainer-confirmed community reports, and commits it only when it changed.
+# No secrets needed: the built-in GITHUB_TOKEN can push (contents: write) and
+# read issues (issues: read) for the confirmed-phish report loop.
 
 on:
   schedule:
     - cron: '17 5 * * *'   # every day at 05:17 UTC. For weekly, use '17 5 * * 1' (Mondays).
   workflow_dispatch:        # lets you run it by hand from the Actions tab
 
+# Build one list at a time. A scheduled run and a hand-run cannot race the push;
+# a newer run waits for the in-flight one instead of cancelling it mid-commit.
+concurrency:
+  group: update-phishing-feed
+  cancel-in-progress: false
+
+# Least privilege: only what this job needs.
 permissions:
-  contents: write
+  contents: write   # push the refreshed list
+  issues: read      # read confirmed-phish reports for the community loop
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15   # a hung feed can't keep the runner (and the concurrency lock) forever
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Collect maintainer-confirmed community reports
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Domains from issues a maintainer reviewed and labeled 'confirmed-phish'
+          # (label applied by a human = users cannot poison the feed). Per issue we take
+          # ONLY the first 'Website address' field value (the real form field; a reporter
+          # cannot smuggle extra domains by injecting their own '### Website address'
+          # heading into a free-text field), strip any scheme/path, and keep it only if it
+          # looks like a hostname. No confirmed issues => empty file => build unchanged.
+          # 'gh' is preinstalled on ubuntu-latest.
+          : > community-reports.txt
+          for n in $(gh issue list --label confirmed-phish --state all --limit 500 \
+                       --json number --jq '.[].number' 2>/dev/null || true); do
+            gh issue view "$n" --json body --jq '.body' 2>/dev/null \
+              | awk '/^### / { grab = ($0 ~ /Website address/); next } grab && NF { print; exit }'
+          done \
+            | tr 'A-Z' 'a-z' \
+            | sed -E 's#^[[:space:]]*https?://##; s#/.*$##; s/[[:space:]]//g' \
+            | grep -E '^[a-z0-9.-]+\.[a-z]{2,}$' > community-reports.txt || true
+          echo "confirmed-phish domains: $(grep -c . community-reports.txt || true)"
       - run: node build-feed.mjs
       - name: Commit if changed
         run: |

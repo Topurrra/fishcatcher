@@ -1,0 +1,37 @@
+name: Report a suspicious site
+description: Tell us about a website that looked like a scam or a fake login page.
+title: "[Report] "
+labels: ["community-report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping keep people safe. You do not need to be technical.
+        Just tell us what you saw.
+
+        A real person reads every report before anything changes, so nothing you
+        type here goes live on its own. Please do not include any of your own
+        passwords, one-time codes, or card numbers.
+  - type: input
+    id: domain
+    attributes:
+      label: Website address
+      description: The web address that looked wrong. Pasting the whole link is fine.
+      placeholder: example-scam-login.com
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: What made it look like a scam?
+      description: For example, it asked for a password or a code, or the address looked almost right but not quite.
+      placeholder: It looked like my bank's login page, but the address was spelled a little differently.
+    validations:
+      required: true
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot (optional)
+      description: If you can, drag an image into this box. Please cover or leave out anything private.
+    validations:
+      required: false
