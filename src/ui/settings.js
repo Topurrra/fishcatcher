@@ -25,8 +25,11 @@ async function setRemoteStatus(state, info = {}) {
     text.textContent = await getMessage('remoteUpdating');
   } else if (state === 'ready') {
     icon.innerHTML = UI_ICONS.check;
-    const count = info.count != null ? Number(info.count).toLocaleString() : '?';
-    text.textContent = await getMessage('remoteReady', [count, fmtDate(info.updatedAt)]);
+    if (info.count != null && info.updatedAt) {
+      text.textContent = await getMessage('remoteReady', [Number(info.count).toLocaleString(), fmtDate(info.updatedAt)]);
+    } else {
+      text.textContent = await getMessage('remoteReadyNoCount');
+    }
   } else if (state === 'error') {
     icon.innerHTML = UI_ICONS.alert;
     text.textContent = await getMessage('remoteError');

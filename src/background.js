@@ -47,13 +47,15 @@ const ready = loadData();
 // Optional opt-in update channel: downloads a JSON bundle, never uploads anything.
 // ETag-cached, refreshed daily via alarm. Falls back silently to bundled lists.
 async function loadRemoteLists() {
-  const prefs = await chrome.storage.local.get(['opt:remote', 'data:etag']);
+  const prefs = await chrome.storage.local.get(['opt:remote', 'data:etag', 'remote:count']);
   if (!prefs['opt:remote']) return;
   const url = DEFAULT_REMOTE_URL; // single fixed source: the FishCatcher registry
   broadcast({ type: 'remote-status', state: 'downloading' });
   try {
     const headers = {};
-    if (prefs['data:etag']) headers['If-None-Match'] = prefs['data:etag'];
+    // Use the cached ETag only once we have recorded a count; otherwise force a
+    // full fetch so count and date get populated (self-heals older installs).
+    if (prefs['data:etag'] && prefs['remote:count'] != null) headers['If-None-Match'] = prefs['data:etag'];
     const res = await fetch(url, { cache: 'no-store', headers });
     if (res.status === 304) {
       const s = await chrome.storage.local.get(['remote:count', 'remote:updatedAt']);

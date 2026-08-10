@@ -208,16 +208,20 @@
     "description": "Options: RDAP privacy note"
   },
   "remoteDefaultHint": {
-    "message": "Updates come from the FishCatcher registry on GitHub.",
-    "description": "Options: default remote update source"
+    "message": "Updates come from",
+    "description": "Options: lead-in before the registry link"
+  },
+  "remoteSourceLink": {
+    "message": "the FishCatcher registry on GitHub",
+    "description": "Options: link text pointing to the registry repository"
+  },
+  "remoteReadyNoCount": {
+    "message": "Threat list is up to date.",
+    "description": "Update status when the count is not known"
   },
   "reasonMl": {
     "message": "The domain's letter pattern resembles automatically generated random domains",
     "description": "S17 lexical model signal"
-  },
-  "scanLinksButton": {
-    "message": "Scan links on this page",
-    "description": "Panel button: analyze every link on the current page"
   },
   "linksNone": {
     "message": "No risky links found on this page.",
@@ -278,10 +282,6 @@
   "remoteError": {
     "message": "Could not reach the registry. Using the built-in list.",
     "description": "Shown when the update download fails"
-  },
-  "linksScanning": {
-    "message": "Scanning links…",
-    "description": "Scan-links button label while scanning"
   },
   "linksChecked": {
     "message": "Checked $1 links on this page.",

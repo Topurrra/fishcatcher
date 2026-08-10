@@ -208,16 +208,20 @@
     "description": "Options: RDAP privacy note"
   },
   "remoteDefaultHint": {
-    "message": "განახლებები მოდის FishCatcher-ის რეესტრიდან GitHub-ზე.",
-    "description": "Options: default remote update source"
+    "message": "განახლებები მოდის",
+    "description": "Options: lead-in before the registry link"
+  },
+  "remoteSourceLink": {
+    "message": "FishCatcher-ის რეესტრიდან GitHub-ზე",
+    "description": "Options: link text pointing to the registry repository"
+  },
+  "remoteReadyNoCount": {
+    "message": "საფრთხის სია განახლებულია.",
+    "description": "Update status when the count is not known"
   },
   "reasonMl": {
     "message": "დომენის სიმბოლოების ნაკადი ავტოგენერირებულ შემთხვევით დომენებს ჰგავს",
     "description": "S17 lexical model signal"
-  },
-  "scanLinksButton": {
-    "message": "შეამოწმე ამ გვერდის ბმულები",
-    "description": "Panel button: analyze every link on the current page"
   },
   "linksNone": {
     "message": "საეჭვო ბმულები ვერ მოიძებნა.",
@@ -278,10 +282,6 @@
   "remoteError": {
     "message": "რეესტრთან დაკავშირება ვერ მოხერხდა. გამოიყენება ჩაშენებული სია.",
     "description": "Shown when the update download fails"
-  },
-  "linksScanning": {
-    "message": "ბმულების სკანირება…",
-    "description": "Scan-links button label while scanning"
   },
   "linksChecked": {
     "message": "შემოწმდა $1 ბმული ამ გვერდზე.",
