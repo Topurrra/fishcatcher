@@ -50,18 +50,32 @@ async function loadRemoteLists() {
   const prefs = await chrome.storage.local.get(['opt:remote', 'data:etag']);
   if (!prefs['opt:remote']) return;
   const url = DEFAULT_REMOTE_URL; // single fixed source: the FishCatcher registry
+  broadcast({ type: 'remote-status', state: 'downloading' });
   try {
     const headers = {};
     if (prefs['data:etag']) headers['If-None-Match'] = prefs['data:etag'];
     const res = await fetch(url, { cache: 'no-store', headers });
-    if (res.status === 304) return;
-    if (!res.ok) return;
+    if (res.status === 304) {
+      const s = await chrome.storage.local.get(['remote:count', 'remote:updatedAt']);
+      broadcast({ type: 'remote-status', state: 'ready', count: s['remote:count'], updatedAt: s['remote:updatedAt'] });
+      return;
+    }
+    if (!res.ok) {
+      broadcast({ type: 'remote-status', state: 'error' });
+      return;
+    }
     const bundle = await res.json();
     Object.assign(data, applyBundle(data, bundle));
     const etag = res.headers.get('ETag');
-    if (etag) chrome.storage.local.set({ 'data:etag': etag });
+    const count = typeof bundle.count === 'number' ? bundle.count : null;
+    const updatedAt = Date.now();
+    const set = { 'remote:updatedAt': updatedAt };
+    if (count != null) set['remote:count'] = count;
+    if (etag) set['data:etag'] = etag;
+    await chrome.storage.local.set(set);
+    broadcast({ type: 'remote-status', state: 'ready', count, updatedAt });
   } catch {
-    // keep bundled lists
+    broadcast({ type: 'remote-status', state: 'error' }); // keep bundled lists
   }
 }
 
@@ -402,7 +416,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         } catch {
           // no content script on this page (chrome://, PDF viewer, etc.)
         }
-        sendResponse({ findings: await storeLinks(msg.tabId, links, true) });
+        sendResponse({ findings: await storeLinks(msg.tabId, links, true), scanned: links.length });
         break;
       }
     }

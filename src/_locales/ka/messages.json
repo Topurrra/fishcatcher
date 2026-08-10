@@ -266,5 +266,25 @@
   "downloadKeep": {
     "message": "დატოვება",
     "description": "Download guard notification button"
+  },
+  "remoteUpdating": {
+    "message": "საფრთხის სია ახლდება…",
+    "description": "Shown while the registry download is in progress"
+  },
+  "remoteReady": {
+    "message": "$1 ცნობილი საშიში საიტი, განახლდა $2",
+    "description": "Shown after a successful update; $1 = count, $2 = date"
+  },
+  "remoteError": {
+    "message": "რეესტრთან დაკავშირება ვერ მოხერხდა. გამოიყენება ჩაშენებული სია.",
+    "description": "Shown when the update download fails"
+  },
+  "linksScanning": {
+    "message": "ბმულების სკანირება…",
+    "description": "Scan-links button label while scanning"
+  },
+  "linksChecked": {
+    "message": "შემოწმდა $1 ბმული ამ გვერდზე.",
+    "description": "Shown after a link scan; $1 = number of links checked"
   }
 }

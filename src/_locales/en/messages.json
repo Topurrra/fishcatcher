@@ -266,5 +266,25 @@
   "downloadKeep": {
     "message": "Keep",
     "description": "Download guard notification button"
+  },
+  "remoteUpdating": {
+    "message": "Updating the threat list…",
+    "description": "Shown while the registry download is in progress"
+  },
+  "remoteReady": {
+    "message": "$1 known bad sites, updated $2",
+    "description": "Shown after a successful update; $1 = count, $2 = date"
+  },
+  "remoteError": {
+    "message": "Could not reach the registry. Using the built-in list.",
+    "description": "Shown when the update download fails"
+  },
+  "linksScanning": {
+    "message": "Scanning links…",
+    "description": "Scan-links button label while scanning"
+  },
+  "linksChecked": {
+    "message": "Checked $1 links on this page.",
+    "description": "Shown after a link scan; $1 = number of links checked"
   }
 }

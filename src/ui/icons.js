@@ -2,6 +2,16 @@
 const svg = (paths) =>
   `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
 
+const svg16 = (paths, cls = '') =>
+  `<svg class="${cls}" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
+
+// Feedback glyphs for progress / done / problem states.
+export const UI_ICONS = {
+  spinner: svg16('<path d="M12 3a9 9 0 1 0 9 9" />', 'spinner'),
+  check: svg16('<path d="M5 12l5 5l10 -10" />'),
+  alert: svg16('<path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M12 8v4" /><path d="M12 16h.01" />')
+};
+
 export const STATUS_ICONS = {
   // no result / cannot check
   none: svg('<path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" /><path d="M12 9v3" /><path d="M12 15h.01" />'),

@@ -1,6 +1,6 @@
 import { applyI18n, getMessage } from '../ui/i18n.js';
 import { initSettings } from '../ui/settings.js';
-import { STATUS_ICONS } from '../ui/icons.js';
+import { STATUS_ICONS, UI_ICONS } from '../ui/icons.js';
 
 const LEVEL_LABEL = {
   low: 'levelLow',
@@ -85,6 +85,7 @@ async function renderLinks(findings, showEmpty) {
 
 async function loadLinks() {
   if (currentTabId == null) return;
+  $('links-summary').hidden = true;
   const { findings } = await chrome.runtime.sendMessage({ type: 'get-links', tabId: currentTabId });
   renderLinks(findings || [], false);
 }
@@ -196,10 +197,16 @@ $('recheck-btn').addEventListener('click', async () => {
 
 $('scan-links-btn').addEventListener('click', async (e) => {
   const btn = e.currentTarget;
+  const original = btn.innerHTML;
   btn.disabled = true;
-  const { findings } = await chrome.runtime.sendMessage({ type: 'scan-links', tabId: currentTabId });
-  await renderLinks(findings || [], true);
+  btn.innerHTML = `${UI_ICONS.spinner}<span>${await getMessage('linksScanning')}</span>`;
+  const { findings, scanned } = await chrome.runtime.sendMessage({ type: 'scan-links', tabId: currentTabId });
+  btn.innerHTML = original;
   btn.disabled = false;
+  const summary = $('links-summary');
+  summary.hidden = false;
+  summary.textContent = await getMessage('linksChecked', [String(scanned ?? 0)]);
+  await renderLinks(findings || [], true);
 });
 
 chrome.runtime.onMessage.addListener((msg) => {

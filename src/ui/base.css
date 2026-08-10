@@ -162,7 +162,26 @@ button svg { width: 16px; height: 16px; flex: none; }
 
 .note { color: var(--muted); }
 
+/* ── progress / done feedback ───────────────────────────── */
+@keyframes fc-spin { to { transform: rotate(360deg); } }
+.spinner { animation: fc-spin 0.7s linear infinite; transform-origin: center; }
+
+.statusline {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 9px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.statusline .si-icon { display: flex; flex: none; }
+.statusline.is-downloading .si-icon { color: var(--accent); }
+.statusline.is-ready .si-icon { color: var(--risk-low); }
+.statusline.is-error .si-icon { color: var(--risk-high); }
+
 @media (prefers-reduced-motion: reduce) {
   button { transition: none; }
   button:active { transform: none; }
+  .spinner { animation: none; }
 }
