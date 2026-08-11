@@ -42,8 +42,32 @@
   </div>
 </nav>
 
-<main class="wrap doc-article">
-  <article class="docs-main">
+<div class="docs">
+  <aside class="docs-side">
+    <div class="filter">
+      <input id="docFilter" type="text" placeholder="Filter" aria-label="Filter navigation" autocomplete="off">
+      <kbd>/</kbd>
+    </div>
+    <nav class="tree" aria-label="Learn navigation">
+      <a class="area" href="/">Home</a>
+      <a class="area" href="/docs">Documentation</a>
+      <a class="area current" href="/learn">Learn</a>
+      <div class="sub">
+        <a href="/learn">Overview</a>
+        <a href="/qr-code-phishing">QR code phishing</a>
+        <a href="/device-code-phishing">Device-code phishing</a>
+        <a href="/aitm-attack">AiTM attacks</a>
+        <a href="/lookalike-domain" class="active">Lookalike domains</a>
+        <a href="/fake-login-page">Fake login pages</a>
+        <a href="/disguised-download">Disguised downloads</a>
+        <a href="/golden-rules">Golden rules</a>
+      </div>
+      <a class="area" href="/privacy">Privacy</a>
+      <a class="area" href="/transparency">Transparency</a>
+    </nav>
+  </aside>
+
+  <main class="docs-main">
     <div class="breadcrumb"><a href="/">Home</a> / <a href="/learn">Learn</a> / How to spot a lookalike domain</div>
     <h1>How to spot a lookalike domain</h1>
     <div class="meta-row">
@@ -98,8 +122,8 @@
       <a href="/learn"><small>Learn</small>All lessons</a>
       <a class="nx" href="/"><small>Home</small>Back to the overview</a>
     </div>
-  </article>
-</main>
+  </main>
+</div>
 
 <footer class="site-foot">
   <div class="wrap">
@@ -115,5 +139,6 @@
 </footer>
 
 <script src="/assets/theme.js"></script>
+<script src="/assets/docs.js"></script>
 </body>
 </html>
