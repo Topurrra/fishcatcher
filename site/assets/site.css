@@ -165,7 +165,7 @@ code, kbd { font-family: var(--mono); font-size: 0.86em; }
 .site-nav .wrap { display: flex; align-items: center; gap: 24px; height: 60px; }
 .brand { font-weight: 700; font-size: 1.05rem; letter-spacing: -0.02em; color: var(--text); }
 .brand:hover { text-decoration: none; }
-.nav-links { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+.nav-links { display: flex; align-items: center; gap: 10px; margin-left: auto; }
 .nav-links a { color: var(--muted); font-size: 0.9rem; font-weight: 500; padding: 7px 11px; border-radius: var(--r-btn); transition: color .15s, background .15s; }
 .nav-links a:hover { color: var(--text); background: var(--surface-2); text-decoration: none; }
 .nav-cta { margin-left: 6px; }
