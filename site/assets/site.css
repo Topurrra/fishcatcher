@@ -1066,9 +1066,6 @@ kbd {
     grid-template-columns: 1fr;
   }
 
-  .site-foot .wrap {
-    grid-template-columns: 1fr 1fr;
-  }
 
   .site-foot .about {
     grid-column: 1 / -1;
