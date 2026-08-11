@@ -42,3 +42,6 @@
 - Privacy policy: https://fishcatcher.dev/privacy
 - Transparency and false-positive benchmark: https://fishcatcher.dev/transparency
 - Benchmark dataset: https://fishcatcher.dev/benchmark
+- Compare, Fish Catcher vs Netcraft: https://fishcatcher.dev/fishcatcher-vs-netcraft
+- Compare, Fish Catcher vs Chrome Safe Browsing: https://fishcatcher.dev/fishcatcher-vs-safe-browsing
+- Compare, Fish Catcher vs Bitdefender TrafficLight: https://fishcatcher.dev/fishcatcher-vs-bitdefender-trafficlight

@@ -323,7 +323,7 @@ code, kbd { font-family: var(--mono); font-size: 0.86em; }
 
 /* ── footer ──────────────────────────────────────────── */
 .site-foot { border-top: 1px solid var(--border); padding: 56px 0 40px; }
-.site-foot .wrap { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; }
+.site-foot .wrap { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr; gap: 32px; }
 .site-foot .about { max-width: 30ch; }
 .site-foot .about p { margin-top: 12px; color: var(--muted); font-size: 0.9rem; }
 .site-foot .foot-note { margin-top: 14px; color: var(--faint); font-size: 0.82rem; }

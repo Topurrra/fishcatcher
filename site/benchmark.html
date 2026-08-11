@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/docs.css">
 <script src="/assets/theme-init.js"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Dataset","name":"Fish Catcher false-positive benchmark","description":"False-positive rate of the Fish Catcher passive URL engine over 100,000 legitimate domains from the Majestic Million.","url":"https://fishcatcher.dev/benchmark","creator":{"@type":"Organization","name":"Fish Catcher"},"license":"https://opensource.org/licenses/MIT","dateModified":"2026-08-11","isAccessibleForFree":true,"measurementTechnique":"Passive URL analysis, counting high and critical warnings","variableMeasured":"phishing false-positive rate"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Dataset","name":"Fish Catcher false-positive benchmark","description":"False-positive rate of the Fish Catcher passive URL engine over 100,000 legitimate domains from the Majestic Million.","url":"https://fishcatcher.dev/benchmark","creator":{"@type":"Organization","name":"Fish Catcher"},"license":"https://opensource.org/licenses/MIT","datePublished":"2026-08-11","dateModified":"2026-08-11","isAccessibleForFree":true,"measurementTechnique":"Passive URL analysis, counting high and critical warnings","variableMeasured":"phishing false-positive rate"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fishcatcher.dev/"},{"@type":"ListItem","position":2,"name":"Transparency","item":"https://fishcatcher.dev/transparency"},{"@type":"ListItem","position":3,"name":"Benchmark","item":"https://fishcatcher.dev/benchmark"}]}</script>
 </head>
 <body>
@@ -42,8 +42,32 @@
   </div>
 </nav>
 
-<main class="wrap doc-article">
-  <article class="docs-main">
+<div class="docs">
+  <aside class="docs-side">
+    <div class="filter">
+      <input id="docFilter" type="text" placeholder="Filter" aria-label="Filter navigation" autocomplete="off">
+      <kbd>/</kbd>
+    </div>
+    <nav class="tree" aria-label="Benchmark navigation">
+      <a class="area" href="/">Home</a>
+      <a class="area" href="/docs">Documentation</a>
+      <a class="area" href="/learn">Learn</a>
+      <a class="area" href="/privacy">Privacy</a>
+      <a class="area" href="/transparency">Transparency</a>
+      <a class="area current" href="/benchmark">Benchmark</a>
+      <div class="sub">
+        <a href="#why" class="active">What a false positive is</a>
+        <a href="#corpus">The corpus</a>
+        <a href="#method">Method</a>
+        <a href="#result">Latest result</a>
+        <a href="#domains">The flagged domains</a>
+        <a href="#history">Version history</a>
+        <a href="#reproduce">Reproduce it</a>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="docs-main">
     <div class="breadcrumb"><a href="/">Home</a> / <a href="/transparency">Transparency</a> / Benchmark</div>
     <h1>False-positive benchmark</h1>
     <div class="meta-row">
@@ -53,16 +77,26 @@
     </div>
     <div class="rule"><span class="line"></span><span class="pill-mono">Show the numbers</span><span class="line"></span></div>
 
-    <p class="lead-p">A false positive is a warning shown on a site that is actually fine, and the false-positive rate is the share of legitimate sites a detector wrongly warns about.</p>
-    <p>A warning tool is only useful if it stays quiet on normal sites. So we measure how often Fish Catcher cries wolf, publish the number, and make it reproducible. If it is not measured, it is just a claim.</p>
+    <p class="lead-p">A false positive is a warning shown on a site that is actually fine, and the false-positive rate is the share of legitimate sites a detector wrongly warns about. It is the single number that decides whether a warning tool is worth keeping switched on.</p>
+
+    <h2 id="why">What a false positive is</h2>
+    <p>A phishing warner earns its place by staying quiet on the millions of ordinary sites you visit and speaking up only when something is genuinely off. If it cries wolf on normal sites, you quickly learn to click past its warnings, and then it cannot help you on the day one of them is real. Precision matters more than a big scary number: a tool that flags everything catches every scam and is also useless.</p>
+    <p>So we measure how often Fish Catcher warns about good sites, publish the result, and make it reproducible. If it is not measured, it is just a claim. This page is the long version of the number quoted on the <a href="/transparency">transparency</a> page: the corpus, the method, the exact command, the domains that were flagged, and the history so far.</p>
+
+    <h2 id="corpus">The corpus</h2>
+    <p>To measure false positives you need a large set of sites that are known to be legitimate. We use the <b>Majestic Million</b>, a public, freely available list of the most-linked domains on the web, ranked by how many separate networks link to them. The top of that list is dominated by long-established, widely referenced sites, which makes it a fair stand-in for normal, legitimate browsing. The benchmark takes the first <b>100,000</b> domains from it.</p>
+    <p>The same cached copy of the list is used by the project's model-training script, so a single download serves both and every rerun is fully offline. No list of legitimate sites is perfect: a popularity ranking can, in principle, contain a parked or briefly compromised domain. Any such case counts against Fish Catcher here, not for it, so if anything this method is slightly harsh on the false-positive number rather than flattering to it.</p>
+    <p>In short, the corpus is deliberately weighted toward sites that should never be flagged, which is what makes a low number here meaningful rather than easy to reach.</p>
 
     <h2 id="method">Method</h2>
-    <p>We run the address-only part of the Fish Catcher engine, with no page-content signals, over the Majestic Million, a public list of the most-linked websites. These are treated as known-legitimate. We count how many the engine would warn about at <b>high</b> or <b>critical</b>, the two levels that actually alarm a user, and divide by the total scanned. Lower is better.</p>
+    <p>The benchmark runs only the passive, address-only part of the shipped Fish Catcher engine: the exact same analyzer that runs inside the extension, with no page-content signals and no cloud lookups enabled. For each of the 100,000 domains it builds the address <code>https://domain/</code> and asks the analyzer for a verdict. It then counts how many domains would be warned about at <b>high</b> or <b>critical</b>, the two levels that actually raise an alarm for a user. The quieter <em>elevated</em> and <em>low</em> levels do not interrupt you, so they are not counted here. The rate is the count of high and critical warnings divided by the number of domains scanned. Lower is better.</p>
     <ul>
       <li>Corpus: Majestic Million, first 100,000 domains.</li>
-      <li>Engine: the shipped passive URL analyzer (no page content, no cloud lookups).</li>
+      <li>Engine: the shipped passive URL analyzer, with no page content and no cloud lookups.</li>
+      <li>Counted: warnings at high or critical only.</li>
       <li>Metric: (high + critical warnings) / total domains scanned.</li>
     </ul>
+    <p>Because only the address is used, the run is reproducible from the domain list alone, with nothing fetched from or stored about any page you visit.</p>
 
     <h2 id="result">Latest result</h2>
     <p>Latest run, <time datetime="2026-08-11">11 August 2026</time>, over 100,000 legitimate sites:</p>
@@ -70,15 +104,32 @@
       <table>
         <thead><tr><th scope="col">Measure</th><th scope="col">Value</th></tr></thead>
         <tbody>
+          <tr><td>Domains scanned</td><td>100,000</td></tr>
           <tr><td>Warnings at high</td><td>5</td></tr>
           <tr><td>Warnings at critical</td><td>0</td></tr>
-          <tr><td>Rate</td><td>0.005% (5 in 100,000)</td></tr>
+          <tr><td>False-positive rate</td><td>0.005% (5 in 100,000)</td></tr>
         </tbody>
       </table>
     </div>
-    <p>The five flagged sites were all very short, digit-heavy names on high-abuse endings, like <code>hy315.cc</code>. The offending domains are printed by the audit, so the number is auditable.</p>
+
+    <h2 id="domains">The flagged domains</h2>
+    <p>Because the audit prints every domain it flags, the result is fully auditable rather than a number you have to trust. In the latest run all five were the same shape: very short, digit-heavy names on high-abuse domain endings, exactly the pattern that automated phishing kits produce by the thousand. Each scored 45, the very bottom of the high band, and each tripped the same four signals: a high-abuse ending, a digit-heavy name, a very short name, and the on-device model.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">Domain</th><th scope="col">Score</th><th scope="col">Level</th><th scope="col">Why it was flagged</th></tr></thead>
+        <tbody>
+          <tr><td>hy315.cc</td><td>45</td><td>high</td><td>high-abuse ending, digit-heavy, very short, on-device model</td></tr>
+          <tr><td>854854.cc</td><td>45</td><td>high</td><td>high-abuse ending, digit-heavy, very short, on-device model</td></tr>
+          <tr><td>god123.xyz</td><td>45</td><td>high</td><td>high-abuse ending, digit-heavy, very short, on-device model</td></tr>
+          <tr><td>121644.cc</td><td>45</td><td>high</td><td>high-abuse ending, digit-heavy, very short, on-device model</td></tr>
+          <tr><td>cm883.cc</td><td>45</td><td>high</td><td>high-abuse ending, digit-heavy, very short, on-device model</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>These are genuinely hard to tell apart from throwaway phishing domains by their address alone, which is why the engine leans cautious on them. Five in a hundred thousand, all at the lowest alarming score, is the price of catching the many similar-looking names that are not innocent.</p>
 
     <h2 id="history">Version history</h2>
+    <p>We rerun this monthly and add a row each time, so the trend stays public and any regression is visible. Newest runs go on top.</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th scope="col">Date</th><th scope="col">Corpus</th><th scope="col">High</th><th scope="col">Critical</th><th scope="col">Rate</th></tr></thead>
@@ -87,19 +138,24 @@
         </tbody>
       </table>
     </div>
-    <p>We plan to rerun this monthly and add a row each time, so the trend stays public.</p>
 
     <h2 id="reproduce">Reproduce it</h2>
-    <p>Clone the source repository and run the audit. It prints every domain it flagged, so you can check the number yourself:</p>
+    <p>You do not have to take the number on faith. Clone the source repository and run the audit yourself; it prints the rate and every domain it flagged, so you can check both:</p>
     <pre data-lang="bash"><code>node scripts/fp-audit.mjs</code></pre>
-    <p>Add <code>--selftest</code> to check the harness on a small built-in set, <code>--limit N</code> to scan fewer domains, or <code>--cache path.csv</code> to reuse an already-downloaded corpus.</p>
+    <p>On the first run it downloads the Majestic Million once and caches it, so every rerun afterwards is offline. The useful flags are:</p>
+    <ul>
+      <li><code>--limit N</code> scans fewer domains for a quick sample.</li>
+      <li><code>--selftest</code> proves the harness on about ten famous domains that must stay calm.</li>
+      <li><code>--cache path.csv</code> reuses a corpus you have already downloaded.</li>
+    </ul>
+    <p>The measurement always exits zero: it is a measurement, not a pass-or-fail test, so a non-zero finding never breaks a build. Only <code>--selftest</code> fails loudly, and only if the harness itself is broken.</p>
 
     <div class="prevnext">
-      <a href="/transparency"><small>Transparency</small>Transparency</a>
+      <a href="/transparency"><small>Transparency</small>How we measure</a>
       <a class="nx" href="/"><small>Home</small>Back to the overview</a>
     </div>
-  </article>
-</main>
+  </main>
+</div>
 
 <footer class="site-foot">
   <div class="wrap">
@@ -110,10 +166,12 @@
     </div>
     <div><h4>Product</h4><ul><li><a href="/#how">How it works</a></li><li><a href="/#install">Install</a></li><li><a href="/privacy">Privacy</a></li></ul></div>
     <div><h4>Learn</h4><ul><li><a href="/learn">Lessons</a></li><li><a href="/docs">Docs</a></li><li><a href="/transparency">Transparency</a></li></ul></div>
+    <div><h4>Compare</h4><ul><li><a href="/fishcatcher-vs-netcraft">vs Netcraft</a></li><li><a href="/fishcatcher-vs-safe-browsing">vs Safe Browsing</a></li><li><a href="/fishcatcher-vs-bitdefender-trafficlight">vs TrafficLight</a></li></ul></div>
     <div><h4>Open source</h4><ul><li><a href="https://github.com/Topurrra/fishcatcher">GitHub</a></li><li><a href="https://github.com/Topurrra/fishcatcher-registry">Threat registry</a></li><li><a href="https://github.com/Topurrra/fishcatcher/blob/main/LICENSE">MIT license</a></li></ul></div>
   </div>
 </footer>
 
 <script src="/assets/theme.js"></script>
+<script src="/assets/docs.js"></script>
 </body>
 </html>
