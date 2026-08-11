@@ -82,6 +82,12 @@ $('recheck-btn').addEventListener('click', async (e) => {
   btn.disabled = false;
 });
 
+// Firefox settings live on the options page (about:addons buries it); open it in a tab.
+$('open-options-btn').addEventListener('click', () => {
+  if (chrome.runtime.openOptionsPage) chrome.runtime.openOptionsPage();
+  else chrome.tabs.create({ url: chrome.runtime.getURL('options/options.html') });
+});
+
 chrome.runtime.onMessage.addListener((msg) => {
   if (msg.type === 'scored') render();
 });

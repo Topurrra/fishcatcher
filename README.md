@@ -58,7 +58,7 @@ A warning tool is only worth trusting if you can check how often it is wrong. We
 that and publish it. On the top 100,000 legitimate websites, fewer than 0.01% get a high
 or critical warning (5 in 100,000, a rate of 0.005%). The audit is reproducible with one
 command, `node scripts/fp-audit.mjs`, and it prints every site it flagged so the number is
-not something you have to take on faith. See [TRANSPARENCY.md](TRANSPARENCY.md).
+not something you have to take on faith. See [fishcatcher.dev/transparency](https://fishcatcher.dev/transparency).
 
 ## Automatic threat updates
 
@@ -73,14 +73,10 @@ when it has changed.
 The automation is in [`registry/`](registry/). See [registry/README.md](registry/README.md)
 to set it up.
 
-## What's next
-
-See [ROADMAP.md](ROADMAP.md) for what is shipped and what is planned.
-
 ## Free and open source
 
-FishCatcher is MIT licensed (see [LICENSE](LICENSE)) and free to use forever. The privacy
-promise above is one you can verify by reading this source. Bundled third party code is
+FishCatcher is MIT licensed (see [LICENSE](LICENSE)) and free to use forever. What it does
+with your data (above) you can verify by reading this source. Bundled third party code is
 listed in [src/vendor/NOTICE.md](src/vendor/NOTICE.md).
 
 ## Build from source

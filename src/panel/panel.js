@@ -307,6 +307,15 @@ chrome.tabs.onActivated.addListener(() => render());
 if (chrome.sidePanel) {
   $('settings-wrap').hidden = false;
   initSettings();
+} else {
+  // Firefox has no side panel: settings live on the options page, which is buried in
+  // about:addons. Surface a button that opens it in a normal tab instead.
+  const ob = $('open-options-btn');
+  ob.hidden = false;
+  ob.addEventListener('click', () => {
+    if (chrome.runtime.openOptionsPage) chrome.runtime.openOptionsPage();
+    else chrome.tabs.create({ url: chrome.runtime.getURL('options/options.html') });
+  });
 }
 
 (async () => {

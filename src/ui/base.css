@@ -85,6 +85,8 @@ header h1 {
 }
 
 /* wordmark: hover "Fish" to glitch-swap into "Phish" (matches the website) */
+.wm-link { color: inherit; text-decoration: none; cursor: pointer; }
+.wm-link:hover { text-decoration: none; }
 .wm-swap { position: relative; }
 .wm-phish { display: none; }
 .wm-swap:hover .wm-fish { display: none; }
