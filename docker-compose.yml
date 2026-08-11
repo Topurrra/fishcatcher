@@ -1,16 +1,3 @@
-# FishCatcher website (static). Run:  docker compose up -d --build
-#
-# PORT: host 8419  ->  container 80   (picked to avoid your other apps on this box)
-#
-# Cloudflare tunnel (cloudflared runs as its own container on this host):
-#   Option A - cloudflared uses the host network:
-#       point the tunnel ingress at  http://localhost:8419
-#   Option B - attach cloudflared to this compose's network:
-#       docker network connect fishcatcher <cloudflared-container>
-#       then point the tunnel ingress at  http://fishcatcher-site:80
-#
-# Only 127.0.0.1 is published, so port 8419 is not exposed on the public
-# interface; the tunnel is the only way in.
 services:
   fishcatcher-site:
     build: .

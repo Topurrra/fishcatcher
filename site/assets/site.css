@@ -252,7 +252,7 @@ code, kbd { font-family: var(--mono); font-size: 0.86em; }
 .tile:hover { border-color: var(--border-strong); box-shadow: var(--shadow-md); transform: translateY(-2px); }
 .tile.wide { grid-column: span 2;  grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: center; }
 .tile.wide.solo { grid-template-columns: 1fr; }
-.tile .ic { color: var(--accent); display: inline-flex; margin-bottom: 16px; }
+.tile .ic { color: var(--accent); display: inline-flex; margin-top: 12px; }
 .tile .ic svg { width: 22px; height: 22px; stroke-width: 1.75; }
 .tile h3 { margin-bottom: 8px; }
 .tile p { color: var(--muted); font-size: 0.95rem; }
@@ -323,7 +323,7 @@ code, kbd { font-family: var(--mono); font-size: 0.86em; }
 
 /* ── footer ──────────────────────────────────────────── */
 .site-foot { border-top: 1px solid var(--border); padding: 56px 0 40px; }
-.site-foot .wrap { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr; gap: 32px; }
+.site-foot .wrap { display: grid; grid-auto-flow: column; }
 .site-foot .about { max-width: 30ch; }
 .site-foot .about p { margin-top: 12px; color: var(--muted); font-size: 0.9rem; }
 .site-foot .foot-note { margin-top: 14px; color: var(--faint); font-size: 0.82rem; }

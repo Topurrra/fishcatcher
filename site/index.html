@@ -1,276 +1,378 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fish Catcher: Free Phishing Detection Browser Extension</title>
-<meta name="description" content="A free, open-source browser extension that warns you in plain language when a website looks like phishing or a scam. On-device and private by default.">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/assets/site.css">
-<link rel="canonical" href="https://fishcatcher.dev/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Fish Catcher">
-<meta property="og:title" content="Fish Catcher: Free Phishing Detection Browser Extension">
-<meta property="og:description" content="A free, open-source browser extension that warns you in plain language when a website looks like phishing or a scam. On-device and private by default.">
-<meta property="og:url" content="https://fishcatcher.dev/">
-<meta property="og:image" content="https://fishcatcher.dev/assets/og.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Fish Catcher: Free Phishing Detection Browser Extension">
-<meta name="twitter:description" content="A free, open-source browser extension that warns you in plain language when a website looks like phishing or a scam. On-device and private by default.">
-<meta name="twitter:image" content="https://fishcatcher.dev/assets/og.jpg">
-<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
-<script src="/assets/theme-init.js"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Fish Catcher","applicationCategory":"BrowserApplication","operatingSystem":"Chrome, Brave, Edge, Opera, Firefox","description":"Fish Catcher warns you, in plain language, when a website looks like phishing or a scam. Free, open source, and on-device by default.","url":"https://fishcatcher.dev/","softwareVersion":"1.0.0","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev","logo":"https://fishcatcher.dev/assets/og.jpg","sameAs":["https://github.com/Topurrra/fishcatcher","https://github.com/Topurrra/fishcatcher-registry"]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Fish Catcher","url":"https://fishcatcher.dev"}</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fish Catcher: Free Phishing Detection Browser Extension</title>
+  <meta name="description"
+    content="A free, open-source browser extension that warns you in plain language when a website looks like phishing or a scam. On-device and private by default.">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="canonical" href="https://fishcatcher.dev/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Fish Catcher">
+  <meta property="og:title" content="Fish Catcher: Free Phishing Detection Browser Extension">
+  <meta property="og:description"
+    content="A free, open-source browser extension that warns you in plain language when a website looks like phishing or a scam. On-device and private by default.">
+  <meta property="og:url" content="https://fishcatcher.dev/">
+  <meta property="og:image" content="https://fishcatcher.dev/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Fish Catcher: Free Phishing Detection Browser Extension">
+  <meta name="twitter:description"
+    content="A free, open-source browser extension that warns you in plain language when a website looks like phishing or a scam. On-device and private by default.">
+  <meta name="twitter:image" content="https://fishcatcher.dev/assets/og.jpg">
+  <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="/assets/theme-init.js"></script>
+  <script
+    type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Fish Catcher","applicationCategory":"BrowserApplication","operatingSystem":"Chrome, Brave, Edge, Opera, Firefox","description":"Fish Catcher warns you, in plain language, when a website looks like phishing or a scam. Free, open source, and on-device by default.","url":"https://fishcatcher.dev/","softwareVersion":"1.0.0","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev"}}</script>
+  <script
+    type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev","logo":"https://fishcatcher.dev/assets/og.jpg","sameAs":["https://github.com/Topurrra/fishcatcher","https://github.com/Topurrra/fishcatcher-registry"]}</script>
+  <script
+    type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Fish Catcher","url":"https://fishcatcher.dev"}</script>
 </head>
+
 <body>
 
-<nav class="site-nav">
-  <div class="wrap">
-    <a class="brand" href="/"><span class="wm"><span class="wm-swap"><span class="wm-fish">Fish</span><span class="wm-phish" data-text="Phish">Phish</span></span> Catcher</span></a>
-    <div class="nav-links">
-      <a class="hide-sm" href="#how">How it works</a>
-      <a href="/docs">Docs</a>
-      <a class="icon-btn" href="https://github.com/Topurrra/fishcatcher" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11 11 0 0 1 6 0C17 4.6 18 4.9 18 4.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg></a>
-      <a class="icon-btn" href="#install" aria-label="Install Fish Catcher" title="Install Fish Catcher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 11 5 4 5-4"/><path d="M5 21h14"/></svg></a>
-      <button class="theme-toggle" aria-label="Switch light or dark theme">
-        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
-      </button>
-    </div>
-  </div>
-</nav>
-
-<header class="hero">
-  <canvas id="hero-canvas" class="hero-anim" aria-hidden="true"></canvas>
-  <div class="wrap">
-    <div class="hero-copy reveal">
-      <h1>Spot fake and phishing sites before you get caught.</h1>
-      <p class="lead">Fish Catcher checks the site you are on and warns you in plain language when it looks like a scam. It never blocks you, and nothing leaves your device.</p>
-      <div class="actions">
-        <a id="install-btn" class="btn btn-primary" href="#install">
-          <span class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18"/></svg></span>
-          Install Fish Catcher
-        </a>
-        <a class="btn" href="#how">See how it works</a>
+  <nav class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="/"><span class="wm"><span class="wm-swap"><span class="wm-fish">Fish</span><span
+              class="wm-phish" data-text="Phish">Phish</span></span> Catcher</span></a>
+      <div class="nav-links">
+        <a class="hide-sm" href="#how">How it works</a>
+        <a href="/docs">Docs</a>
+        <a class="icon-btn" href="https://github.com/Topurrra/fishcatcher" aria-label="GitHub" title="GitHub"><svg
+            viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path
+              d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11 11 0 0 1 6 0C17 4.6 18 4.9 18 4.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z" />
+          </svg></a>
+        <a class="icon-btn" href="#install" aria-label="Install Fish Catcher" title="Install Fish Catcher"><svg
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M12 3v12" />
+            <path d="m7 11 5 4 5-4" />
+            <path d="M5 21h14" />
+          </svg></a>
+        <button class="theme-toggle" aria-label="Switch light or dark theme">
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4" />
+            <path
+              d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+          </svg>
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z" />
+          </svg>
+        </button>
       </div>
-      <p class="note">Chrome, Brave, Edge, Opera and Firefox. English and Georgian.</p>
     </div>
-  </div>
-</header>
+  </nav>
 
-<section class="proof">
-  <div class="wrap">
-    <div class="cell"><b>On your device</b><span>Every check runs locally. Works offline.</span></div>
-    <div class="cell"><b>No account</b><span>No sign up, no tracking, no profile.</span></div>
-    <div class="cell"><b>Warns, never blocks</b><span>You stay in control of every page.</span></div>
-    <div class="cell"><b>Open source</b><span>MIT licensed. Read the code.</span></div>
-  </div>
-</section>
-
-<section id="how" class="section">
-  <div class="wrap">
-    <div class="rule reveal"><span class="line"></span><span class="pill-mono">How it protects you</span><span class="line"></span></div>
-    <div class="head-block reveal">
-      <h2>Clear warnings, in words anyone understands.</h2>
-      <p class="lead">Every check runs on your device. When something looks off, Fish Catcher tells you what and why, so you learn to spot it yourself.</p>
+  <header class="hero">
+    <canvas id="hero-canvas" class="hero-anim" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <div class="hero-copy reveal">
+        <h1>Spot fake and phishing sites before you get caught.</h1>
+        <p class="lead">Fish Catcher checks the site you are on and warns you in plain language when it looks like a
+          scam. It never blocks you, and nothing leaves your device.</p>
+        <div class="actions">
+          <a id="install-btn" class="btn btn-primary" href="#install">
+            <span class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="M3 9h18" />
+              </svg></span>
+            Install Fish Catcher
+          </a>
+          <a class="btn" href="#how">See how it works</a>
+        </div>
+        <p class="note">Chrome, Brave, Edge, Opera and Firefox. English and Georgian.</p>
+      </div>
     </div>
+  </header>
 
-    <div class="bento">
-      <div class="tile wide reveal">
+  <section class="proof">
+    <div class="wrap">
+      <div class="cell"><b>On your device</b><span>Every check runs locally. Works offline.</span></div>
+      <div class="cell"><b>No account</b><span>No sign up, no tracking, no profile.</span></div>
+      <div class="cell"><b>Warns, never blocks</b><span>You stay in control of every page.</span></div>
+      <div class="cell"><b>Open source</b><span>MIT licensed. Read the code.</span></div>
+    </div>
+  </section>
+
+  <section id="how" class="section">
+    <div class="wrap">
+      <div class="rule reveal"><span class="line"></span><span class="pill-mono">How it protects you</span><span
+          class="line"></span></div>
+      <div class="head-block reveal">
+        <h2>Clear warnings, in words anyone understands.</h2>
+        <p class="lead">Every check runs on your device. When something looks off, Fish Catcher tells you what and why,
+          so you learn to spot it yourself.</p>
+      </div>
+
+      <div class="bento">
+        <div class="tile wide reveal">
+          <div>
+            <span class="ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+                <path d="M9.5 9a2.5 2.5 0 1 1 3 2.4c-.6.2-1 .8-1 1.6" />
+                <path d="M12 17h.01" />
+              </svg>
+              <h3 style="color: var(--text);margin-left: 10px;">Plain language, not scary jargon</h3>
+            </span>
+            <p>Instead of a red screen, you get a sentence or two you can act on. The exact reasons behind every
+              warning, spelled out.</p>
+          </div>
+          <div class="reasons">
+            <div class="row">Domain looks like a misspelling of <span class="u">paypal.com</span></div>
+            <div class="row">Uses a high abuse domain ending (<span class="u">.tk</span>)</div>
+            <div class="row">Asks for a password on a site that is not known</div>
+          </div>
+        </div>
+
+        <div class="tile reveal">
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 8v4l2.5 1.5" />
+            </svg>
+            <h3 style="color: var(--text);margin-left: 10px;">A risk color you read at a glance</h3>
+          </span>
+          <p>The toolbar icon turns one of four colors. You always decide what to do next.</p>
+          <div class="chipset" style="margin-top:16px">
+            <div class="chip g"><span class="dot"></span><b>Green</b><span>No suspicious signs.</span></div>
+            <div class="chip a"><span class="dot"></span><b>Yellow</b><span>A little unusual. Double check.</span></div>
+            <div class="chip o"><span class="dot"></span><b>Orange</b><span>Several indicators. Be careful.</span></div>
+            <div class="chip r"><span class="dot"></span><b>Red</b><span>Strong signs of a fake. Do not log in.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tile reveal">
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+              <path d="M14 14h3v3M21 21v.01M17 21h.01M21 17h.01" />
+            </svg>
+            <h3 style="color: var(--text);margin-left: 10px;">Checks QR codes</h3>
+          </span>
+          <p style="margin-bottom: 5px;">Right click any QR image to read the link inside before you trust it. Fully on your device.</p>
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 15 15 9" />
+              <path d="M11 6.5 12 5.5a5 5 0 0 1 7 7l-1 1" />
+              <path d="M13 17.5 12 18.5a5 5 0 0 1-7-7l1-1" />
+            </svg>
+            <h3 style="color: var(--text);margin-left: 10px;">Watches links and downloads</h3>
+          </span>
+          <p style="margin-bottom: 5px;">Flags a link whose text hides a different destination, and a download disguised as a safe file.</p>
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M12 2a10 10 0 0 0-3.5 19.4" />
+              <path d="M12 2a10 10 0 0 1 3.5 19.4" />
+              <path d="M2 12h20" />
+              <path d="M12 2c2.5 2.7 3.9 6.3 4 10-.1 3.7-1.5 7.3-4 10-2.5-2.7-3.9-6.3-4-10 .1-3.7 1.5-7.3 4-10Z" />
+            </svg>
+            <h3 style="color: var(--text);margin-left: 10px;">Runs offline, on your device</h3>
+          </span>
+          <p>The lists it checks against ship inside the extension. No connection needed, nothing sent out.</p>
+        </div>
+
+        <!-- <div class="tile reveal">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M9 15 15 9" />
+              <path d="M11 6.5 12 5.5a5 5 0 0 1 7 7l-1 1" />
+              <path d="M13 17.5 12 18.5a5 5 0 0 1-7-7l1-1" />
+            </svg></span>
+          <h3>Watches links and downloads</h3>
+          <p>Flags a link whose text hides a different destination, and a download disguised as a safe file.</p>
+        </div>
+
+        <div class="tile reveal">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M12 2a10 10 0 0 0-3.5 19.4" />
+              <path d="M12 2a10 10 0 0 1 3.5 19.4" />
+              <path d="M2 12h20" />
+              <path d="M12 2c2.5 2.7 3.9 6.3 4 10-.1 3.7-1.5 7.3-4 10-2.5-2.7-3.9-6.3-4-10 .1-3.7 1.5-7.3 4-10Z" />
+            </svg></span>
+          <h3>Runs offline, on your device</h3>
+          <p>The lists it checks against ship inside the extension. No connection needed, nothing sent out.</p>
+        </div> -->
+
+        <div class="tile reveal">
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M12 2 4 5v6c0 5 3.4 7.8 8 9 4.6-1.2 8-4 8-9V5l-8-3Z" />
+              <path d="M12 8v4" />
+              <path d="M12 15h.01" />
+            </svg>
+            <h3 style="color: var(--text);margin-left: 10px;">Catches scam packs</h3>
+          </span>
+          <p>Flags pages that ask for a crypto wallet recovery phrase or private key, and fake tech-support pages that
+            tell you to call a number.</p>
+        </div>
+
+        <div class="tile reveal">
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+              <path d="M17 11a3 3 0 1 0 0-6" />
+              <path d="M2 20c0-3 3.1-5 7-5s7 2 7 5" />
+              <path d="M17 15c2.7.3 5 2 5 5" />
+            </svg>
+            <h3 style="color: var(--text);margin-left: 10px;">Family mode</h3>
+          </span>
+          <p>Bigger text and a clear alert on dangerous sites, with an optional one-tap email to a helper. Nothing sends
+            until you press send.</p>
+        </div>
+
+        <div class="tile wide solo reveal">
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M4 4h16v12H7l-3 3V4Z" />
+              <path d="M12 8v3" />
+              <path d="M12 13h.01" />
+            </svg>
+            <h3 style="color: var(--text);margin-left: 10px;">Report a site in one tap</h3>
+          </span>
+          <p>One button opens a pre-filled report. A maintainer reviews it before anything reaches the threat list, so
+            the lists stay clean.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-sm">
+    <div class="wrap">
+      <div class="head-block reveal">
+        <h2>Three steps, and none of them are yours.</h2>
+        <p class="lead">Fish Catcher works quietly in the background. You only hear from it when something is worth a
+          second look.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="n">01 / Check</div>
+          <h3>It reads the page</h3>
+          <p>Fish Catcher looks at the address and content of the site you are on, entirely on your device.</p>
+        </div>
+        <div class="step reveal">
+          <div class="n">02 / Warn</div>
+          <h3>It sets a risk color</h3>
+          <p>Lookalike domains, fake login pages, confusing links and known bad sites each raise the level.</p>
+        </div>
+        <div class="step reveal">
+          <div class="n">03 / Learn</div>
+          <h3>It explains why</h3>
+          <p>Every warning is written plainly, so the next scam is one you recognise on your own.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="privacy" class="section">
+    <div class="wrap split">
+      <div class="head-block reveal">
+        <p class="eyebrow">Your privacy</p>
+        <h2>It works for you, not on you.</h2>
+        <p class="lead">Fish Catcher does its checks locally, using lists that ship inside the extension. You can verify
+          that by reading the code.</p>
+      </div>
+      <div class="priv-list reveal">
+        <div class="priv-item">
+          <h3>No account, no tracking</h3>
+          <p>Nothing from the pages you visit is sent anywhere. There is no sign up and no profile.</p>
+        </div>
+        <div class="priv-item">
+          <h3>Online checks are opt in</h3>
+          <p>Two optional features can look something up online. Both stay off until you turn them on, and each says
+            exactly what it sends.</p>
+        </div>
+        <div class="priv-item">
+          <h3>Open and verifiable</h3>
+          <p>The whole thing is MIT licensed. The privacy promise is one you can check yourself.</p>
+          <a class="more" href="/privacy">Read the full privacy policy</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="install" class="section-sm">
+    <div class="wrap">
+      <div class="callout reveal">
         <div>
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M9.5 9a2.5 2.5 0 1 1 3 2.4c-.6.2-1 .8-1 1.6"/><path d="M12 17h.01"/></svg></span>
-          <h3>Plain language, not scary jargon</h3>
-          <p>Instead of a red screen, you get a sentence or two you can act on. The exact reasons behind every warning, spelled out.</p>
+          <h2>Free to install, free forever.</h2>
+          <p class="lead">Add Fish Catcher in about a minute. It protects you right away, and short, plain lessons help
+            you learn to spot scams yourself.</p>
         </div>
-        <div class="reasons">
-          <div class="row">Domain looks like a misspelling of <span class="u">paypal.com</span></div>
-          <div class="row">Uses a high abuse domain ending (<span class="u">.tk</span>)</div>
-          <div class="row">Asks for a password on a site that is not known</div>
-        </div>
-      </div>
-
-      <div class="tile reveal">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.5"/></svg></span>
-        <h3>A risk color you read at a glance</h3>
-        <p>The toolbar icon turns one of four colors. You always decide what to do next.</p>
-        <div class="chipset" style="margin-top:16px">
-          <div class="chip g"><span class="dot"></span><b>Green</b><span>No suspicious signs.</span></div>
-          <div class="chip a"><span class="dot"></span><b>Yellow</b><span>A little unusual. Double check.</span></div>
-          <div class="chip o"><span class="dot"></span><b>Orange</b><span>Several indicators. Be careful.</span></div>
-          <div class="chip r"><span class="dot"></span><b>Red</b><span>Strong signs of a fake. Do not log in.</span></div>
+        <div class="actions">
+          <a class="btn btn-primary" href="/docs#install">Install guide</a>
+          <a class="btn" href="/learn">Open the lessons</a>
         </div>
       </div>
-
-      <div class="tile reveal">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 21v.01M17 21h.01M21 17h.01"/></svg></span>
-        <h3>Checks QR codes</h3>
-        <p>Right click any QR image to read the link inside before you trust it. Fully on your device.</p>
-      </div>
-
-      <div class="tile reveal">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15 15 9"/><path d="M11 6.5 12 5.5a5 5 0 0 1 7 7l-1 1"/><path d="M13 17.5 12 18.5a5 5 0 0 1-7-7l1-1"/></svg></span>
-        <h3>Watches links and downloads</h3>
-        <p>Flags a link whose text hides a different destination, and a download disguised as a safe file.</p>
-      </div>
-
-      <div class="tile reveal">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 0-3.5 19.4"/><path d="M12 2a10 10 0 0 1 3.5 19.4"/><path d="M2 12h20"/><path d="M12 2c2.5 2.7 3.9 6.3 4 10-.1 3.7-1.5 7.3-4 10-2.5-2.7-3.9-6.3-4-10 .1-3.7 1.5-7.3 4-10Z"/></svg></span>
-        <h3>Runs offline, on your device</h3>
-        <p>The lists it checks against ship inside the extension. No connection needed, nothing sent out.</p>
-      </div>
-
-      <div class="tile reveal">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 7.8 8 9 4.6-1.2 8-4 8-9V5l-8-3Z"/><path d="M12 8v4"/><path d="M12 15h.01"/></svg></span>
-        <h3>Catches scam packs</h3>
-        <p>Flags pages that ask for a crypto wallet recovery phrase or private key, and fake tech-support pages that tell you to call a number.</p>
-      </div>
-
-      <div class="tile reveal">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M17 11a3 3 0 1 0 0-6"/><path d="M2 20c0-3 3.1-5 7-5s7 2 7 5"/><path d="M17 15c2.7.3 5 2 5 5"/></svg></span>
-        <h3>Family mode</h3>
-        <p>Bigger text and a clear alert on dangerous sites, with an optional one-tap email to a helper. Nothing sends until you press send.</p>
-      </div>
-
-      <div class="tile wide solo reveal">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H7l-3 3V4Z"/><path d="M12 8v3"/><path d="M12 13h.01"/></svg></span>
-        <h3>Report a site in one tap</h3>
-        <p>One button opens a pre-filled report. A maintainer reviews it before anything reaches the threat list, so the lists stay clean.</p>
-      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="section-sm">
-  <div class="wrap">
-    <div class="head-block reveal">
-      <h2>Three steps, and none of them are yours.</h2>
-      <p class="lead">Fish Catcher works quietly in the background. You only hear from it when something is worth a second look.</p>
-    </div>
-    <div class="steps">
-      <div class="step reveal">
-        <div class="n">01 / Check</div>
-        <h3>It reads the page</h3>
-        <p>Fish Catcher looks at the address and content of the site you are on, entirely on your device.</p>
+  <footer class="site-foot">
+    <div class="wrap">
+      <div class="about">
+        <a class="brand" href="/"><span class="wm"><span class="wm-swap"><span class="wm-fish">Fish</span><span
+                class="wm-phish" data-text="Phish">Phish</span></span> Catcher</span></a>
+        <p>Free, open-source phishing protection for people who are not security experts.</p>
+        <p class="foot-note">MIT licensed. No account, no tracking, nothing leaves your browser.</p>
       </div>
-      <div class="step reveal">
-        <div class="n">02 / Warn</div>
-        <h3>It sets a risk color</h3>
-        <p>Lookalike domains, fake login pages, confusing links and known bad sites each raise the level.</p>
-      </div>
-      <div class="step reveal">
-        <div class="n">03 / Learn</div>
-        <h3>It explains why</h3>
-        <p>Every warning is written plainly, so the next scam is one you recognise on your own.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="privacy" class="section">
-  <div class="wrap split">
-    <div class="head-block reveal">
-      <p class="eyebrow">Your privacy</p>
-      <h2>It works for you, not on you.</h2>
-      <p class="lead">Fish Catcher does its checks locally, using lists that ship inside the extension. You can verify that by reading the code.</p>
-    </div>
-    <div class="priv-list reveal">
-      <div class="priv-item">
-        <h3>No account, no tracking</h3>
-        <p>Nothing from the pages you visit is sent anywhere. There is no sign up and no profile.</p>
-      </div>
-      <div class="priv-item">
-        <h3>Online checks are opt in</h3>
-        <p>Two optional features can look something up online. Both stay off until you turn them on, and each says exactly what it sends.</p>
-      </div>
-      <div class="priv-item">
-        <h3>Open and verifiable</h3>
-        <p>The whole thing is MIT licensed. The privacy promise is one you can check yourself.</p>
-        <a class="more" href="/privacy">Read the full privacy policy</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section-sm">
-  <div class="wrap">
-    <div class="callout reveal">
       <div>
-        <h2>See how it compares.</h2>
-        <p class="lead">Honest, side-by-side looks at how Fish Catcher stacks up against other phishing tools, including where it is weaker.</p>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#install">Install</a></li>
+          <li><a href="/privacy">Privacy</a></li>
+        </ul>
       </div>
-      <div class="actions">
-        <a class="btn" href="/fishcatcher-vs-netcraft">vs Netcraft</a>
-        <a class="btn" href="/fishcatcher-vs-safe-browsing">vs Safe Browsing</a>
-        <a class="btn" href="/fishcatcher-vs-bitdefender-trafficlight">vs TrafficLight</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="install" class="section-sm">
-  <div class="wrap">
-    <div class="callout reveal">
       <div>
-        <h2>Free to install, free forever.</h2>
-        <p class="lead">Add Fish Catcher in about a minute. It protects you right away, and short, plain lessons help you learn to spot scams yourself.</p>
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="/learn">Lessons</a></li>
+          <li><a href="/docs">Docs</a></li>
+        </ul>
       </div>
-      <div class="actions">
-        <a class="btn btn-primary" href="/docs#install">Install guide</a>
-        <a class="btn" href="/learn">Open the lessons</a>
+      <div>
+        <h4>Compare</h4>
+        <ul>
+          <li><a href="/fishcatcher-vs-netcraft">vs Netcraft</a></li>
+          <li><a href="/fishcatcher-vs-safe-browsing">vs Safe Browsing</a></li>
+          <li><a href="/fishcatcher-vs-bitdefender-trafficlight">vs TrafficLight</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Open source</h4>
+        <ul>
+          <li><a href="https://github.com/Topurrra/fishcatcher">GitHub</a></li>
+          <li><a href="https://github.com/Topurrra/fishcatcher-registry">Threat registry</a></li>
+          <li><a href="https://github.com/Topurrra/fishcatcher/blob/main/LICENSE">MIT license</a></li>
+        </ul>
       </div>
     </div>
-  </div>
-</section>
+  </footer>
 
-<footer class="site-foot">
-  <div class="wrap">
-    <div class="about">
-      <a class="brand" href="/"><span class="wm"><span class="wm-swap"><span class="wm-fish">Fish</span><span class="wm-phish" data-text="Phish">Phish</span></span> Catcher</span></a>
-      <p>Free, open-source phishing protection for people who are not security experts.</p>
-      <p class="foot-note">MIT licensed. No account, no tracking, nothing leaves your browser.</p>
-    </div>
-    <div>
-      <h4>Product</h4>
-      <ul>
-        <li><a href="#how">How it works</a></li>
-        <li><a href="#install">Install</a></li>
-        <li><a href="/privacy">Privacy</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4>Learn</h4>
-      <ul>
-        <li><a href="/learn">Lessons</a></li>
-        <li><a href="/docs">Docs</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4>Compare</h4>
-      <ul>
-        <li><a href="/fishcatcher-vs-netcraft">vs Netcraft</a></li>
-        <li><a href="/fishcatcher-vs-safe-browsing">vs Safe Browsing</a></li>
-        <li><a href="/fishcatcher-vs-bitdefender-trafficlight">vs TrafficLight</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4>Open source</h4>
-      <ul>
-        <li><a href="https://github.com/Topurrra/fishcatcher">GitHub</a></li>
-        <li><a href="https://github.com/Topurrra/fishcatcher-registry">Threat registry</a></li>
-        <li><a href="https://github.com/Topurrra/fishcatcher/blob/main/LICENSE">MIT license</a></li>
-      </ul>
-    </div>
-  </div>
-</footer>
-
-<script src="/assets/theme.js"></script>
-<script src="/assets/reveal.js"></script>
-<script src="/assets/hero-anim.js"></script>
-<script src="/assets/browser-button.js"></script>
+  <script src="/assets/theme.js"></script>
+  <script src="/assets/reveal.js"></script>
+  <script src="/assets/hero-anim.js"></script>
+  <script src="/assets/browser-button.js"></script>
 </body>
+
 </html>
