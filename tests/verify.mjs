@@ -162,6 +162,19 @@ check('legit: http-only site stays low, not silent-fail', () => {
   assert.ok(r.score > 0 && r.score < 20);
 });
 
+check('engine: localhost / private LAN never flagged (dev + home network)', () => {
+  for (const url of [
+    'http://127.0.0.1/', 'http://127.0.0.1:3000/login', 'http://localhost:8080/',
+    'http://192.168.1.1/', 'http://10.0.0.5/', 'http://172.16.4.9/', 'http://[::1]:5173/',
+  ]) {
+    const r = analyzeUrl(url, data);
+    assert.equal(r.score, 0, `${url} reasons=${r.reasons.map((x) => x.key)}`);
+    assert.equal(r.level, 'low');
+  }
+  // A real public IP is still flagged.
+  assert.equal(analyzeUrl('http://185.22.64.3/login', data).level, 'high');
+});
+
 check('engine: non-http input ignored', () => {
   assert.equal(analyzeUrl('ftp://example.com/', data), null);
   assert.equal(analyzeUrl('not a url', data), null);

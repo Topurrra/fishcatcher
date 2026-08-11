@@ -1,5 +1,5 @@
 // Pure URL analysis: string in → {score, level, reasons} out. No extension APIs.
-import { runSignals, isIpAddress } from './signals.js';
+import { runSignals, isIpAddress, isLocalHost } from './signals.js';
 import { runAitm } from './aitm.js';
 import { runScamPacks } from './scampacks.js';
 import { registrableDomain } from './psl.js';
@@ -27,6 +27,10 @@ export function analyzeUrl(input, data, opts) {
   const result = { url: input, host, registrable, score: 0, level: 'low', reasons: [] };
 
   if (data.safeList.has(registrable) || data.trustList?.has(registrable)) return result;
+
+  // localhost / loopback / private-LAN addresses are developer and home-network
+  // hosts, never phishing targets, so they stay quiet (including on plain http).
+  if (isLocalHost(host)) return result;
 
   // Softer allowlist: known-legitimate domains still get scored, but brand-
   // impersonation signals are suppressed (see signals.js) to avoid flagging
