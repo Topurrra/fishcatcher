@@ -3,20 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Learn to Spot Phishing: QR, Login, Domain &amp; More</title>
-<meta name="description" content="Short, plain-language lessons on how phishing works and how to spot it: QR code scams, fake login pages, lookalike domains, AiTM, and more.">
-<link rel="canonical" href="https://fishcatcher.dev/learn">
+<title>Phishing Detection False-Positive Benchmark (0.005%)</title>
+<meta name="description" content="How accurate is Fish Catcher? Measured false-positive rate of 0.005% over 100,000 legitimate domains, with a reproducible method and version history.">
+<link rel="canonical" href="https://fishcatcher.dev/benchmark">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Fish Catcher">
-<meta property="og:title" content="Learn to Spot Phishing: QR, Login, Domain &amp; More">
-<meta property="og:description" content="Short, plain-language lessons on how phishing works and how to spot it: QR code scams, fake login pages, lookalike domains, AiTM, and more.">
-<meta property="og:url" content="https://fishcatcher.dev/learn">
+<meta property="og:title" content="Phishing Detection False-Positive Benchmark (0.005%)">
+<meta property="og:description" content="How accurate is Fish Catcher? Measured false-positive rate of 0.005% over 100,000 legitimate domains, with a reproducible method and version history.">
+<meta property="og:url" content="https://fishcatcher.dev/benchmark">
 <meta property="og:image" content="https://fishcatcher.dev/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Learn to Spot Phishing: QR, Login, Domain &amp; More">
-<meta name="twitter:description" content="Short, plain-language lessons on how phishing works and how to spot it: QR code scams, fake login pages, lookalike domains, AiTM, and more.">
+<meta name="twitter:title" content="Phishing Detection False-Positive Benchmark (0.005%)">
+<meta name="twitter:description" content="How accurate is Fish Catcher? Measured false-positive rate of 0.005% over 100,000 legitimate domains, with a reproducible method and version history.">
 <meta name="twitter:image" content="https://fishcatcher.dev/assets/og.jpg">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
@@ -24,8 +24,8 @@
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/docs.css">
 <script src="/assets/theme-init.js"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fishcatcher.dev/"},{"@type":"ListItem","position":2,"name":"Learn","item":"https://fishcatcher.dev/learn"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"Phishing lessons","itemListElement":[{"@type":"ListItem","position":1,"url":"https://fishcatcher.dev/qr-code-phishing","name":"How QR code phishing (quishing) scams work"},{"@type":"ListItem","position":2,"url":"https://fishcatcher.dev/device-code-phishing","name":"What is a device-code phishing attack?"},{"@type":"ListItem","position":3,"url":"https://fishcatcher.dev/aitm-attack","name":"What is an AiTM (adversary-in-the-middle) attack?"},{"@type":"ListItem","position":4,"url":"https://fishcatcher.dev/lookalike-domain","name":"How to spot a lookalike domain"},{"@type":"ListItem","position":5,"url":"https://fishcatcher.dev/fake-login-page","name":"How to spot a fake login page"},{"@type":"ListItem","position":6,"url":"https://fishcatcher.dev/disguised-download","name":"How to spot a disguised download"},{"@type":"ListItem","position":7,"url":"https://fishcatcher.dev/golden-rules","name":"Golden rules for avoiding phishing"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Dataset","name":"Fish Catcher false-positive benchmark","description":"False-positive rate of the Fish Catcher passive URL engine over 100,000 legitimate domains from the Majestic Million.","url":"https://fishcatcher.dev/benchmark","creator":{"@type":"Organization","name":"Fish Catcher"},"license":"https://opensource.org/licenses/MIT","dateModified":"2026-08-11","isAccessibleForFree":true,"measurementTechnique":"Passive URL analysis, counting high and critical warnings","variableMeasured":"phishing false-positive rate"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fishcatcher.dev/"},{"@type":"ListItem","position":2,"name":"Transparency","item":"https://fishcatcher.dev/transparency"},{"@type":"ListItem","position":3,"name":"Benchmark","item":"https://fishcatcher.dev/benchmark"}]}</script>
 </head>
 <body>
 
@@ -44,30 +44,58 @@
 
 <main class="wrap doc-article">
   <article class="docs-main">
-    <div class="breadcrumb"><a href="/">Home</a> / Learn</div>
-    <h1>Learn to spot a scam</h1>
+    <div class="breadcrumb"><a href="/">Home</a> / <a href="/transparency">Transparency</a> / Benchmark</div>
+    <h1>False-positive benchmark</h1>
     <div class="meta-row">
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.5"/></svg> Updated <time datetime="2026-08-11">11 August 2026</time></span>
       <span class="sep"></span>
       <a href="https://github.com/Topurrra/fishcatcher"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11 11 0 0 1 6 0C17 4.6 18 4.9 18 4.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg> View source</a>
     </div>
-    <div class="rule"><span class="line"></span><span class="pill-mono">Stay safe</span><span class="line"></span></div>
+    <div class="rule"><span class="line"></span><span class="pill-mono">Show the numbers</span><span class="line"></span></div>
 
-    <p class="lead-p">Phishing uses the same handful of tricks again and again. Once you can name them, they are much easier to catch. Each lesson is short, plain, and free.</p>
-    <h2 id="lessons">The lessons</h2>
-    <div class="article-cards">
-      <a href="/qr-code-phishing"><b>How QR code phishing (quishing) scams work</b><span>QR code phishing, also called quishing, hides a scam link inside a QR code.</span></a>
-      <a href="/device-code-phishing"><b>What is a device-code phishing attack?</b><span>Device code phishing tricks you into approving a sign-in on your own account.</span></a>
-      <a href="/aitm-attack"><b>What is an AiTM (adversary-in-the-middle) attack?</b><span>An AiTM attack sits between you and a real login to steal your session, even with MFA.</span></a>
-      <a href="/lookalike-domain"><b>How to spot a lookalike domain</b><span>A lookalike domain copies a trusted brand with small spelling or character tricks.</span></a>
-      <a href="/fake-login-page"><b>How to spot a fake login page</b><span>.</span></a>
-      <a href="/disguised-download"><b>How to spot a disguised download</b><span>.</span></a>
-      <a href="/golden-rules"><b>Golden rules for avoiding phishing</b><span>.</span></a>
+    <p class="lead-p">A false positive is a warning shown on a site that is actually fine, and the false-positive rate is the share of legitimate sites a detector wrongly warns about.</p>
+    <p>A warning tool is only useful if it stays quiet on normal sites. So we measure how often Fish Catcher cries wolf, publish the number, and make it reproducible. If it is not measured, it is just a claim.</p>
+
+    <h2 id="method">Method</h2>
+    <p>We run the address-only part of the Fish Catcher engine, with no page-content signals, over the Majestic Million, a public list of the most-linked websites. These are treated as known-legitimate. We count how many the engine would warn about at <b>high</b> or <b>critical</b>, the two levels that actually alarm a user, and divide by the total scanned. Lower is better.</p>
+    <ul>
+      <li>Corpus: Majestic Million, first 100,000 domains.</li>
+      <li>Engine: the shipped passive URL analyzer (no page content, no cloud lookups).</li>
+      <li>Metric: (high + critical warnings) / total domains scanned.</li>
+    </ul>
+
+    <h2 id="result">Latest result</h2>
+    <p>Latest run, <time datetime="2026-08-11">11 August 2026</time>, over 100,000 legitimate sites:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">Measure</th><th scope="col">Value</th></tr></thead>
+        <tbody>
+          <tr><td>Warnings at high</td><td>5</td></tr>
+          <tr><td>Warnings at critical</td><td>0</td></tr>
+          <tr><td>Rate</td><td>0.005% (5 in 100,000)</td></tr>
+        </tbody>
+      </table>
     </div>
-    <p>Fish Catcher puts these checks in your browser and warns you in plain language when a site looks like one of these tricks. It never blocks a page; you always decide.</p>
+    <p>The five flagged sites were all very short, digit-heavy names on high-abuse endings, like <code>hy315.cc</code>. The offending domains are printed by the audit, so the number is auditable.</p>
+
+    <h2 id="history">Version history</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">Date</th><th scope="col">Corpus</th><th scope="col">High</th><th scope="col">Critical</th><th scope="col">Rate</th></tr></thead>
+        <tbody>
+          <tr><td>2026-08-11</td><td>Majestic Million, 100,000</td><td>5</td><td>0</td><td>0.005%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>We plan to rerun this monthly and add a row each time, so the trend stays public.</p>
+
+    <h2 id="reproduce">Reproduce it</h2>
+    <p>Clone the source repository and run the audit. It prints every domain it flagged, so you can check the number yourself:</p>
+    <pre data-lang="bash"><code>node scripts/fp-audit.mjs</code></pre>
+    <p>Add <code>--selftest</code> to check the harness on a small built-in set, <code>--limit N</code> to scan fewer domains, or <code>--cache path.csv</code> to reuse an already-downloaded corpus.</p>
 
     <div class="prevnext">
-      <a href="/"><small>Home</small>Back to the overview</a>
+      <a href="/transparency"><small>Transparency</small>Transparency</a>
       <a class="nx" href="/"><small>Home</small>Back to the overview</a>
     </div>
   </article>

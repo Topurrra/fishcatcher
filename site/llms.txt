@@ -1,0 +1,44 @@
+# Fish Catcher
+
+> Fish Catcher is a free, open-source (MIT) browser extension that warns you, in plain language, when a website looks like phishing or a scam. It never blocks a page, and its default checks run entirely on your device, so nothing about the pages you visit is sent anywhere.
+
+## What it is
+
+- A Manifest V3 browser extension for Chrome, Brave, Edge, Opera, and Firefox.
+- Built for non-technical users. It shows a risk color and explains why in a sentence or two.
+- Risk colors: green (no suspicious signs), yellow (a little unusual), orange (several indicators), red (strong signs of a fake).
+- Local-first and private by default: no account, no tracking, no server. Optional online features are off until you turn them on.
+
+## What it detects
+
+- Brand impersonation: misspelled or look-alike domains and homoglyph tricks.
+- URL tricks: raw IP addresses, the @ trick, high-abuse domain endings, long subdomain chains, unencrypted logins, digit-heavy names.
+- Known-bad lists: a bundled blocklist plus a daily community feed (Phishing.Database, URLhaus by abuse.ch, and OpenPhish), matched on your device.
+- Page checks: a login form on a site it does not know, and device-code sign-in scams.
+- On-device model: spots the random, computer-generated addresses fresh phishing uses.
+- AiTM (adversary-in-the-middle): a sign-in or code prompt on a site whose address does not match the brand it imitates.
+- Scam packs: pages asking for a crypto wallet recovery phrase or private key, and fake tech-support "call this number" pages.
+- QR codes: reads the link inside a QR image on your device before you trust it.
+- Optional layers (off by default): Google Safe Browsing (with your own free key) and an RDAP domain-age check.
+
+## Accuracy
+
+- Measured false-positive rate: 0.005% (5 warnings at high, 0 at critical) across 100,000 legitimate domains from the Majestic Million, as of 2026-08-11.
+- The audit is reproducible: run `node scripts/fp-audit.mjs` in the source repository. It prints every domain it flagged.
+
+## Facts
+
+- License: MIT (free and open source).
+- Privacy: on-device by default; nothing about your browsing leaves your browser unless you enable an optional online feature, and each sends only the one domain it needs.
+- Source (extension): https://github.com/Topurrra/fishcatcher
+- Threat registry: https://github.com/Topurrra/fishcatcher-registry
+- Website: https://fishcatcher.dev
+
+## Key pages
+
+- Home: https://fishcatcher.dev/
+- Documentation: https://fishcatcher.dev/docs
+- Learn (phishing education): https://fishcatcher.dev/learn
+- Privacy policy: https://fishcatcher.dev/privacy
+- Transparency and false-positive benchmark: https://fishcatcher.dev/transparency
+- Benchmark dataset: https://fishcatcher.dev/benchmark

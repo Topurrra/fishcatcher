@@ -1,0 +1,21 @@
+# Fish Catcher (fishcatcher.dev) - open source, nothing to hide.
+User-agent: *
+Allow: /
+
+# AI crawlers are explicitly welcome to read and cite this site.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://fishcatcher.dev/sitemap.xml

@@ -61,6 +61,14 @@
 
 /* ── content ─────────────────────────────────────────── */
 .docs-main { min-width: 0; max-width: 764px; margin: 0 auto; }
+/* standalone article pages (learn articles, comparisons, benchmark) */
+.doc-article { max-width: var(--wrap); margin: 0 auto; padding: 44px 24px 96px; }
+.article-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 8px 0 1.4em; }
+.article-cards a { display: block; border: 1px solid var(--border); border-radius: var(--r-card); padding: 18px; transition: border-color .2s, background .2s; }
+.article-cards a:hover { border-color: var(--border-strong); background: var(--surface-2); text-decoration: none; }
+.article-cards b { display: block; margin-bottom: 4px; color: var(--text); }
+.article-cards span { color: var(--muted); font-size: 0.92rem; }
+@media (max-width: 720px) { .article-cards { grid-template-columns: 1fr; } }
 .breadcrumb { color: var(--muted); font-size: 0.85rem; margin-bottom: 18px; }
 .breadcrumb a { color: var(--muted); }
 .breadcrumb a:hover { color: var(--text); text-decoration: none; }
@@ -77,7 +85,9 @@
 
 .docs-main h2 { font-size: 1.5rem; margin: 44px 0 14px; scroll-margin-top: 80px; }
 .docs-main h3 { font-size: 1.08rem; margin: 28px 0 8px; scroll-margin-top: 80px; }
-.docs-main p, .docs-main li { color: var(--text); }
+.docs-main p { color: var(--text); margin: 0 0 1.1em; }
+.docs-main li { color: var(--text); }
+.docs-main h3 + p, .docs-main .lead-p + * { margin-top: 0; }
 .docs-main .lead-p { color: var(--muted); font-size: 1.06rem; }
 .docs-main ul, .docs-main ol { padding-left: 22px; margin: 0 0 1em; display: grid; gap: 7px; }
 .docs-main :not(pre) > code {

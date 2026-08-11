@@ -1,4 +1,5 @@
-// Theme toggle. The no-flash init runs inline in <head>; this only wires the button.
+// Theme toggle. The no-flash init runs from theme-init.js in <head>; this wires
+// the button via delegation so no inline onclick is needed (keeps the CSP strict).
 (function () {
   const KEY = 'fc-theme';
   function current() {
@@ -10,4 +11,7 @@
     document.documentElement.setAttribute('data-theme', next);
     try { localStorage.setItem(KEY, next); } catch (e) { /* ignore */ }
   };
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('.theme-toggle')) window.fcToggleTheme();
+  });
 })();

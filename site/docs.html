@@ -3,24 +3,41 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fish Catcher docs</title>
-<meta name="description" content="How to install and use Fish Catcher: what it checks, the risk levels, settings, automatic updates, and building from source.">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/site.css">
-<link rel="stylesheet" href="assets/docs.css">
-<script>(function(){try{var t=localStorage.getItem('fc-theme');if(!t)t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<title>Fish Catcher Docs: Install, Settings &amp; Risk Levels</title>
+<meta name="description" content="How to install and use Fish Catcher: what it checks, the green to red risk levels, settings including Google Safe Browsing, automatic updates, and building from source.">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/docs.css">
+<link rel="canonical" href="https://fishcatcher.dev/docs">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Fish Catcher">
+<meta property="og:title" content="Fish Catcher Docs: Install, Settings &amp; Risk Levels">
+<meta property="og:description" content="How to install and use Fish Catcher: what it checks, the green to red risk levels, settings including Google Safe Browsing, automatic updates, and building from source.">
+<meta property="og:url" content="https://fishcatcher.dev/docs">
+<meta property="og:image" content="https://fishcatcher.dev/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fish Catcher Docs: Install, Settings &amp; Risk Levels">
+<meta name="twitter:description" content="How to install and use Fish Catcher: what it checks, the green to red risk levels, settings including Google Safe Browsing, automatic updates, and building from source.">
+<meta name="twitter:image" content="https://fishcatcher.dev/assets/og.jpg">
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+<script src="/assets/theme-init.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does it slow down my browsing?","acceptedAnswer":{"@type":"Answer","text":"No. The checks are small string operations that run on your device in a fraction of a second."}},{"@type":"Question","name":"Will it block me from a site?","acceptedAnswer":{"@type":"Answer","text":"Never. Fish Catcher only warns. You always decide what to do."}},{"@type":"Question","name":"Does it send my browsing anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. See the privacy policy for exactly what the optional online features send."}},{"@type":"Question","name":"It flagged a site I trust. What now?","acceptedAnswer":{"@type":"Answer","text":"Open the panel and choose Trust this site. It stops being flagged, and you can undo it in Settings."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fishcatcher.dev/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://fishcatcher.dev/docs"}]}</script>
 </head>
 <body>
 
 <nav class="site-nav">
   <div class="wrap">
-    <a class="brand" href="index.html"><span class="wm"><span class="wm-swap"><span class="wm-fish">Fish</span><span class="wm-phish" data-text="Phish">Phish</span></span> Catcher</span></a>
+    <a class="brand" href="/"><span class="wm"><span class="wm-swap"><span class="wm-fish">Fish</span><span class="wm-phish" data-text="Phish">Phish</span></span> Catcher</span></a>
     <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="docs.html">Docs</a>
+      <a href="/">Home</a>
+      <a href="/docs">Docs</a>
       <a class="icon-btn" href="https://github.com/Topurrra/fishcatcher" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11 11 0 0 1 6 0C17 4.6 18 4.9 18 4.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg></a>
-      <a class="icon-btn" href="index.html#install" aria-label="Install Fish Catcher" title="Install Fish Catcher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 11 5 4 5-4"/><path d="M5 21h14"/></svg></a>
-      <button class="theme-toggle" onclick="fcToggleTheme()" aria-label="Switch light or dark theme">
+      <a class="icon-btn" href="/#install" aria-label="Install Fish Catcher" title="Install Fish Catcher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 11 5 4 5-4"/><path d="M5 21h14"/></svg></a>
+      <button class="theme-toggle" aria-label="Switch light or dark theme">
         <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
         <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
       </button>
@@ -35,8 +52,8 @@
       <kbd>/</kbd>
     </div>
     <nav class="tree" aria-label="Documentation navigation">
-      <a class="area" href="index.html">Home</a>
-      <a class="area current" href="docs.html">Documentation <span class="badge">Start here</span></a>
+      <a class="area" href="/">Home</a>
+      <a class="area current" href="/docs">Documentation <span class="badge">Start here</span></a>
       <div class="sub">
         <a href="#overview" class="active">Overview</a>
         <a href="#install">Install</a>
@@ -47,14 +64,14 @@
         <a href="#build">Build from source</a>
         <a href="#faq">FAQ</a>
       </div>
-      <a class="area" href="learn.html">Learn</a>
-      <a class="area" href="privacy.html">Privacy</a>
-      <a class="area" href="transparency.html">Transparency</a>
+      <a class="area" href="/learn">Learn</a>
+      <a class="area" href="/privacy">Privacy</a>
+      <a class="area" href="/transparency">Transparency</a>
     </nav>
   </aside>
 
   <main class="docs-main">
-    <div class="breadcrumb"><a href="index.html">Home</a> / Docs</div>
+    <div class="breadcrumb"><a href="/">Home</a> / Docs</div>
     <h1>Documentation</h1>
     <p class="sub">Install Fish Catcher, understand what it checks, and make it your own.</p>
     <div class="meta-row">
@@ -135,13 +152,13 @@ node scripts/package.mjs    # zip both builds for the stores</code></pre>
     <h3>Will it block me from a site?</h3>
     <p>Never. Fish Catcher only warns. You always decide what to do.</p>
     <h3>Does it send my browsing anywhere?</h3>
-    <p>No. See the <a href="privacy.html">privacy policy</a> for exactly what the optional online features send.</p>
+    <p>No. See the <a href="/privacy">privacy policy</a> for exactly what the optional online features send.</p>
     <h3>It flagged a site I trust. What now?</h3>
     <p>Open the panel and choose Trust this site. It stops being flagged, and you can undo it in Settings.</p>
 
     <div class="prevnext">
-      <a href="learn.html"><small>Learn</small>Anti-phishing lessons</a>
-      <a class="nx" href="privacy.html"><small>Next</small>Privacy policy</a>
+      <a href="/learn"><small>Learn</small>Anti-phishing lessons</a>
+      <a class="nx" href="/privacy"><small>Next</small>Privacy policy</a>
     </div>
   </main>
 
@@ -150,23 +167,23 @@ node scripts/package.mjs    # zip both builds for the stores</code></pre>
 <footer class="site-foot">
   <div class="wrap">
     <div class="about">
-      <a class="brand" href="index.html"><span class="wm"><span class="wm-swap"><span class="wm-fish">Fish</span><span class="wm-phish" data-text="Phish">Phish</span></span> Catcher</span></a>
+      <a class="brand" href="/"><span class="wm"><span class="wm-swap"><span class="wm-fish">Fish</span><span class="wm-phish" data-text="Phish">Phish</span></span> Catcher</span></a>
       <p>Free, open-source phishing protection for people who are not security experts.</p>
       <p class="foot-note">MIT licensed. No account, no tracking, nothing leaves your browser.</p>
     </div>
     <div>
       <h4>Product</h4>
       <ul>
-        <li><a href="index.html#how">How it works</a></li>
-        <li><a href="index.html#install">Install</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="/#how">How it works</a></li>
+        <li><a href="/#install">Install</a></li>
+        <li><a href="/privacy">Privacy</a></li>
       </ul>
     </div>
     <div>
       <h4>Learn</h4>
       <ul>
-        <li><a href="learn.html">Lessons</a></li>
-        <li><a href="docs.html">Docs</a></li>
+        <li><a href="/learn">Lessons</a></li>
+        <li><a href="/docs">Docs</a></li>
       </ul>
     </div>
     <div>
@@ -180,7 +197,7 @@ node scripts/package.mjs    # zip both builds for the stores</code></pre>
   </div>
 </footer>
 
-<script src="assets/theme.js"></script>
-<script src="assets/docs.js"></script>
+<script src="/assets/theme.js"></script>
+<script src="/assets/docs.js"></script>
 </body>
 </html>

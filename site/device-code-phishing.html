@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What Is a Device Code Phishing Attack and How It Works</title>
+<meta name="description" content="Device code phishing tricks you into approving a sign-in on your own account. Learn how the attack works, what it steals, and how to protect yourself.">
+<link rel="canonical" href="https://fishcatcher.dev/device-code-phishing">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Fish Catcher">
+<meta property="og:title" content="What Is a Device Code Phishing Attack and How It Works">
+<meta property="og:description" content="Device code phishing tricks you into approving a sign-in on your own account. Learn how the attack works, what it steals, and how to protect yourself.">
+<meta property="og:url" content="https://fishcatcher.dev/device-code-phishing">
+<meta property="og:image" content="https://fishcatcher.dev/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What Is a Device Code Phishing Attack and How It Works">
+<meta name="twitter:description" content="Device code phishing tricks you into approving a sign-in on your own account. Learn how the attack works, what it steals, and how to protect yourself.">
+<meta name="twitter:image" content="https://fishcatcher.dev/assets/og.jpg">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/docs.css">
+<script src="/assets/theme-init.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"What Is a Device Code Phishing Attack and How It Works","description":"Device code phishing tricks you into approving a sign-in on your own account. Learn how the attack works, what it steals, and how to protect yourself.","url":"https://fishcatcher.dev/device-code-phishing","mainEntityOfPage":"https://fishcatcher.dev/device-code-phishing","datePublished":"2026-08-11","dateModified":"2026-08-11","inLanguage":"en","author":{"@type":"Organization","name":"Fish Catcher"},"publisher":{"@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fishcatcher.dev/"},{"@type":"ListItem","position":2,"name":"Learn","item":"https://fishcatcher.dev/learn"},{"@type":"ListItem","position":3,"name":"What is a device-code phishing attack?","item":"https://fishcatcher.dev/device-code-phishing"}]}</script>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="wm"><span class="wm-swap"><span class="wm-fish">Fish</span><span class="wm-phish" data-text="Phish">Phish</span></span> Catcher</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/docs">Docs</a>
+      <a class="icon-btn" href="https://github.com/Topurrra/fishcatcher" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11 11 0 0 1 6 0C17 4.6 18 4.9 18 4.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg></a>
+      <a class="icon-btn" href="/#install" aria-label="Install Fish Catcher" title="Install Fish Catcher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 11 5 4 5-4"/><path d="M5 21h14"/></svg></a>
+      <button class="theme-toggle" aria-label="Switch light or dark theme"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg></button>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap doc-article">
+  <article class="docs-main">
+    <div class="breadcrumb"><a href="/">Home</a> / <a href="/learn">Learn</a> / What is a device-code phishing attack?</div>
+    <h1>What is a device-code phishing attack?</h1>
+    <div class="meta-row">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.5"/></svg> Updated <time datetime="2026-08-11">11 August 2026</time></span>
+      <span class="sep"></span>
+      <a href="https://github.com/Topurrra/fishcatcher"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11 11 0 0 1 6 0C17 4.6 18 4.9 18 4.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg> View source</a>
+    </div>
+    <div class="rule"><span class="line"></span><span class="pill-mono">Stay safe</span><span class="line"></span></div>
+
+<p class="lead-p">A device code phishing attack is a scam that tricks you into approving a sign-in code on your real account, which hands the attacker a logged-in session without ever seeing your password.</p>
+
+<h2 id="the-feature">The feature it abuses</h2>
+<p>Some devices are hard to type on. Think of a smart TV, a game console, or a printer. To sign in, these devices show a short code and ask you to visit a web page on your phone or computer, enter that code, and approve the login. The device then gets access. This is a real and useful feature built into many sign-in systems.</p>
+<p>Device code phishing turns that feature against you. The attacker starts the sign-in on their own device, receives the short code, and then sends that code to you. If you enter it and approve, you are not logging their device into your account by mistake. You are logging in for real, and the access lands in the attacker's hands.</p>
+
+<h2 id="how-it-works">How the attack works</h2>
+<p>The steps are simple, which is part of why it works.</p>
+<ul>
+<li>The attacker asks a sign-in service to start a device login. The service gives back a short code, for example a mix like WDJB-MFQK.</li>
+<li>The attacker contacts you, often by email or chat, pretending to be your workplace IT team, a help desk, or a service you use.</li>
+<li>The message asks you to go to a real, official sign-in page and enter the code to "verify your account", "keep your access", or "join a meeting".</li>
+<li>You visit the genuine page, sign in as normal, and approve the code. Because the page is real, nothing looks wrong.</li>
+<li>The service now treats the attacker's device as signed in as you. They get a session, and they can often refresh it to stay in for a long time.</li>
+</ul>
+<p>Notice what did not happen. You never handed over your password. Your two-factor step still ran. That is what makes this scam dangerous. It rides on top of a correct, safe login instead of trying to beat it.</p>
+
+<h2 id="why-it-fools-people">Why it fools careful people</h2>
+<p>Most phishing advice tells you to check the web address and never type your password into a strange site. Device code phishing sidesteps that advice. The page you visit is the real one, at the real address, such as microsoft.com or google.com. There is no fake site to spot.</p>
+<p>The trick lives entirely in the message that pushes you to enter the code. The attacker supplies a time limit, because the code expires in minutes, and that pressure stops you from pausing to think. The request sounds routine: verify, confirm, activate. People approve dozens of small prompts every week, so one more feels normal.</p>
+
+<h2 id="protect-yourself">How to protect yourself</h2>
+<p>The core rule is short. Only enter a device code that you started yourself, on a device that is in front of you right now.</p>
+<ul>
+<li>If a code arrives by email, text, or chat and asks you to type it into a sign-in page, stop. A real service does not send you a code and then ask you to enter it somewhere on its behalf.</li>
+<li>Ask a plain question: did I just try to sign in a TV, console, or app? If the answer is no, do not enter the code.</li>
+<li>Be suspicious of urgency. "Enter this in the next five minutes or lose access" is a pressure tactic, not a real deadline set by your safety.</li>
+<li>If a message claims to come from your IT team or a support desk, contact them through a channel you already trust before acting.</li>
+<li>Watch for requests to approve a sign-in you did not begin, even if everything else looks official.</li>
+</ul>
+<p>Fish Catcher helps here by watching for device code sign-in scams. When a page tries to walk you through entering a device code in a setting that looks like a scam, it raises a plain warning with a risk color and explains what it noticed. It never blocks the page. You stay in control and decide whether the request is one you actually started.</p>
+
+<h2 id="faq">Common questions</h2>
+<h3>How is this different from normal phishing?</h3>
+<p>Normal phishing sends you to a fake website to capture your password. Device code phishing sends you to the real website. You sign in correctly, but the code you approve gives access to the attacker's device. There is no fake page to catch, so the warning sign is the unexpected request to enter a code.</p>
+
+<h3>Does two-factor authentication stop this attack?</h3>
+<p>Not on its own. You complete your normal two-factor step during the login, and the attacker's device inherits the approved session. That is why the real defense is refusing to enter any code you did not request yourself.</p>
+
+<h3>What should I do if I already entered a code?</h3>
+<p>Act quickly. Sign out of all sessions on the affected account, change your password, and review the list of active sessions or connected devices for anything you do not recognize. If it is a work account, tell your IT or security team right away so they can revoke the access.</p>
+
+    <div class="prevnext">
+      <a href="/learn"><small>Learn</small>All lessons</a>
+      <a class="nx" href="/"><small>Home</small>Back to the overview</a>
+    </div>
+  </article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="about">
+      <a class="brand" href="/"><span class="wm"><span class="wm-swap"><span class="wm-fish">Fish</span><span class="wm-phish" data-text="Phish">Phish</span></span> Catcher</span></a>
+      <p>Free, open-source phishing protection for people who are not security experts.</p>
+      <p class="foot-note">MIT licensed. No account, no tracking, nothing leaves your browser.</p>
+    </div>
+    <div><h4>Product</h4><ul><li><a href="/#how">How it works</a></li><li><a href="/#install">Install</a></li><li><a href="/privacy">Privacy</a></li></ul></div>
+    <div><h4>Learn</h4><ul><li><a href="/learn">Lessons</a></li><li><a href="/docs">Docs</a></li><li><a href="/transparency">Transparency</a></li></ul></div>
+    <div><h4>Open source</h4><ul><li><a href="https://github.com/Topurrra/fishcatcher">GitHub</a></li><li><a href="https://github.com/Topurrra/fishcatcher-registry">Threat registry</a></li><li><a href="https://github.com/Topurrra/fishcatcher/blob/main/LICENSE">MIT license</a></li></ul></div>
+  </div>
+</footer>
+
+<script src="/assets/theme.js"></script>
+</body>
+</html>
