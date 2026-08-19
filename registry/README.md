@@ -22,8 +22,23 @@ probabilistic, so about 0.3% of lookups can be false positives. That is why Fish
 only warns and never blocks, and why safe-listed and user-trusted domains are checked
 before the feed.
 
-No servers, no secrets. The only human step is a maintainer confirming community reports.
-Setup is one time.
+No servers. The one secret is the feed signing key (below). The only recurring human step
+is a maintainer confirming community reports. Setup is one time.
+
+## Signed lists
+
+Every published `fishcatcher-lists.json` carries a `sig` field: an ECDSA P-256 / SHA-256
+signature (raw r||s, base64) over the fields `version, generated, sources, count, bloom`
+in that order. The extension pins the matching public key in `src/data/registry-key.json`
+and refuses a list whose signature is missing or wrong, so a compromised registry repo,
+CDN or man-in-the-middle cannot push a tampered list to opted-in users. A bundle can also
+only add threat data: the extension ignores anything that would touch its safe list,
+brands or weights.
+
+The private key lives only in the repository secret `FEED_SIGNING_KEY` (PKCS8 PEM) and in
+the maintainer's password manager. CI refuses to publish when the secret is missing. To
+rotate: generate a new P-256 key, ship the new public key in the extension first, then swap
+the secret.
 
 ## Report loop (community reports, human-gated)
 

@@ -14,7 +14,8 @@ import { zipDirectory } from '../scripts/package.mjs';
 import { matchDeviceCodeScam } from '../src/engine/devicecode.js';
 import { Bloom } from '../src/engine/bloom.js';
 import { parseRegistrationDate, ageInDays } from '../src/engine/rdap.js';
-import { applyBundle } from '../src/engine/remote.js';
+import { applyBundle, verifyBundle, bundlePayload } from '../src/engine/remote.js';
+import { createPrivateKey, createPublicKey, generateKeyPairSync, sign as cryptoSign } from 'node:crypto';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = (p) => JSON.parse(readFileSync(join(root, p), 'utf8'));
@@ -338,6 +339,33 @@ check('remote: v2 bundle applies bloom + lists', () => {
   assert.equal(next.trustList, data.trustList, 'trust list preserved');
   const r = analyzeUrl('https://bloom-bad.com/', next);
   assert.ok(r.reasons.some((x) => x.key === 'reasonBloom'));
+  // A feed may only add threat data: it must never widen the safe list or brands.
+  const sneaky = applyBundle(data, { domains: ['evil.com'], brands: [], tlds: {}, keywords: [] });
+  assert.equal(sneaky.safeList, data.safeList, 'safe list untouched');
+  assert.equal(sneaky.brands, data.brands, 'brands untouched');
+});
+
+// checks are sync; async verification runs first and records into this map
+const asyncResults = {};
+async function runAsyncChecks() {
+  const pem = generateKeyPairSync('ec', { namedCurve: 'P-256' }).privateKey.export({ type: 'pkcs8', format: 'pem' });
+  const spki = createPublicKey(createPrivateKey(pem)).export({ type: 'spki', format: 'der' }).toString('base64');
+  const b = { version: 2, generated: '2026-08-20T00:00:00.000Z', sources: ['t'], count: 3, bloom: { m: 16, k: 2, seed: 1, bits: 'AAA=' } };
+  const sig = cryptoSign('sha256', Buffer.from(bundlePayload(b)), { key: createPrivateKey(pem), dsaEncoding: 'ieee-p1363' }).toString('base64');
+  asyncResults.good = await verifyBundle({ ...b, sig }, { spki });
+  asyncResults.tampered = await verifyBundle({ ...b, sig, count: 4 }, { spki });
+  asyncResults.unsigned = await verifyBundle(b, { spki });
+  asyncResults.wrongKey = await verifyBundle({ ...b, sig }, readJson('src/data/registry-key.json'));
+  asyncResults.pinnedKeyShape = typeof readJson('src/data/registry-key.json').spki === 'string';
+}
+await runAsyncChecks();
+
+check('remote: signature verified before a bundle is applied', () => {
+  assert.equal(asyncResults.good, true, 'valid signature accepted');
+  assert.equal(asyncResults.tampered, false, 'tampered payload rejected');
+  assert.equal(asyncResults.unsigned, false, 'unsigned bundle rejected');
+  assert.equal(asyncResults.wrongKey, false, 'signature from another key rejected');
+  assert.ok(asyncResults.pinnedKeyShape, 'pinned public key ships in data/registry-key.json');
 });
 
 check('engine: S15 young domain adds weight', () => {

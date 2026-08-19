@@ -31,7 +31,7 @@ let seniorEnabled = false;
 let seniorHelper = '';
 
 async function loadData() {
-  const [safe, brands, tlds, keywords, psl, block, mlw, safeBloom, allow, stored] = await Promise.all([
+  const [safe, brands, tlds, keywords, psl, block, mlw, safeBloom, allow, registryKey, stored] = await Promise.all([
     fetch(chrome.runtime.getURL('data/safe-list.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/brands.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/tlds.json')).then((r) => r.json()),
@@ -41,6 +41,7 @@ async function loadData() {
     fetch(chrome.runtime.getURL('data/ml-weights.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/safe-bloom.json')).then((r) => r.json()),
     fetch(chrome.runtime.getURL('data/aitm-allow.json')).then((r) => r.json()),
+    fetch(chrome.runtime.getURL('data/registry-key.json')).then((r) => r.json()),
     chrome.storage.local.get(['trust:list', 'opt:cloud', 'opt:gsb', 'gsb:key', 'opt:senior', 'senior:helper'])
   ]);
   data.safeList = new Set(safe.domains);
@@ -52,6 +53,7 @@ async function loadData() {
   data.blockList = new Set(block.domains);
   data.aitmIdp = new Set(allow.idp);
   data.aitmMediation = new Set(allow.mediation);
+  data.registryKey = registryKey;
   data.ml = mlw;
   data.trustList = new Set(stored['trust:list'] ? JSON.parse(stored['trust:list']) : []);
   cloudEnabled = !!stored['opt:cloud'];
@@ -73,7 +75,9 @@ const REMOTE_REFRESH_MS = 24 * 60 * 60 * 1000;
 async function loadRemoteLists(force = false) {
   const prefs = await chrome.storage.local.get(['opt:remote', 'data:etag', 'remote:count', 'remote:updatedAt', 'remote:bundle']);
   if (!prefs['opt:remote']) return;
-  if (prefs['remote:bundle'] && !data.bloom) Object.assign(data, applyBundle(data, prefs['remote:bundle']));
+  if (prefs['remote:bundle'] && !data.bloom && await verifyBundle(prefs['remote:bundle'], data.registryKey)) {
+    Object.assign(data, applyBundle(data, prefs['remote:bundle']));
+  }
   if (!force && prefs['remote:updatedAt'] && Date.now() - prefs['remote:updatedAt'] < REMOTE_REFRESH_MS) {
     broadcast({ type: 'remote-status', state: 'ready', count: prefs['remote:count'], updatedAt: prefs['remote:updatedAt'] });
     return;
@@ -96,6 +100,12 @@ async function loadRemoteLists(force = false) {
       return;
     }
     const bundle = await res.json();
+    // Signed by the registry's key (data/registry-key.json). An unsigned or
+    // tampered file is refused and the bundled lists stay in force.
+    if (!(await verifyBundle(bundle, data.registryKey))) {
+      broadcast({ type: 'remote-status', state: 'error' });
+      return;
+    }
     Object.assign(data, applyBundle(data, bundle));
     const etag = res.headers.get('ETag');
     const count = typeof bundle.count === 'number' ? bundle.count : null;

@@ -51,7 +51,14 @@ jobs:
             | sed -E 's#^[[:space:]]*https?://##; s#/.*$##; s/[[:space:]]//g' \
             | grep -E '^[a-z0-9.-]+\.[a-z]{2,}$' > community-reports.txt || true
           echo "confirmed-phish domains: $(grep -c . community-reports.txt || true)"
-      - run: node build-feed.mjs
+      - run: node build-feed.mjs --selftest
+      - name: Build and sign the list
+        env:
+          # ECDSA P-256 private key (PKCS8 PEM). The matching public key is pinned in the
+          # extension (src/data/registry-key.json); without this secret the build fails
+          # on purpose rather than publish an unsigned list.
+          FEED_SIGNING_KEY: ${{ secrets.FEED_SIGNING_KEY }}
+        run: node build-feed.mjs
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"

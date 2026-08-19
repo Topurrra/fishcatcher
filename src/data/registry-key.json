@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "alg": "ES256",
+  "kid": "fc-feed-2026-08",
+  "spki": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEv8EPzKO/KjOQ1OukMN0JNDEDK+ZTHreLoltN+u/7hIeMTQEcFIU62Z+eOXosd/QZ8T7PGr2tBIjrVMwA651+QQ=="
+}

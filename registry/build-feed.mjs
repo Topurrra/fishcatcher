@@ -14,6 +14,7 @@
 // Run: node build-feed.mjs        (add --force to override the drop guard)
 //      node build-feed.mjs --selftest   (offline check of the pure logic)
 import { writeFileSync, readFileSync } from 'node:fs';
+import { createPrivateKey, createPublicKey, generateKeyPairSync, sign, verify } from 'node:crypto';
 
 const TARGET_FPR = 0.003; // 0.3% false positives; the extension only warns, never blocks
 const OUT = 'fishcatcher-lists.json';
@@ -21,6 +22,12 @@ const COMMUNITY_FILE = 'community-reports.txt'; // written by the workflow from 
 const FETCH_TIMEOUT_MS = 20000;                 // a single slow feed must not hang the build
 const FETCH_TRIES = 3;
 const MIN_HOSTS = 1000;                          // hard floor: below this the merge looks broken
+// Every published list is signed (ECDSA P-256 / SHA-256, raw r||s signature) with the
+// key in the FEED_SIGNING_KEY secret (PKCS8 PEM). The extension pins the matching public
+// key in src/data/registry-key.json and refuses unsigned or tampered files. Local runs
+// without the key produce an unsigned file for inspection only; CI refuses to publish one.
+const SIGNING_KEY_PEM = process.env.FEED_SIGNING_KEY || '';
+const REQUIRE_SIGNATURE = process.env.CI === 'true' || process.argv.includes('--require-signature');
 const DROP_RATIO = 0.6;                          // refuse a rebuild under 60% of the last good count
 
 const SOURCES = [
@@ -94,6 +101,20 @@ class Bloom {
   }
 }
 
+// ── signing (mirror of src/engine/remote.js bundlePayload/verifyBundle) ─
+function bundlePayload(b) {
+  return JSON.stringify({ version: b.version, generated: b.generated, sources: b.sources, count: b.count, bloom: b.bloom });
+}
+function signBundle(bundle, pem) {
+  const key = createPrivateKey(pem);
+  const sig = sign('sha256', Buffer.from(bundlePayload(bundle)), { key, dsaEncoding: 'ieee-p1363' });
+  return { ...bundle, sig: sig.toString('base64') };
+}
+function verifySigned(bundle, pem) {
+  const pub = createPublicKey(createPrivateKey(pem));
+  return verify('sha256', Buffer.from(bundlePayload(bundle)), { key: pub, dsaEncoding: 'ieee-p1363' }, Buffer.from(bundle.sig, 'base64'));
+}
+
 // ── offline self-check (no network): node build-feed.mjs --selftest ─
 function runSelfTest() {
   const assert = (c, m) => { if (!c) throw new Error('selftest FAILED: ' + m); };
@@ -102,6 +123,11 @@ function runSelfTest() {
   assert(feedDropTooFar(700, 1000, false) === false, 'drop above 60% is allowed');
   assert(feedDropTooFar(1, 1000, true) === false, 'force overrides the guard');
   assert(feedDropTooFar(500, 0, false) === false, 'no previous list => allow');
+  // sign/verify round trip with a throwaway key; a tampered payload must fail
+  const pem = generateKeyPairSync('ec', { namedCurve: 'P-256' }).privateKey.export({ type: 'pkcs8', format: 'pem' });
+  const b = signBundle({ version: 2, generated: 'x', sources: ['a'], count: 1, bloom: { m: 8, k: 1, seed: 1, bits: 'AA==' } }, pem);
+  assert(verifySigned(b, pem) === true, 'signature verifies');
+  assert(verifySigned({ ...b, count: 2 }, pem) === false, 'tampered bundle fails');
   console.log('selftest ok');
 }
 if (process.argv.includes('--selftest')) { runSelfTest(); process.exit(0); }
@@ -168,17 +194,25 @@ const k = Math.max(1, Math.round((m / n) * Math.LN2));
 const bloom = new Bloom(m, k, 1);
 for (const d of domains) bloom.add(d);
 
-const bundle = {
+let bundle = {
   version: 2,
   generated: new Date().toISOString(),
   sources: usedSources,
   count: n,
   bloom: { m, k, seed: 1, bits: bloom.toBase64() }
 };
+if (SIGNING_KEY_PEM) {
+  bundle = signBundle(bundle, SIGNING_KEY_PEM);
+  if (!verifySigned(bundle, SIGNING_KEY_PEM)) throw new Error('signature self-check failed');
+} else if (REQUIRE_SIGNATURE) {
+  throw new Error('FEED_SIGNING_KEY is not set: refusing to publish an unsigned list');
+} else {
+  console.error('WARN no FEED_SIGNING_KEY: writing an UNSIGNED list (the extension will refuse it)');
+}
 writeFileSync(OUT, JSON.stringify(bundle));
 
 // Read the file back and re-parse it, so a truncated or corrupt write fails the
 // build here instead of shipping a broken list to the extension.
 JSON.parse(readFileSync(OUT, 'utf8'));
 
-console.log(`packed ${n} hosts -> ${OUT} (m=${m}, k=${k}, ~${Math.round(m / 8 / 1024)}KB filter)\n  ${stats.join('\n  ')}`);
+console.log(`packed ${n} hosts -> ${OUT} (m=${m}, k=${k}, ~${Math.round(m / 8 / 1024)}KB filter, ${bundle.sig ? 'signed' : 'UNSIGNED'})\n  ${stats.join('\n  ')}`);
