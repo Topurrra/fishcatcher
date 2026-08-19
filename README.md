@@ -59,8 +59,8 @@ that and publish it. On the top 100,000 legitimate websites, none get a high or 
 warning (0 in 100,000, measured 20 August 2026). The audit is reproducible with one
 command, `node scripts/fp-audit.mjs`, and it prints every site it flagged so the number is
 not something you have to take on faith. We also publish recall: with the known-bad lists
-switched off, the address-only engine rates 72.7% of 392,233 live phishing hosts from public
-feeds as elevated or above and 9.0% as high or critical (`node scripts/recall-audit.mjs`); the
+switched off, the address-only engine rates 73.0% of 392,233 live phishing hosts from public
+feeds as elevated or above and 10.9% as high or critical (`node scripts/recall-audit.mjs`); the
 daily list covers the rest. See [fishcatcher.dev/transparency](https://fishcatcher.dev/transparency).
 
 ## Automatic threat updates
@@ -81,7 +81,7 @@ repository; its README explains the setup and the signing key.
 
 FishCatcher is MIT licensed (see [LICENSE](LICENSE)) and free to use forever. What it does
 with your data (above) you can verify by reading this source. Bundled third party code is
-listed in [src/vendor/NOTICE.md](src/vendor/NOTICE.md).
+listed in [src/vendor/NOTICE.md](src/vendor/NOTICE.md). What changed in each release is in [CHANGELOG.md](CHANGELOG.md).
 
 ## Build from source
 

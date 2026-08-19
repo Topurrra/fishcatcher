@@ -944,6 +944,92 @@ check('ml v2: inference for 10,000 hosts under 200 ms', () => {
   assert.ok(ms < 200, `10k predictions took ${ms.toFixed(0)} ms`);
 });
 
+// ── nudge, onboarding, changelog ──
+check('credential nudge + open-real-site: wired in both bundles', () => {
+  for (const t of ['chrome', 'firefox']) {
+    const bg = readFileSync(join(root, `dist/${t}/background.js`), 'utf8');
+    const probe = readFileSync(join(root, `dist/${t}/probe.js`), 'utf8');
+    assert.ok(bg.includes("'credential-focus'"), `${t} background handles credential-focus`);
+    assert.ok(probe.includes("'credential-focus'"), `${t} probe sends credential-focus`);
+    assert.ok(bg.includes("'open-real-site'"), `${t} background handles open-real-site`);
+    assert.ok(probe.includes("'open-real-site'"), `${t} probe banner sends open-real-site`);
+    assert.ok(bg.includes('openReal'), `${t} banner payload carries the open-real-site label`);
+  }
+});
+
+check('credential nudge: banner locale keys exist', () => {
+  for (const k of ['openRealSite', 'bannerDismiss', 'levelHigh', 'levelCritical']) {
+    assert.ok(enMessages[k]?.message, k);
+  }
+});
+
+check('onboarding: welcome page shipped and opened on install only', () => {
+  for (const t of ['chrome', 'firefox']) {
+    assert.ok(existsSync(join(root, `dist/${t}/onboarding/welcome.html`)), `${t} ships welcome.html`);
+    const bg = readFileSync(join(root, `dist/${t}/background.js`), 'utf8');
+    assert.ok(bg.includes('onboarding/welcome.html'), `${t} background opens the welcome page`);
+    assert.ok(bg.includes("details.reason === 'install'"), `${t} only on install, never on update`);
+  }
+});
+
+check('onboarding: welcome locale keys present', () => {
+  for (const k of ['welcomeTitle', 'welcomeIntro', 'welcomeLevels', 'welcomeOpenPanel', 'welcomeTryDemo', 'welcomeSettings', 'welcomeOpenSettings']) {
+    assert.ok(enMessages[k]?.message, k);
+  }
+  const welcome = readFileSync(join(root, 'src/onboarding/welcome.html'), 'utf8');
+  for (const k of ['welcomeIntro', 'welcomeTryDemo', 'levelLow', 'levelCritical']) {
+    assert.ok(welcome.includes(`data-i18n="${k}"`), `welcome.html uses ${k}`);
+  }
+  assert.ok(welcome.includes('https://fishcatcher.dev/demo'), 'demo link');
+});
+
+check('site: demo page exists, scripts only from /assets/', () => {
+  const html = readFileSync(join(root, 'site/demo.html'), 'utf8');
+  for (const m of html.matchAll(/<script[^>]*\ssrc="([^"]+)"/g)) {
+    assert.match(m[1], /^\/assets\//, `script src ${m[1]}`);
+  }
+});
+
+check('changelog: file, site page, sitemap and footer links', () => {
+  const md = readFileSync(join(root, 'CHANGELOG.md'), 'utf8');
+  assert.ok(md.includes('## [1.0.0]'), 'CHANGELOG.md has 1.0.0');
+  assert.ok(md.includes('## [Unreleased]'), 'CHANGELOG.md has Unreleased');
+  assert.ok(existsSync(join(root, 'site/changelog.html')), 'site/changelog.html exists');
+  const sm = readFileSync(join(root, 'site/sitemap.xml'), 'utf8');
+  assert.ok(sm.includes('fishcatcher.dev/changelog'), 'sitemap has /changelog');
+  assert.ok(sm.includes('fishcatcher.dev/demo'), 'sitemap has /demo');
+  for (const page of readdirSync(join(root, 'site')).filter((f) => f.endsWith('.html'))) {
+    assert.ok(readFileSync(join(root, 'site', page), 'utf8').includes('href="/changelog"'), `${page} footer links /changelog`);
+  }
+  assert.ok(readFileSync(join(root, 'README.md'), 'utf8').includes('CHANGELOG.md'), 'README links CHANGELOG.md');
+});
+
+// ── brands: generated list ──────────────────────────────────────
+check('brands: generated list shape (count, fields, keyword length, canonical domains)', () => {
+  assert.ok(data.brands.length >= 250, `only ${data.brands.length} brands`);
+  const names = new Set();
+  for (const b of data.brands) {
+    assert.ok(typeof b.name === 'string' && b.name.length > 0, 'brand has a name');
+    assert.ok(!names.has(b.name), `duplicate brand name ${b.name}`);
+    names.add(b.name);
+    assert.ok(Array.isArray(b.domains) && b.domains.length > 0, `${b.name}: non-empty domains`);
+    assert.ok(Array.isArray(b.keywords) && b.keywords.length > 0, `${b.name}: non-empty keywords`);
+    for (const k of b.keywords) assert.ok(k.length >= 3, `${b.name}: keyword too short: ${k}`);
+    assert.equal(b.domains[0], registrableDomain(b.domains[0], data.psl), `${b.name}: canonical domain ${b.domains[0]} is registrable`);
+  }
+});
+
+check('brands: classic impersonations still fire', () => {
+  const r1 = analyzeUrl('https://paypa1.com/', data);
+  assert.ok(r1.reasons.some((x) => x.key === 'reasonBrand'), 'paypa1.com -> reasonBrand');
+  const r2 = analyzeUrl('https://chase-login-secure.com/', data);
+  const hit = r2.reasons.find((x) => x.key === 'reasonBrandSubdomain');
+  assert.ok(hit, 'chase-login-secure.com -> reasonBrandSubdomain');
+  assert.equal(hit.params[0], 'Chase');
+  const r3 = analyzeUrl('https://hsbc-verify.top/', data);
+  assert.ok(r3.reasons.some((x) => x.key === 'reasonBrand' || x.key === 'reasonBrandSubdomain'), 'hsbc-verify.top -> brand reason');
+});
+
 // ── report ──────────────────────────────────────────────────────
 let failed = 0;
 for (const c of checks) {
