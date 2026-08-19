@@ -109,11 +109,23 @@
       if (h && h !== location.hostname) { faviconCrossOrigin = true; break; }
     }
 
+    // S20 form-action destinations: where a visible password/OTP form posts.
+    // getAttribute, not form.action: a child named "action" shadows the property.
+    const formActions = [];
+    for (const f of document.querySelectorAll('form[action]')) {
+      const field = f.querySelector('input[type="password"], input[autocomplete="one-time-code"], input[name*="otp" i], input[id*="otp" i]');
+      if (!field || !visible(field)) continue;
+      const h = hostOf(f.getAttribute('action'));
+      if (h && h !== location.hostname && !formActions.includes(h)) formActions.push(h);
+      if (formActions.length >= 10) break;
+    }
+
     return {
       interactions: [...kinds],
       identityHints: { title, ogSiteName, logoAlts, brandTokens },
       resourceHosts,
-      faviconCrossOrigin
+      faviconCrossOrigin,
+      formActions
     };
   }
 

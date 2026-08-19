@@ -220,7 +220,7 @@
     "description": "Update status when the count is not known"
   },
   "reasonMl": {
-    "message": "The domain's letter pattern resembles automatically generated random domains",
+    "message": "The address matches letter patterns common in phishing and randomly generated domains",
     "description": "S17 lexical model signal"
   },
   "linksNone": {
@@ -426,5 +426,17 @@
   "reportOpening": {
     "message": "Opening a report form in a new tab.",
     "description": "Confirmation shown after the report button is pressed"
+  },
+  "reasonFormAction": {
+    "message": "The login form sends what you type to $1, not to this site",
+    "description": "S20 form-action signal; $1 = destination domain"
+  },
+  "reasonFormExfil": {
+    "message": "The login form sends what you type to $1, a service scammers use to collect passwords",
+    "description": "S20 form-action signal, known exfil endpoint; $1 = destination domain"
+  },
+  "openRealSite": {
+    "message": "Open $1",
+    "description": "Button: open the real site of the impersonated brand; $1 = brand domain"
   }
 }

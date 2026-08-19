@@ -212,6 +212,7 @@ async function scoreTab(tabId, url) {
     return;
   }
   result.trusted = data.trustList.has(result.registrable);
+  result.realSite = realSiteFor(result.reasons, data.brands);
   results.set(tabId, result);
   paint(tabId, result);
   broadcast({ type: 'scored', tabId });
@@ -373,7 +374,10 @@ async function checkQrImage(srcUrl, tab) {
   }
   await ready;
   const result = text ? analyzeUrl(text, data) : null;
-  if (result) result.trusted = data.trustList.has(result.registrable);
+  if (result) {
+    result.trusted = data.trustList.has(result.registrable);
+    result.realSite = realSiteFor(result.reasons, data.brands);
+  }
   pendingResult = result;
   // Never stay silent: the panel shows why there is no result.
   pendingNote = result ? 'qrResultNote' : text ? 'qrNotUrl' : 'qrUnreadable';
@@ -538,7 +542,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       }
       case 'check-url': {
         const result = analyzeUrl(msg.url, data);
-        if (result) result.trusted = data.trustList.has(result.registrable);
+        if (result) {
+          result.trusted = data.trustList.has(result.registrable);
+          result.realSite = realSiteFor(result.reasons, data.brands);
+        }
         sendResponse({ result });
         break;
       }

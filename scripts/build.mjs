@@ -49,6 +49,7 @@ const BACKGROUND_MODULES = [
   'engine/psl.js',
   'engine/signals.js',
   'engine/aitm.js',
+  'engine/formaction.js',
   'engine/scampacks.js',
   'engine/analyzer.js',
   'engine/links.js',

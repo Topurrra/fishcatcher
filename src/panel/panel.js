@@ -41,6 +41,7 @@ async function renderResult(result, noteKey) {
     $('reasons-wrap').hidden = true;
     $('hint').hidden = false;
     $('trust-btn').hidden = true;
+    $('real-site-btn').hidden = true;
     $('helper-alert').hidden = true;
     return;
   }
@@ -83,6 +84,7 @@ async function renderResult(result, noteKey) {
     trustBtn.dataset.domain = result.registrable;
     trustBtn.dataset.trusted = result.trusted ? '1' : '';
   }
+  await renderRealSite(result);
 }
 
 async function renderLinks(findings, showEmpty) {
@@ -219,6 +221,21 @@ async function showAge(on) {
   el.querySelector('.si-text').textContent = await getMessage('ageChecking');
   el.hidden = false;
 }
+
+// "Open the real site": the worker names the impersonated brand's domain.
+async function renderRealSite(result) {
+  const btn = $('real-site-btn');
+  btn.hidden = !result.realSite;
+  if (!result.realSite) return;
+  btn.textContent = await getMessage('openRealSite', [result.realSite]);
+  btn.dataset.domain = result.realSite;
+  // Family mode: the same button moves into the big alert so the safe action is obvious.
+  ($('helper-alert').hidden ? $('trust-btn') : $('tell-helper-btn')).insertAdjacentElement('afterend', btn);
+}
+
+$('real-site-btn').addEventListener('click', (e) => {
+  chrome.tabs.create({ url: `https://${e.currentTarget.dataset.domain}/` });
+});
 
 $('trust-btn').addEventListener('click', async (e) => {
   const btn = e.currentTarget;

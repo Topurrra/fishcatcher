@@ -220,7 +220,7 @@
     "description": "Update status when the count is not known"
   },
   "reasonMl": {
-    "message": "დომენის სიმბოლოების ნაკადი ავტოგენერირებულ შემთხვევით დომენებს ჰგავს",
+    "message": "მისამართი ემთხვევა ასოების იმ ნაკადებს, რომლებიც გავრცელებულია ფიშინგურ და ავტოგენერირებულ დომენებში",
     "description": "S17 lexical model signal"
   },
   "linksNone": {
@@ -426,5 +426,17 @@
   "reportOpening": {
     "message": "დაფიქსირების ფორმა იხსნება ახალ ჩანართში.",
     "description": "Confirmation shown after the report button is pressed"
+  },
+  "reasonFormAction": {
+    "message": "შესვლის ფორმა თქვენს მონაცემებს აგზავნის $1-ზე და არა ამ საიტზე",
+    "description": "S20 form-action signal; $1 = destination domain"
+  },
+  "reasonFormExfil": {
+    "message": "შესვლის ფორმა თქვენს მონაცემებს აგზავნის $1-ზე, სერვისზე, რომელსაც თაღლითები პაროლების შესაგროვებლად იყენებენ",
+    "description": "S20 form-action signal, known exfil endpoint; $1 = destination domain"
+  },
+  "openRealSite": {
+    "message": "გახსენით $1",
+    "description": "Button: open the real site of the impersonated brand; $1 = brand domain"
   }
 }

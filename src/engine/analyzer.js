@@ -1,6 +1,7 @@
 // Pure URL analysis: string in → {score, level, reasons} out. No extension APIs.
 import { runSignals, isIpAddress, isLocalHost } from './signals.js';
 import { runAitm } from './aitm.js';
+import { runFormAction } from './formaction.js';
 import { runScamPacks } from './scampacks.js';
 import { registrableDomain } from './psl.js';
 
@@ -66,6 +67,10 @@ export function analyzeUrl(input, data, opts) {
     const a = runAitm({ registrable, knownLegit, aitm: opts.aitm }, data);
     score += a.score;
     for (const r of a.reasons) reasons.push(r);
+    // S20: login form posts to a foreign domain (rides in the same payload).
+    const f = runFormAction({ registrable, knownLegit, aitm: opts.aitm }, data);
+    score += f.score;
+    for (const r of f.reasons) reasons.push(r);
   }
 
   // Scam packs — crypto seed-phrase request, or tech-support locker scare.
@@ -80,4 +85,17 @@ export function analyzeUrl(input, data, opts) {
   result.level = levelForScore(result.score);
   result.reasons = reasons;
   return result;
+}
+
+// Brand the page impersonates, as a domain the UI can offer to open instead.
+// reasonBrand carries the brand domain; the others carry the brand name.
+export function realSiteFor(reasons, brands) {
+  for (const r of reasons ?? []) {
+    if (r.key === 'reasonBrand' && r.params[0]) return r.params[0];
+    if (r.key === 'reasonHomoglyph' || r.key === 'reasonBrandSubdomain' || r.key === 'reasonAitmMismatch') {
+      const b = brands.find((x) => x.name === r.params[0]);
+      if (b?.domains?.[0]) return b.domains[0];
+    }
+  }
+  return undefined;
 }
