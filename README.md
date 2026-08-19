@@ -55,10 +55,13 @@ there is no server: FishCatcher runs no backend of its own.
 ## Transparency
 
 A warning tool is only worth trusting if you can check how often it is wrong. We measure
-that and publish it. On the top 100,000 legitimate websites, fewer than 0.01% get a high
-or critical warning (5 in 100,000, a rate of 0.005%). The audit is reproducible with one
+that and publish it. On the top 100,000 legitimate websites, none get a high or critical
+warning (0 in 100,000, measured 20 August 2026). The audit is reproducible with one
 command, `node scripts/fp-audit.mjs`, and it prints every site it flagged so the number is
-not something you have to take on faith. See [fishcatcher.dev/transparency](https://fishcatcher.dev/transparency).
+not something you have to take on faith. We also publish recall: with the known-bad lists
+switched off, the address-only engine rates 72.7% of 392,233 live phishing hosts from public
+feeds as elevated or above and 9.0% as high or critical (`node scripts/recall-audit.mjs`); the
+daily list covers the rest. See [fishcatcher.dev/transparency](https://fishcatcher.dev/transparency).
 
 ## Automatic threat updates
 

@@ -120,10 +120,10 @@ const phishing = [
   ['http://micr0soft.com/login', 'critical'],
   ['https://paypa1.com/', 'critical'],
   ['http://xn--pypal-4ve.com/', 'high'],
-  ['https://login.microsoft.com.evil.ru/', 'high'],
+  ['https://login.microsoft.com.evil.ru/', 'critical'], // ml v2 adds S17 on top of brand-subdomain + keyword + depth
   ['http://185.22.64.3/login', 'high'],
   ['https://paypal.com@evil.com/', 'elevated'],
-  ['https://secure-verify-account.tk/', 'elevated'],
+  ['https://secure-verify-account.tk/', 'high'], // ml v2 recognises the secure-/-verify- pattern
   ['https://a1b2c3.xyz/', 'high'],
   ['https://microsoft-login-2026.com/', 'critical'],
   ['https://dhl-track-parcel.top/', 'critical'],
@@ -397,16 +397,20 @@ check('locales: M6 strings present', () => {
 });
 
 // ── M7: lexical model (S17) ─────────────────────────────────────
-import { mlPredict } from '../src/engine/ml.js';
+import { mlPredict, mlTopFeatures } from '../src/engine/ml.js';
 
-check('ml: random DGAs high, legit domains low', () => {
+check('ml: random DGAs and phishing-shaped hosts high, legit domains low', () => {
   const ml = data.ml;
-  for (const d of ['xqzkvwqt', 'qwzxkjt9', 'a1b2c3']) assert.ok(mlPredict(ml, d) >= ml.threshold, `${d} flagged`);
-  for (const d of ['google', 'example', 'microsoft', 'tbcbank', 'netgazeti']) assert.ok(mlPredict(ml, d) < ml.threshold, `${d} clean`);
+  for (const d of ['kjh3f9s8df7g.net', 'zxcvbqwerty.info', 'mnbvcxzpoiuy.net', 'paypal-login-verify.com', 'secure-appleid.support', 'login-microsoft-365.weebly.com']) {
+    assert.ok(mlPredict(ml, d) >= ml.threshold, `${d} flagged (${mlPredict(ml, d).toFixed(3)})`);
+  }
+  for (const d of ['google.com', 'example.com', 'microsoft.com', 'tbcbank.ge', 'netgazeti.ge', 'wikipedia.org', 'mail.google.com']) {
+    assert.ok(mlPredict(ml, d) < ml.threshold, `${d} clean (${mlPredict(ml, d).toFixed(3)})`);
+  }
 });
 
 check('engine: S17 fires on random domain only', () => {
-  const flagged = analyzeUrl('https://xqzkvwqt.com/', data);
+  const flagged = analyzeUrl('https://kjh3f9s8df7g.net/', data);
   assert.ok(flagged.reasons.some((x) => x.key === 'reasonMl'));
   const clean = analyzeUrl('https://example.com/', data);
   assert.ok(!clean.reasons.some((x) => x.key === 'reasonMl'));
@@ -804,6 +808,140 @@ check('engine: S7 keyword is skipped on known-legit domains', () => {
   assert.equal(legit.level, 'low');
   const phish = analyzeUrl('https://secure-login-update.com/', data);
   assert.ok(phish.reasons.some((r) => r.key === 'reasonKeyword'), 'keyword still fires on unknown hosts');
+});
+
+// ── psl: full public suffix list ──
+check('psl: full list with wildcard and exception rules', () => {
+  assert.ok(data.psl.length > 8000, `rules=${data.psl.length}`);
+  assert.equal(registrableDomain('bucket.s3.amazonaws.com', data.psl), 'bucket.s3.amazonaws.com');
+  // *.compute.amazonaws.com wildcard
+  assert.equal(registrableDomain('ec2-1-2-3-4.us-east-1.compute.amazonaws.com', data.psl), 'ec2-1-2-3-4.us-east-1.compute.amazonaws.com');
+  // !www.ck exception vs *.ck wildcard
+  assert.equal(registrableDomain('www.ck', data.psl), 'www.ck');
+  assert.equal(registrableDomain('foo.bar.ck', data.psl), 'foo.bar.ck');
+  assert.equal(registrableDomain('user.github.io', data.psl), 'user.github.io');
+  assert.equal(registrableDomain('www.bbc.co.uk', data.psl), 'bbc.co.uk');
+  assert.equal(registrableDomain('a.b.example.com', data.psl), 'example.com');
+  // unlisted TLD falls back to the last two labels
+  assert.equal(registrableDomain('example.zzz', data.psl), 'example.zzz');
+  assert.equal(registrableDomain('a.example.zzz', data.psl), 'example.zzz');
+  const t = performance.now();
+  for (let i = 0; i < 20000; i++) registrableDomain('ec2-1-2-3-4.us-east-1.compute.amazonaws.com', data.psl);
+  assert.ok(performance.now() - t < 300, 'lookup is O(labels)');
+});
+
+// ── form-action signal + real-site button ──
+import { runFormAction, FORM_ACTION_WEIGHT, FORM_ACTION_EXFIL_WEIGHT } from '../src/engine/formaction.js';
+import { realSiteFor } from '../src/engine/analyzer.js';
+
+const faCtx = (formActions, over = {}) => ({ registrable: 'unknown-login-site.com', knownLegit: false, aitm: { interactions: ['password'], formActions }, ...over });
+
+check('formaction: own-domain post stays 0', () => {
+  assert.deepEqual(runFormAction(faCtx(['www.unknown-login-site.com', 'unknown-login-site.com']), data), { score: 0, reasons: [] });
+  assert.deepEqual(runFormAction(faCtx([]), data), { score: 0, reasons: [] });
+  assert.deepEqual(runFormAction({ registrable: 'unknown-login-site.com', knownLegit: false, aitm: null }, data), { score: 0, reasons: [] });
+});
+
+check('formaction: cross-domain post fires reasonFormAction (40) with the destination', () => {
+  const r = runFormAction(faCtx(['post.evil.com']), data);
+  assert.equal(r.score, FORM_ACTION_WEIGHT);
+  assert.equal(FORM_ACTION_WEIGHT, 40);
+  assert.deepEqual(r.reasons, [{ key: 'reasonFormAction', params: ['evil.com'], weight: 40 }]);
+});
+
+check('formaction: known exfil endpoints fire reasonFormExfil (60) instead', () => {
+  assert.equal(FORM_ACTION_EXFIL_WEIGHT, 60);
+  for (const h of ['api.telegram.org', 'discord.com', 'formspree.io', 'script.google.com', 'abc.ngrok-free.app', 'x.requestbin.net', '203.0.113.7']) {
+    const r = runFormAction(faCtx(['evil.com', h]), data);
+    assert.equal(r.score, 60, h);
+    assert.equal(r.reasons[0].key, 'reasonFormExfil', h);
+  }
+  assert.deepEqual(runFormAction(faCtx(['api.telegram.org']), data).reasons[0].params, ['telegram.org']);
+});
+
+check('formaction: same-brand, IdP, safe-list and knownLegit destinations stay silent', () => {
+  const noSafe = { ...data, safeList: new Set() };
+  assert.equal(runFormAction(faCtx(['accounts.live.com'], { registrable: 'microsoft.com' }), noSafe).score, 0, 'same brand');
+  assert.equal(runFormAction(faCtx(['login.okta.com']), data).score, 0, 'IdP');
+  assert.equal(runFormAction(faCtx(['accounts.google.com']), data).score, 0, 'safe list');
+  assert.equal(runFormAction(faCtx(['post.evil.com'], { knownLegit: true }), data).score, 0, 'knownLegit');
+});
+
+check('formaction: password form + foreign post reaches high/critical via analyzeUrl', () => {
+  const aitm = { interactions: ['password'], identityHints: {}, resourceHosts: {}, faviconCrossOrigin: false, formActions: ['post.evil.com'] };
+  const r = analyzeUrl('https://unknown-login-site.com/', data, { hasPasswordForm: true, aitm });
+  assert.ok(r.level === 'high' || r.level === 'critical', `level=${r.level} score=${r.score}`);
+  assert.ok(r.reasons.some((x) => x.key === 'reasonFormAction'));
+  const exfil = analyzeUrl('https://unknown-login-site.com/', data, { hasPasswordForm: true, aitm: { ...aitm, formActions: ['api.telegram.org'] } });
+  assert.equal(exfil.level, 'critical');
+  // No opts.aitm: untouched.
+  assert.ok(!analyzeUrl('https://unknown-login-site.com/', data, { hasPasswordForm: true }).reasons.some((x) => x.key.startsWith('reasonForm')));
+});
+
+check('realsite: maps every brand-impersonation reason to the brand domain', () => {
+  assert.equal(realSiteFor([{ key: 'reasonBrand', params: ['paypal.com', 'paypa1.com'], weight: 45 }], data.brands), 'paypal.com');
+  assert.equal(realSiteFor([{ key: 'reasonHomoglyph', params: ['Microsoft'], weight: 45 }], data.brands), 'microsoft.com');
+  assert.equal(realSiteFor([{ key: 'reasonBrandSubdomain', params: ['Google'], weight: 40 }], data.brands), 'google.com');
+  assert.equal(realSiteFor([{ key: 'reasonAitmMismatch', params: ['Apple', 'evil.ru'], weight: 55 }], data.brands), 'apple.com');
+  assert.equal(realSiteFor([{ key: 'reasonHomoglyph', params: [''], weight: 45 }, { key: 'reasonIp', params: [], weight: 35 }], data.brands), undefined);
+  assert.equal(realSiteFor([], data.brands), undefined);
+  assert.equal(realSiteFor(analyzeUrl('https://paypa1-secure.com/', data).reasons, data.brands), 'paypal.com');
+});
+
+check('realsite: locales + dist markup carry the button', () => {
+  const ka = readJson('src/_locales/ka/messages.json');
+  for (const k of ['openRealSite', 'reasonFormAction', 'reasonFormExfil']) {
+    assert.ok(enMessages[k]?.message, `en ${k}`);
+    assert.ok(ka[k]?.message, `ka ${k}`);
+  }
+  assert.match(enMessages.openRealSite.message, /\$1/);
+  for (const f of ['dist/chrome/panel/panel.html', 'dist/firefox/popup/popup.html']) {
+    assert.match(readFileSync(join(root, f), 'utf8'), /id="real-site-btn"/, f);
+  }
+  assert.match(readFileSync(join(root, 'dist/chrome/background.js'), 'utf8'), /function realSiteFor/);
+  assert.match(readFileSync(join(root, 'dist/chrome/probe.js'), 'utf8'), /formActions/);
+});
+
+// ── recall audit ──
+// ESM imports hoist, so this stays next to the one check that uses it.
+import { execFileSync } from 'node:child_process';
+check('recall audit: scripts/recall-audit.mjs exists and its offline --selftest passes', () => {
+  const p = join(root, 'scripts/recall-audit.mjs');
+  assert.ok(existsSync(p), 'scripts/recall-audit.mjs exists');
+  const out = execFileSync(process.execPath, [p, '--selftest'], { encoding: 'utf8' });
+  assert.match(out, /selftest: \d+\/\d+ as expected/);
+});
+
+// ── ml v2: n-gram host model ────────────────────────────────────
+check('ml v2: weights file is version 2 and under 100 KB', () => {
+  assert.equal(data.ml.version, 2);
+  assert.ok(data.ml.table && data.ml.buckets, 'int8 table + bucket count present');
+  const bytes = Buffer.byteLength(readFileSync(join(root, 'src/data/ml-weights.json')));
+  assert.ok(bytes < 100 * 1024, `ml-weights.json is ${bytes} bytes`);
+});
+
+check('ml v2: phishing-shaped host above threshold, famous host below', () => {
+  assert.ok(mlPredict(data.ml, 'paypal-login-verify.com') > data.ml.threshold);
+  assert.ok(mlPredict(data.ml, 'wikipedia.org') < data.ml.threshold);
+});
+
+check('ml v2: mlTopFeatures returns contributing tokens', () => {
+  const top = mlTopFeatures(data.ml, 'paypal-login-verify.com');
+  assert.ok(Array.isArray(top) && top.length > 0 && top.length <= 3);
+  for (const f of top) {
+    assert.equal(typeof f.token, 'string');
+    assert.ok(f.weight > 0);
+  }
+});
+
+check('ml v2: inference for 10,000 hosts under 200 ms', () => {
+  const hosts = [];
+  for (let i = 0; i < 10000; i++) hosts.push(`host-${i}.sub${i % 7}.example${i % 13}.com`);
+  mlPredict(data.ml, 'warmup.com'); // decode the base64 table outside the timed loop
+  const t0 = performance.now();
+  for (const h of hosts) mlPredict(data.ml, h);
+  const ms = performance.now() - t0;
+  assert.ok(ms < 200, `10k predictions took ${ms.toFixed(0)} ms`);
 });
 
 // ── report ──────────────────────────────────────────────────────

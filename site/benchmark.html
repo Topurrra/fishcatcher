@@ -3,20 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Phishing Detection False-Positive Benchmark (0.005%)</title>
-<meta name="description" content="How accurate is Fish Catcher? Measured false-positive rate of 0.005% over 100,000 legitimate domains, with a reproducible method and version history.">
+<title>Phishing Detection False-Positive Benchmark (0%)</title>
+<meta name="description" content="How accurate is Fish Catcher? Measured false-positive rate of 0% over 100,000 legitimate domains, with a reproducible method and version history.">
 <link rel="canonical" href="https://fishcatcher.dev/benchmark">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Fish Catcher">
-<meta property="og:title" content="Phishing Detection False-Positive Benchmark (0.005%)">
-<meta property="og:description" content="How accurate is Fish Catcher? Measured false-positive rate of 0.005% over 100,000 legitimate domains, with a reproducible method and version history.">
+<meta property="og:title" content="Phishing Detection False-Positive Benchmark (0%)">
+<meta property="og:description" content="How accurate is Fish Catcher? Measured false-positive rate of 0% over 100,000 legitimate domains, with a reproducible method and version history.">
 <meta property="og:url" content="https://fishcatcher.dev/benchmark">
 <meta property="og:image" content="https://fishcatcher.dev/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Phishing Detection False-Positive Benchmark (0.005%)">
-<meta name="twitter:description" content="How accurate is Fish Catcher? Measured false-positive rate of 0.005% over 100,000 legitimate domains, with a reproducible method and version history.">
+<meta name="twitter:title" content="Phishing Detection False-Positive Benchmark (0%)">
+<meta name="twitter:description" content="How accurate is Fish Catcher? Measured false-positive rate of 0% over 100,000 legitimate domains, with a reproducible method and version history.">
 <meta name="twitter:image" content="https://fishcatcher.dev/assets/og.jpg">
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="/assets/docs.css">
 <link rel="stylesheet" href="/assets/diagrams.css">
 <script src="/assets/theme-init.js"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Dataset","name":"Fish Catcher false-positive benchmark","description":"False-positive rate of the Fish Catcher passive URL engine over 100,000 legitimate domains from the Majestic Million.","url":"https://fishcatcher.dev/benchmark","creator":{"@type":"Organization","name":"Fish Catcher"},"license":"https://opensource.org/licenses/MIT","datePublished":"2026-08-11","dateModified":"2026-08-19","isAccessibleForFree":true,"measurementTechnique":"Passive URL analysis, counting high and critical warnings","variableMeasured":"phishing false-positive rate"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Dataset","name":"Fish Catcher false-positive benchmark","description":"False-positive rate of the Fish Catcher passive URL engine over 100,000 legitimate domains from the Majestic Million.","url":"https://fishcatcher.dev/benchmark","creator":{"@type":"Organization","name":"Fish Catcher"},"license":"https://opensource.org/licenses/MIT","datePublished":"2026-08-11","dateModified":"2026-08-20","isAccessibleForFree":true,"measurementTechnique":"Passive URL analysis, counting high and critical warnings","variableMeasured":"phishing false-positive rate"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fishcatcher.dev/"},{"@type":"ListItem","position":2,"name":"Transparency","item":"https://fishcatcher.dev/transparency"},{"@type":"ListItem","position":3,"name":"Benchmark","item":"https://fishcatcher.dev/benchmark"}]}</script>
 </head>
 <body>
@@ -64,6 +64,7 @@
         <a href="#method">Method</a>
         <a href="#result">Latest result</a>
         <a href="#domains">The flagged domains</a>
+        <a href="#recall">Recall</a>
         <a href="#history">Version history</a>
         <a href="#reproduce">Reproduce it</a>
       </div>
@@ -74,7 +75,7 @@
     <div class="breadcrumb"><a href="/">Home</a> / <a href="/transparency">Transparency</a> / Benchmark</div>
     <h1>False-positive benchmark</h1>
     <div class="meta-row">
-      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.5"/></svg> Updated <time datetime="2026-08-19">19 August 2026</time></span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.5"/></svg> Updated <time datetime="2026-08-20">20 August 2026</time></span>
       <span class="sep"></span>
       <a href="https://github.com/Topurrra/fishcatcher"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11 11 0 0 1 6 0C17 4.6 18 4.9 18 4.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg> View source</a>
     </div>
@@ -101,41 +102,62 @@
     <p>Run of <time datetime="2026-08-19">19 August 2026</time>, 100,000 legitimate sites:</p>
     <figure class="diagram">
     <ul class="bars" aria-label="How 100,000 legitimate sites were rated">
-      <li><span class="lbl">Low</span><span class="bar"><i style="width:97.7%;background:var(--green)"></i></span><span class="val">97,697 (97.7%)</span></li>
-      <li><span class="lbl">Elevated</span><span class="bar"><i style="width:2.3%;background:var(--amber)"></i></span><span class="val">2,298 (2.3%)</span></li>
-      <li><span class="lbl">High</span><span class="bar"><i style="width:0.005%;background:var(--orange)"></i></span><span class="val">5 (0.005%)</span></li>
+      <li><span class="lbl">Low</span><span class="bar"><i style="width:99.9%;background:var(--green)"></i></span><span class="val">99,912 (99.9%)</span></li>
+      <li><span class="lbl">Elevated</span><span class="bar"><i style="width:0.088%;background:var(--amber)"></i></span><span class="val">88 (0.088%)</span></li>
+      <li><span class="lbl">High</span><span class="bar"><i style="width:0%;background:var(--orange)"></i></span><span class="val">0</span></li>
       <li><span class="lbl">Critical</span><span class="bar"><i style="width:0%;background:var(--red)"></i></span><span class="val">0</span></li>
     </ul>
-    <figcaption>False-positive rate 0.005%, 5 in 100,000. Same numbers as the 11 August run.</figcaption>
+    <figcaption>False-positive rate 0%, 0 in 100,000, after the August 20 model update; 88 sites show the quieter yellow level.</figcaption>
     </figure>
 
     <h2 id="domains">The flagged domains</h2>
-    <p>All five were very short, digit-heavy names on high-abuse endings, the shape automated phishing kits produce by the thousand. Each scored 45, the bottom of the high band, on the same four signals.</p>
+    <p>The 20 August run flagged none. Earlier runs flagged five very short, digit-heavy names on high-abuse endings (hy315.cc, 854854.cc, god123.xyz, 121644.cc, cm883.cc), each at the bottom of the high band; the retrained on-device model now rates them elevated, the level that does not alarm. The audit still prints every domain it flags on each run, so the claim stays checkable.</p>
+
+    <h2 id="recall">Recall</h2>
+    <p>The other side of the coin: how much of the live phishing traffic the engine catches from the address alone. The corpus is the three public feeds the threat registry packs every day (Phishing.Database active domains, URLhaus, OpenPhish), deduplicated to 392,233 hosts on <time datetime="2026-08-20">20 August 2026</time>. The same address-only analyzer runs with the bundled blocklist and the community list switched off, so the result measures the heuristics and the on-device model, not the list.</p>
+    <figure class="diagram">
+    <ul class="bars" aria-label="How 392,233 phishing hosts were rated without the lists">
+      <li><span class="lbl">Low</span><span class="bar"><i style="width:27.3%;background:var(--green)"></i></span><span class="val">107,104 (27.3%)</span></li>
+      <li><span class="lbl">Elevated</span><span class="bar"><i style="width:63.7%;background:var(--amber)"></i></span><span class="val">249,750 (63.7%)</span></li>
+      <li><span class="lbl">High</span><span class="bar"><i style="width:7.1%;background:var(--orange)"></i></span><span class="val">27,985 (7.1%)</span></li>
+      <li><span class="lbl">Critical</span><span class="bar"><i style="width:1.9%;background:var(--red)"></i></span><span class="val">7,394 (1.9%)</span></li>
+    </ul>
+    <figcaption>Any-signal recall (elevated or above) 72.7%; alarm recall (high or critical) 9.0%. The daily list catches the rest.</figcaption>
+    </figure>
+    <p>The most frequent reasons among the 285,129 flagged hosts:</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th scope="col">Domain</th><th scope="col">Score</th><th scope="col">Level</th><th scope="col">Why it was flagged</th></tr></thead>
+        <thead><tr><th scope="col">Reason</th><th scope="col">Hosts</th></tr></thead>
         <tbody>
-          <tr><td>hy315.cc</td><td>45</td><td>high</td><td>high-abuse ending, digit-heavy, very short, on-device model</td></tr>
-          <tr><td>854854.cc</td><td>45</td><td>high</td><td>high-abuse ending, digit-heavy, very short, on-device model</td></tr>
-          <tr><td>god123.xyz</td><td>45</td><td>high</td><td>high-abuse ending, digit-heavy, very short, on-device model</td></tr>
-          <tr><td>121644.cc</td><td>45</td><td>high</td><td>high-abuse ending, digit-heavy, very short, on-device model</td></tr>
-          <tr><td>cm883.cc</td><td>45</td><td>high</td><td>high-abuse ending, digit-heavy, very short, on-device model</td></tr>
+          <tr><td>On-device model (random-looking name)</td><td>276,801</td></tr>
+          <tr><td>Unusual mix of digits and hyphens</td><td>56,828</td></tr>
+          <tr><td>Brand name in the address, not the brand's domain</td><td>27,351</td></tr>
+          <tr><td>High-abuse domain ending</td><td>40,521</td></tr>
+          <tr><td>Phishing keyword in the address</td><td>22,915</td></tr>
+          <tr><td>Deep chain of subdomains</td><td>20,063</td></tr>
+          <tr><td>Very short, random-looking domain</td><td>10,540</td></tr>
+          <tr><td>Raw IP address</td><td>5,467</td></tr>
+          <tr><td>Misspelled brand</td><td>493</td></tr>
         </tbody>
       </table>
     </div>
-    <p>By address alone these look like throwaway phishing domains, so the engine leans cautious.</p>
+    <p>Most misses are ordinary-looking names on free hosting (<code>weebly.com</code>, <code>000webhostapp.com</code>, <code>godaddysites.com</code>, <code>pages.dev</code>) or plain compromised sites, which no address rule can tell apart from their legitimate neighbours. Those are the list's job, and the page checks add more once you open the site. Reproduce it with:</p>
+    <pre data-lang="bash"><code>node scripts/recall-audit.mjs</code></pre>
+    <p>Flags are the same as the false-positive audit: <code>--limit N</code>, <code>--selftest</code>, <code>--cache path.txt</code>. The first run downloads the three feeds and caches the merged list for the day.</p>
 
     <h2 id="history">Version history</h2>
     <p>Rerun after engine changes and at least monthly. Newest on top.</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th scope="col">Date</th><th scope="col">Corpus</th><th scope="col">High</th><th scope="col">Critical</th><th scope="col">Rate</th></tr></thead>
+        <thead><tr><th scope="col">Date</th><th scope="col">Corpus</th><th scope="col">High</th><th scope="col">Critical</th><th scope="col">Rate</th><th scope="col">Recall (any / alarm)</th></tr></thead>
         <tbody>
-          <tr><td>2026-08-19</td><td>Majestic Million, 100,000</td><td>5</td><td>0</td><td>0.005%</td></tr>
-          <tr><td>2026-08-11</td><td>Majestic Million, 100,000</td><td>5</td><td>0</td><td>0.005%</td></tr>
+          <tr><td>2026-08-20</td><td>Majestic Million, 100,000; feeds, 392,233</td><td>0</td><td>0</td><td>0%</td><td>72.7% / 9.0%</td></tr>
+          <tr><td>2026-08-19</td><td>Majestic Million, 100,000</td><td>5</td><td>0</td><td>0.005%</td><td>not measured</td></tr>
+          <tr><td>2026-08-11</td><td>Majestic Million, 100,000</td><td>5</td><td>0</td><td>0.005%</td><td>not measured</td></tr>
         </tbody>
       </table>
     </div>
+    <p>What changed on 20 August: the recall audit was added; the engine is unchanged, so the false-positive numbers are the same as 19 August.</p>
     <p>What changed on 19 August: hosting-platform suffixes (netlify.app, web.app, pages.dev, github.io and similar) are treated as separate registrable domains; 24 more brands, including major US and UK banks, Coinbase, Binance, MetaMask, USPS, FedEx, DHL, DocuSign and Okta; digit-homoglyph folding; softer weights on known-legitimate domains. Same result.</p>
 
     <h2 id="reproduce">Reproduce it</h2>
