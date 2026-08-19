@@ -1,0 +1,104 @@
+name: Release
+
+# Push a tag like v1.0.1 (matching "version" in src/manifest.json) and this builds,
+# tests, packages, publishes a GitHub release with checksums, and submits the zips
+# to the Chrome Web Store and to Firefox Add-ons. Secrets are repository secrets
+# (Settings -> Secrets and variables -> Actions); they never appear in logs or files.
+#
+#   CWS_EXTENSION_ID, CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_REFRESH_TOKEN
+#   AMO_JWT_ISSUER, AMO_JWT_SECRET
+#
+# Either store can be skipped by leaving its secrets empty.
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write   # create the GitHub release
+  id-token: write   # build provenance attestation
+  attestations: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+
+      - name: Tag must match the manifest version
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          ver=$(node -p "require('./src/manifest.json').version")
+          test "$tag" = "$ver" || { echo "tag v$tag but manifest says $ver"; exit 1; }
+
+      - name: Build, test, package
+        run: |
+          node scripts/build.mjs
+          node tests/verify.mjs
+          node scripts/package.mjs
+          git archive --format=zip -o dist/fishcatcher-source.zip HEAD
+          (cd dist && sha256sum fishcatcher-chrome.zip fishcatcher-firefox.zip fishcatcher-source.zip > SHA256SUMS.txt)
+          cat dist/SHA256SUMS.txt
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: |
+            dist/fishcatcher-chrome.zip
+            dist/fishcatcher-firefox.zip
+
+      - name: GitHub release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            dist/fishcatcher-chrome.zip dist/fishcatcher-firefox.zip dist/fishcatcher-source.zip dist/SHA256SUMS.txt \
+            --title "Fish Catcher $GITHUB_REF_NAME" --generate-notes
+
+      - name: Chrome Web Store
+        if: ${{ secrets.CWS_EXTENSION_ID != '' }}
+        env:
+          CWS_EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
+          CWS_CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CWS_CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+        run: |
+          set -euo pipefail
+          token=$(curl -sS -X POST https://oauth2.googleapis.com/token \
+            -d client_id="$CWS_CLIENT_ID" -d client_secret="$CWS_CLIENT_SECRET" \
+            -d refresh_token="$CWS_REFRESH_TOKEN" -d grant_type=refresh_token | node -p "JSON.parse(require('fs').readFileSync(0,'utf8')).access_token")
+          echo "::add-mask::$token"
+          up=$(curl -sS -H "Authorization: Bearer $token" -H "x-goog-api-version: 2" \
+            -X PUT -T dist/fishcatcher-chrome.zip \
+            "https://www.googleapis.com/upload/chromewebstore/v1.1/items/$CWS_EXTENSION_ID")
+          echo "$up"; echo "$up" | grep -q '"uploadState": *"SUCCESS"' || { echo "upload failed"; exit 1; }
+          pub=$(curl -sS -H "Authorization: Bearer $token" -H "x-goog-api-version: 2" -H "Content-Length: 0" \
+            -X POST "https://www.googleapis.com/chromewebstore/v1.1/items/$CWS_EXTENSION_ID/publish")
+          echo "$pub"; echo "$pub" | grep -q '"status": *\[ *"OK"' || { echo "publish failed"; exit 1; }
+
+      - name: Firefox Add-ons
+        if: ${{ secrets.AMO_JWT_ISSUER != '' }}
+        env:
+          AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: |
+          set -euo pipefail
+          # web-ext is Mozilla's own tool; it uploads the package plus the source zip,
+          # submits to the listed channel, and exits once the version is queued.
+          npx --yes web-ext@8 sign \
+            --source-dir dist/firefox --artifacts-dir dist/amo \
+            --channel listed \
+            --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET" \
+            --upload-source-code dist/fishcatcher-source.zip \
+            --approval-timeout 0
