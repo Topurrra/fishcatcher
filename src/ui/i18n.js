@@ -1,7 +1,8 @@
 // Thin wrapper over chrome.i18n. Works in pages, content scripts and the
 // bundled background worker (no DOM use outside applyI18n). Messages use $1..$9
 // directly in their text, which chrome.i18n.getMessage substitutes positionally.
-export function getMessage(key, params) {
+// Async on purpose: every caller awaits or .then()s it, as they did with the old loader.
+export async function getMessage(key, params) {
   return chrome.i18n.getMessage(key, (params ?? []).map(String));
 }
 

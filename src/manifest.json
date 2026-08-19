@@ -23,9 +23,8 @@
   "options_ui": { "page": "options/options.html", "open_in_tab": true },
   "background": { "service_worker": "background.js" },
   "permissions": ["storage", "tabs", "activeTab", "sidePanel", "contextMenus", "alarms"],
-  "optional_permissions": [
-    "downloads",
-    "notifications",
+  "optional_permissions": ["downloads", "notifications"],
+  "optional_host_permissions": [
     "https://rdap.org/*",
     "https://rdap.verisign.com/*",
     "https://raw.githubusercontent.com/*",

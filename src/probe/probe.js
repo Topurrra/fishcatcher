@@ -252,13 +252,30 @@
     }
   });
 
+  // Our UI lives in a closed shadow root on a host reset with all:initial, so the
+  // page's own CSS (button{width:100%}, * {font...}, etc.) cannot restyle it and
+  // our styles do not leak into the page. Returns the inner root to fill.
+  function mountOverlay(id, hostCss, rootCss) {
+    const host = document.createElement('div');
+    host.id = id;
+    host.style.cssText = 'all:initial;position:fixed;z-index:2147483647;' + hostCss;
+    const shadow = host.attachShadow({ mode: 'closed' });
+    const style = document.createElement('style');
+    style.textContent = '*{box-sizing:border-box}button{all:unset;box-sizing:border-box}';
+    shadow.appendChild(style);
+    const root = document.createElement('div');
+    root.style.cssText = rootCss;
+    shadow.appendChild(root);
+    document.documentElement.appendChild(host);
+    return { host, root };
+  }
+
   // Strict-mode warning banner (payload strings pre-resolved by the worker).
   function showBanner(payload) {
     if (document.getElementById('fishcatcher-banner')) return;
     const colors = { high: '#fb923c', critical: '#f87171' };
-    const root = document.createElement('div');
-    root.id = 'fishcatcher-banner';
-    root.style.cssText = `position:fixed;top:0;left:0;right:0;z-index:2147483647;background:#1c1c1c;color:#f2f2f2;border-bottom:2px solid ${colors[payload.level]};font:13px/1.5 system-ui,sans-serif;padding:10px 14px;display:flex;gap:12px;align-items:flex-start;`;
+    const { host, root } = mountOverlay('fishcatcher-banner', 'top:0;left:0;right:0;',
+      `background:#1c1c1c;color:#f2f2f2;border-bottom:2px solid ${colors[payload.level]};font:13px/1.5 system-ui,sans-serif;padding:10px 14px;display:flex;gap:12px;align-items:flex-start;`);
     const main = document.createElement('div');
     main.style.cssText = 'flex:1;min-width:0';
     const title = document.createElement('strong');
@@ -278,14 +295,13 @@
     main.appendChild(ul);
     const btn = document.createElement('button');
     btn.textContent = payload.dismiss;
-    btn.style.cssText = 'background:#2a2a2a;color:#f2f2f2;border:1px solid #444;border-radius:6px;padding:4px 10px;cursor:pointer;font:inherit';
+    btn.style.cssText = 'background:#2a2a2a;color:#f2f2f2;border:1px solid #444;border-radius:6px;padding:4px 10px;cursor:pointer;font:inherit;flex:none';
     btn.addEventListener('click', () => {
-      root.remove();
+      host.remove();
       send({ type: 'banner-dismissed', url: location.href });
     });
     root.appendChild(main);
     root.appendChild(btn);
-    document.documentElement.appendChild(root);
   }
 
   // S14 probe (strict mode only): device-code scam text on the page.
@@ -308,18 +324,16 @@
       if (document.getElementById('fishcatcher-devicecode')) return;
       const text = await getMessage('deviceCodeNotice');
       const dismiss = await getMessage('bannerDismiss');
-      const root = document.createElement('div');
-      root.id = 'fishcatcher-devicecode';
-      root.style.cssText = 'position:fixed;bottom:12px;right:12px;z-index:2147483647;max-width:340px;background:#1c1c1c;color:#f2f2f2;border:1px solid #2dd4bf;border-radius:10px;font:13px/1.5 system-ui,sans-serif;padding:10px 12px;';
+      const { host, root } = mountOverlay('fishcatcher-devicecode', 'bottom:12px;right:12px;max-width:340px;',
+        'background:#1c1c1c;color:#f2f2f2;border:1px solid #2dd4bf;border-radius:10px;font:13px/1.5 system-ui,sans-serif;padding:10px 12px;');
       const p = document.createElement('p');
       p.style.cssText = 'margin:0 0 8px';
       p.textContent = text;
       const btn = document.createElement('button');
       btn.textContent = dismiss;
       btn.style.cssText = 'background:#2a2a2a;color:#f2f2f2;border:1px solid #444;border-radius:6px;padding:3px 10px;cursor:pointer;font:inherit';
-      btn.addEventListener('click', () => root.remove());
+      btn.addEventListener('click', () => host.remove());
       root.append(p, btn);
-      document.documentElement.appendChild(root);
     })();
   }
 })();

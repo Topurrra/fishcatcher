@@ -349,8 +349,12 @@ check('engine: S15 young domain adds weight', () => {
 check('manifest: alarms + optional opt-in origins', () => {
   const m = readJson('src/manifest.json');
   assert.ok(m.permissions.includes('alarms'));
-  assert.ok(m.optional_permissions.includes('https://rdap.org/*'));
-  assert.ok(m.optional_permissions.includes('https://raw.githubusercontent.com/*'));
+  // MV3: host patterns live in optional_host_permissions (Chrome ignores them in
+  // optional_permissions, so permissions.request() would fail at enable time).
+  assert.ok(m.optional_host_permissions.includes('https://rdap.org/*'));
+  assert.ok(m.optional_host_permissions.includes('https://raw.githubusercontent.com/*'));
+  assert.ok(m.optional_host_permissions.includes('https://safebrowsing.googleapis.com/*'));
+  assert.ok(!m.optional_permissions.some((p) => p.includes('://')), 'no host patterns in optional_permissions');
 });
 
 check('locales: M6 strings present', () => {
