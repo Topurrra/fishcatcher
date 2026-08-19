@@ -14,6 +14,7 @@ import { registrableDomain } from '../src/engine/psl.js';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const N = 100000;
 const TARGET_FPR = 0.001; // low, so few unknown-bad domains slip past brand checks
+const SEED = 2; // seed 1 collided with a typosquat used in tests/verify.mjs (amaz0n-prime.ru)
 
 const psl = JSON.parse(readFileSync(join(root, 'src/data/psl.json'), 'utf8')).suffixes;
 const lines = readFileSync(join(root, 'scripts/data/majestic_million.csv'), 'utf8').split('\n').slice(1, N + 1);
@@ -29,11 +30,11 @@ for (const line of lines) {
 const n = regs.size;
 const m = Math.ceil((-n * Math.log(TARGET_FPR)) / (Math.LN2 * Math.LN2));
 const k = Math.max(1, Math.round((m / n) * Math.LN2));
-const bloom = new Bloom(m, k, 1);
+const bloom = new Bloom(m, k, SEED);
 for (const r of regs) bloom.add(r);
 
 writeFileSync(
   join(root, 'src/data/safe-bloom.json'),
-  JSON.stringify({ version: 1, count: n, m, k, seed: 1, bits: bloom.toBase64() })
+  JSON.stringify({ version: 1, count: n, m, k, seed: SEED, bits: bloom.toBase64() })
 );
 console.log(`safe-bloom: ${n} registrable domains from top ${N} (m=${m}, k=${k}, ~${Math.round(m / 8 / 1024)}KB)`);

@@ -16,3 +16,6 @@ store/
 
 # the threat registry is its own repo (Topurrra/fishcatcher-registry); a local clone may live here
 registry/
+
+# agent worktrees
+.claude/
