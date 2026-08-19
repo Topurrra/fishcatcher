@@ -112,14 +112,22 @@ for (let i = 1; i < lines.length && domains.length < limit; i++) {
 
 // ── run the passive engine (NO opts) over every domain ───────────
 const offenders = [];
-let high = 0, critical = 0, tested = 0;
+let high = 0, critical = 0, elevated = 0, tested = 0;
+const elevatedReasons = {};
 for (const d of domains) {
   const r = analyzeUrl(`https://${d}/`, data); // no opts → passive URL engine only
   if (!r) continue; // unparseable host: not part of the measurement
   tested++;
   if (r.level === 'high') high++;
   else if (r.level === 'critical') critical++;
-  else continue;
+  else {
+    // Elevated does not alarm the user, but a model retrain must not inflate it.
+    if (r.level === 'elevated') {
+      elevated++;
+      for (const x of r.reasons) elevatedReasons[x.key] = (elevatedReasons[x.key] ?? 0) + 1;
+    }
+    continue;
+  }
   offenders.push({ domain: d, score: r.score, level: r.level, reasons: r.reasons.map((x) => x.key) });
 }
 
@@ -136,6 +144,8 @@ console.log(`high:     ${high}`);
 console.log(`critical: ${critical}`);
 console.log(`false positives (high+critical): ${flagged}`);
 console.log(`false-positive rate: ${fmtPct(pct)}  (${flagged} in ${tested})`);
+const elevatedTop = Object.entries(elevatedReasons).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([k, n]) => `${k} ${n}`).join(', ');
+console.log(`elevated: ${elevated}  (${fmtPct(tested ? (elevated / tested) * 100 : 0)}; reasons: ${elevatedTop || 'none'})`);
 console.log('');
 if (offenders.length) {
   console.log('offending domains (score, level, reasons):');

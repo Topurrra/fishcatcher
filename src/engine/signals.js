@@ -148,8 +148,9 @@ export function runSignals(ctx, data) {
   // S11 — short random-looking domain
   if (!isIp && sld.length <= 6 && /\d/.test(sld)) add(5, 'reasonShort');
 
-  // S17 — lexical model flags random/DGA-like domains
-  if (!isIp && data.ml && mlPredict(data.ml, sld) >= (data.ml.threshold ?? 0.6)) add(20, 'reasonMl');
+  // S17 — on-device n-gram model over the full host (minus www.): phishing-feed
+  // address patterns (login-, -verify, hosting tenants, abused TLDs) and DGA names
+  if (!isIp && data.ml && mlPredict(data.ml, host) >= (data.ml.threshold ?? 0.6)) add(20, 'reasonMl');
 
   return { score, reasons };
 }
