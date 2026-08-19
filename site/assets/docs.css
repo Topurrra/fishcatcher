@@ -148,11 +148,6 @@
 /* Comparison pages: "where your data goes" flow diagram, the pixel fish
    (same sprite as the hero, drawn in accent shades), the scorecard and the
    two "pick X if" lists. Colours are tokens only; no risk colours here. */
-#fc-fish .d { fill: var(--accent); }
-#fc-fish .m { fill: var(--accent); fill-opacity: .82; }
-#fc-fish .b { fill: var(--accent); fill-opacity: .62; }
-#fc-fish .l { fill: var(--accent); fill-opacity: .36; }
-#fc-fish .p { fill: var(--text); }
 
 .cmp-flow .dv { stroke: var(--border); stroke-dasharray: 5 4; }
 .cmp-flow .bw { fill: var(--surface-2); stroke: var(--border); }
@@ -171,7 +166,7 @@
 .docs-main .cmp-score thead tr { border-bottom-color: var(--border-strong); }
 .docs-main .cmp-score tbody tr:last-child { border-bottom: 0; }
 .docs-main .cmp-score thead th { background: transparent; font-weight: 600; color: var(--text); padding-top: 4px; white-space: nowrap; }
-.docs-main .cmp-score thead th .cmp-fish { vertical-align: -6px; margin-right: 8px; }
+.docs-main .cmp-score thead th .cmp-logo { display: inline-block; vertical-align: -8px; margin-right: 8px; }
 .docs-main .cmp-score tbody th { font-weight: 550; color: var(--muted); width: 24%; }
 .docs-main .cmp-score td { color: var(--text); width: 38%; position: relative; padding-left: 40px; }
 .docs-main .cmp-score td::before { display: none; content: attr(data-col); font-size: 0.75rem; color: var(--muted); margin-bottom: 2px; }
@@ -201,3 +196,36 @@
   .docs-main .cmp-score tbody th { grid-column: 1 / -1; margin-bottom: 8px; width: auto; }
   .docs-main .cmp-score td::before { display: block; }
 }
+
+/* ── FAQ accordions ─────────────────────────────────── */
+.docs-main .faq { border-top: 1px solid var(--border); margin: 0; }
+.docs-main .faq:last-of-type { border-bottom: 1px solid var(--border); margin-bottom: 1.4em; }
+.docs-main .faq summary {
+  list-style: none; cursor: pointer; position: relative;
+  padding: 14px 40px 14px 0; font-weight: 600; color: var(--text); line-height: 1.45;
+}
+.docs-main .faq summary::-webkit-details-marker { display: none; }
+.docs-main .faq summary::after {
+  content: ""; position: absolute; right: 6px; top: 50%;
+  width: 8px; height: 8px; margin-top: -6px;
+  border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted);
+  transform: rotate(45deg); transition: transform .2s var(--ease), border-color .2s;
+}
+.docs-main .faq summary:hover::after { border-color: var(--text); }
+.docs-main .faq[open] summary::after { transform: rotate(225deg); margin-top: -2px; }
+.docs-main .faq summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+.docs-main .faq p { margin: 0 0 14px; color: var(--muted); max-width: 68ch; }
+.docs-main .faq p + p { margin-top: -6px; }
+
+/* ── the real Fish Catcher icon, and its hover glitch (the hero "catch") ── */
+.fc-fish { image-rendering: pixelated; image-rendering: crisp-edges; }
+.fc-fish:hover { animation: fc-fish-glitch .3s steps(1) infinite; }
+@keyframes fc-fish-glitch {
+  0%   { transform: translate(0, 0);    filter: hue-rotate(-150deg) saturate(1.6) drop-shadow(-2px 0 #22d3ee) drop-shadow(2px 0 #ff2d6f); clip-path: inset(0 0 0 0); }
+  20%  { transform: translate(-2px, 1px); filter: hue-rotate(-150deg) saturate(1.6) drop-shadow(2px 0 #22d3ee) drop-shadow(-2px 0 #ff2d6f); clip-path: inset(0 0 45% 0); }
+  40%  { transform: translate(2px, -1px); filter: hue-rotate(-150deg) saturate(1.6) brightness(1.8); clip-path: inset(30% 0 20% 0); }
+  60%  { transform: translate(-1px, 0);   filter: hue-rotate(-150deg) saturate(1.6) drop-shadow(-2px 0 #22d3ee) drop-shadow(2px 0 #ff2d6f); clip-path: inset(55% 0 0 0); }
+  80%  { transform: translate(1px, 1px);  filter: hue-rotate(-150deg) saturate(1.6) drop-shadow(2px 0 #ff2d6f); clip-path: inset(0 0 0 0); }
+  100% { transform: translate(0, 0);    filter: hue-rotate(-150deg) saturate(1.6) drop-shadow(-2px 0 #22d3ee) drop-shadow(2px 0 #ff2d6f); clip-path: inset(0 0 0 0); }
+}
+@media (prefers-reduced-motion: reduce) { .fc-fish:hover { animation: none; filter: hue-rotate(-150deg) saturate(1.6); } }

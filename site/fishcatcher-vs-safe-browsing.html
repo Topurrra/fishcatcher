@@ -62,20 +62,18 @@
 <figure class="diagram">
 <svg class="cmp-flow" viewBox="0 0 640 220" role="img" aria-labelledby="flow-title" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
 <title id="flow-title">Where your data goes: Fish Catcher keeps the check on your device; Safe Browsing sends partial hashes of the address to Google</title>
-<defs><symbol id="fc-fish" viewBox="0 0 14 11" shape-rendering="crispEdges"><path class="d" d="M6 0h2v1h-2zM5 1h5v1h-5zM1 2h1v1h-1zM4 2h1v1h-1zM10 2h1v1h-1zM0 3h3v1h-3zM10 3h1v1h-1zM0 4h3v1h-3zM11 4h1v1h-1zM0 5h2v1h-2zM12 5h1v1h-1zM0 6h3v1h-3zM12 6h1v1h-1zM0 7h3v1h-3zM11 7h1v1h-1zM1 8h1v1h-1zM4 8h1v1h-1zM10 8h1v1h-1zM5 9h5v1h-5zM6 10h2v1h-2z"/><path class="m" d="M11 3h1v1h-1zM12 4h1v1h-1zM13 5h1v1h-1zM13 6h1v1h-1zM12 7h1v1h-1z"/><path class="b" d="M5 2h5v1h-5zM3 3h7v1h-7zM3 4h5v1h-5zM10 4h1v1h-1zM2 5h6v1h-6zM10 5h2v1h-2zM3 6h3v1h-3zM10 6h2v1h-2zM3 7h3v1h-3zM10 7h1v1h-1zM5 8h5v1h-5z"/><path class="l" d="M8 4h2v1h-2zM8 5h1v1h-1zM6 6h4v1h-4zM6 7h4v1h-4z"/><path class="p" d="M9 5h1v1h-1z"/></symbol></defs>
 <text x="1" y="18" font-size="13" font-weight="600">With Fish Catcher</text>
 <rect class="dv" x="1" y="34" width="308" height="140" rx="10"/>
 <text class="muted" x="14" y="52" font-size="12">Your device</text>
 <rect class="bw" x="30" y="60" width="130" height="96" rx="6"/>
 <path class="hl" d="M30 76h130"/>
 <circle class="dot" cx="40" cy="68" r="2.5"/><circle class="dot" cx="49" cy="68" r="2.5"/><circle class="dot" cx="58" cy="68" r="2.5"/>
-<use href="#fc-fish" x="74" y="100" width="42" height="33"/>
-<path class="loop" d="M250 80.3A32 32 0 1 1 218 80.3"/>
-<path class="loop" d="M213.9 87.3 218 80.3 209.9 80.3"/>
+<image class="fc-fish px" href="/assets/icon-128.png" x="73" y="86" width="44" height="44"/>
+<circle class="loop" cx="234" cy="108" r="32"/>
 <path class="loop" d="M224 109l7 7 13-14"/>
 <text class="muted" x="234" y="160" font-size="12" text-anchor="middle">Checks run here</text>
 <text class="muted" x="155" y="196" font-size="12" text-anchor="middle">Nothing about the page leaves your browser</text>
-<text x="331" y="18" font-size="13" font-weight="600">With Safe Browsing</text>
+<image href="/assets/logos/safebrowsing.svg" x="331" y="4" width="11" height="16"/><text x="348" y="18" font-size="13" font-weight="600">With Safe Browsing</text>
 <rect class="dv" x="331" y="34" width="150" height="140" rx="10"/>
 <text class="muted" x="344" y="52" font-size="12">Your device</text>
 <rect class="bw" x="341" y="60" width="130" height="96" rx="6"/>
@@ -95,7 +93,7 @@
 
 <h2 id="compare">Side by side</h2>
 <table class="cmp-score">
-<thead><tr><th></th><th scope="col"><svg class="cmp-fish" viewBox="0 0 14 11" width="28" height="22" aria-hidden="true"><use href="#fc-fish"/></svg>Fish Catcher</th><th scope="col">Safe Browsing</th></tr></thead>
+<thead><tr><th></th><th scope="col"><img class="cmp-logo fc-fish" src="/assets/icon-128.png" alt="" width="28" height="28">Fish Catcher</th><th scope="col"><img class="cmp-logo" src="/assets/logos/safebrowsing.svg" alt="" width="19" height="28">Safe Browsing</th></tr></thead>
 <tbody>
 <tr><th scope="row">Privacy</th><td data-col="Fish Catcher"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Checks stay on your device</td><td data-col="Safe Browsing"><svg class="g part" role="img" viewBox="0 0 20 20" aria-label="Partly"><path d="M5 10h10"/></svg>Partial URL hashes go to Google</td></tr>
 <tr><th scope="row">Open source</th><td data-col="Fish Catcher"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>MIT licensed, code on GitHub</td><td data-col="Safe Browsing"><svg class="g part" role="img" viewBox="0 0 20 20" aria-label="Partly"><path d="M5 10h10"/></svg>Browser code open, list is Google’s</td></tr>
@@ -105,7 +103,7 @@
 <tr><th scope="row">Best for</th><td data-col="Fish Catcher"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Catching scams not yet listed</td><td data-col="Safe Browsing"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Known bad pages, zero setup</td></tr>
 </tbody>
 </table>
-<p class="cmp-note">Competitor details are from their public documentation as of August 2026; tell us if something changed.</p>
+<p class="cmp-note">Competitor details are from their public documentation as of August 2026; tell us if something changed. Logos belong to their owners and are shown to identify the products.</p>
 
 <h2 id="pick">Which to pick</h2>
 <p>Keep Safe Browsing on either way. The question is whether to add Fish Catcher beside it.</p>
@@ -131,10 +129,13 @@
 </ul>
 
 <h2 id="faq">Common questions</h2>
-<h3>If my browser already has Safe Browsing, do I need Fish Catcher?</h3>
+<details class="faq"><summary>If my browser already has Safe Browsing, do I need Fish Catcher?</summary>
 <p>No, but it covers a different gap. Safe Browsing knows sites that were already reported; Fish Catcher reads the page in front of you and says why it looks risky.</p>
-<h3>Should I turn off Safe Browsing if I install Fish Catcher?</h3>
+</details>
+<details class="faq"><summary>Should I turn off Safe Browsing if I install Fish Catcher?</summary>
 <p>No, leave it on. Fish Catcher warns and never blocks, so it does not replace the red full-page block.</p>
+</details>
+
 
     <h2 id="others">Other comparisons</h2>
     <div class="article-cards">
