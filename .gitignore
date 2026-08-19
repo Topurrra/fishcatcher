@@ -13,3 +13,6 @@ docs/
 # local scanner notes
 omnis-x-fp.md
 store/
+
+# the threat registry is its own repo (Topurrra/fishcatcher-registry); a local clone may live here
+registry/

@@ -71,8 +71,8 @@ When you turn on threat list updates, the extension fetches that file once a day
 when it has changed. Every list is signed by the registry and the extension checks the
 signature against a key built into it before using the list, so a tampered file is ignored.
 
-The automation is in [`registry/`](registry/). See [registry/README.md](registry/README.md)
-to set it up.
+The automation lives in the [fishcatcher-registry](https://github.com/Topurrra/fishcatcher-registry)
+repository; its README explains the setup and the signing key.
 
 ## Free and open source
 
