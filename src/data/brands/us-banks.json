@@ -1,0 +1,33 @@
+{
+  "brands": [
+    {"name": "Bank of America", "domains": ["bankofamerica.com"], "keywords": ["bankofamerica"]},
+    {"name": "Wells Fargo", "domains": ["wellsfargo.com"], "keywords": ["wellsfargo"]},
+    {"name": "Capital One", "domains": ["capitalone.com"], "keywords": ["capitalone"]},
+    {"name": "Citibank", "domains": ["citibank.com", "citi.com"], "keywords": ["citibank"]},
+    {"name": "Chase", "domains": ["chase.com"], "keywords": ["chasebank", "chase-online", "chaseonline", "chase-login"]},
+    {"name": "U.S. Bank", "domains": ["usbank.com"], "keywords": ["usbank.com", "usbank-login", "usbank-online"]},
+    {"name": "PNC", "domains": ["pnc.com"], "keywords": ["pncbank", "pnc-bank", "pnc-online"]},
+    {"name": "Truist", "domains": ["truist.com"], "keywords": ["truistbank", "truist-online", "truist-login"]},
+    {"name": "TD Bank", "domains": ["td.com", "tdbank.com"], "keywords": ["tdbank"]},
+    {"name": "Fifth Third Bank", "domains": ["53.com"], "keywords": ["fifththird", "53bank"]},
+    {"name": "Regions Bank", "domains": ["regions.com"], "keywords": ["regionsbank"]},
+    {"name": "KeyBank", "domains": ["key.com"], "keywords": ["keybank"]},
+    {"name": "M&T Bank", "domains": ["mtb.com"], "keywords": ["mandtbank", "mtb-online"]},
+    {"name": "Citizens Bank", "domains": ["citizensbank.com"], "keywords": ["citizensbank"]},
+    {"name": "Huntington Bank", "domains": ["huntington.com"], "keywords": ["huntingtonbank"]},
+    {"name": "Ally", "domains": ["ally.com"], "keywords": ["allybank", "ally-bank"]},
+    {"name": "Discover", "domains": ["discover.com"], "keywords": ["discovercard", "discover-card", "discoverbank"]},
+    {"name": "American Express", "domains": ["americanexpress.com"], "keywords": ["americanexpress", "amex-login", "amex-verify"]},
+    {"name": "Synchrony", "domains": ["synchrony.com"], "keywords": ["synchrony"]},
+    {"name": "Navy Federal", "domains": ["navyfederal.org"], "keywords": ["navyfederal"]},
+    {"name": "USAA", "domains": ["usaa.com"], "keywords": ["usaa.com", "usaa-login", "usaa-secure"]},
+    {"name": "Charles Schwab", "domains": ["schwab.com"], "keywords": ["schwab.com", "charlesschwab"]},
+    {"name": "Fidelity", "domains": ["fidelity.com", "fidelity.ca", "fidelity.co.uk", "fidelityinternational.com"], "keywords": ["fidelity.com", "fidelity-login", "fidelityinvestments"]},
+    {"name": "Vanguard", "domains": ["vanguard.com", "vanguard.ca", "vanguardinvestor.co.uk"], "keywords": ["vanguard.com", "vanguard-login"]},
+    {"name": "Morgan Stanley", "domains": ["morganstanley.com"], "keywords": ["morganstanley"]},
+    {"name": "Goldman Sachs", "domains": ["goldmansachs.com", "marcus.com"], "keywords": ["goldmansachs"]},
+    {"name": "E-Trade", "domains": ["etrade.com"], "keywords": ["etrade.com", "etrade-login"]},
+    {"name": "Comerica", "domains": ["comerica.com"], "keywords": ["comerica"]},
+    {"name": "Zions Bank", "domains": ["zionsbank.com"], "keywords": ["zionsbank"]}
+  ]
+}

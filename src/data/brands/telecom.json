@@ -1,0 +1,25 @@
+{
+  "brands": [
+    {"name": "AT&T", "domains": ["att.com"], "keywords": ["att-login", "att-net", "att-mail"]},
+    {"name": "Verizon", "domains": ["verizon.com", "verizonwireless.com"], "keywords": ["verizon"]},
+    {"name": "T-Mobile", "domains": ["t-mobile.com", "t-mobile.at"], "keywords": ["t-mobile.com", "tmobile-login", "tmobile-account"]},
+    {"name": "Vodafone", "domains": ["vodafone.com", "vodafone.co.uk", "vodafone.de", "vodafone.it", "vodafone.es", "vodafone.gr", "vodafone.ro", "vodafone.ua", "vodafone.co.nz", "vodafone.com.au", "vodafone.com.eg", "vodafone.in"], "keywords": ["vodafone"]},
+    {"name": "O2", "domains": ["o2.co.uk", "o2.de"], "keywords": ["o2-uk", "o2-login"]},
+    {"name": "BT", "domains": ["bt.com"], "keywords": ["btinternet", "btmail", "bt-mail"]},
+    {"name": "Sky", "domains": ["sky.com"], "keywords": ["sky-login", "sky-billing", "skyid"]},
+    {"name": "Virgin Media", "domains": ["virginmedia.com", "virginmedia.ie", "virginmediabusiness.co.uk"], "keywords": ["virginmedia"]},
+    {"name": "Xfinity", "domains": ["xfinity.com", "comcast.net"], "keywords": ["xfinity", "comcast"]},
+    {"name": "Bell Canada", "domains": ["bell.ca"], "keywords": ["bellcanada", "bell-canada"]},
+    {"name": "Telstra", "domains": ["telstra.com"], "keywords": ["telstra"]},
+    {"name": "Optus", "domains": ["optus.com.au"], "keywords": ["optus"]},
+    {"name": "Orange", "domains": ["orange.fr", "orange.com", "orange.es", "orange.pl", "orange.ro", "orange.be", "orange.sk", "orange.sn", "orange.eg", "orange.ma", "orange.jo", "orange.ci", "orange.mg", "orange.md", "orange.cm", "orange.tn", "orange.lu"], "keywords": ["orange-fr"]},
+    {"name": "SFR", "domains": ["sfr.fr"], "keywords": ["sfr-fr", "sfr-mobile", "sfr-facture"]},
+    {"name": "Bouygues Telecom", "domains": ["bouyguestelecom.fr"], "keywords": ["bouygues"]},
+    {"name": "Free", "domains": ["free.fr"], "keywords": ["free-mobile", "freemobile"]},
+    {"name": "Deutsche Telekom", "domains": ["telekom.de", "telekom.si", "telekom.sk", "telekom.ro", "telekom.hu", "telekom.mk", "hrvatskitelekom.hr"], "keywords": ["telekom"]},
+    {"name": "Swisscom", "domains": ["swisscom.ch"], "keywords": ["swisscom"]},
+    {"name": "Movistar", "domains": ["movistar.es", "movistar.com", "movistar.cl", "movistar.com.ar", "movistar.com.mx", "movistar.com.pe", "movistar.com.co"], "keywords": ["movistar"]},
+    {"name": "Vodacom", "domains": ["vodacom.co.za", "vodacom.com"], "keywords": ["vodacom"]},
+    {"name": "Etisalat", "domains": ["etisalat.ae"], "keywords": ["etisalat"]}
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "brands": [
+    {"name": "PayPal", "domains": ["paypal.com"], "keywords": ["paypal"]},
+    {"name": "Revolut", "domains": ["revolut.com"], "keywords": ["revolut"]},
+    {"name": "Wise", "domains": ["wise.com"], "keywords": ["transferwise"]},
+    {"name": "Venmo", "domains": ["venmo.com"], "keywords": ["venmo"]},
+    {"name": "Zelle", "domains": ["zellepay.com"], "keywords": ["zelle"]},
+    {"name": "Stripe", "domains": ["stripe.com"], "keywords": ["stripe.com"]},
+    {"name": "Square", "domains": ["squareup.com", "square.com", "block.xyz"], "keywords": ["squareup"]},
+    {"name": "Cash App", "domains": ["cash.app"], "keywords": ["cashapp", "cash-app"]},
+    {"name": "Klarna", "domains": ["klarna.com", "klarna.de"], "keywords": ["klarna"]},
+    {"name": "Afterpay", "domains": ["afterpay.com", "afterpay.nl"], "keywords": ["afterpay"]},
+    {"name": "Skrill", "domains": ["skrill.com"], "keywords": ["skrill"]},
+    {"name": "Neteller", "domains": ["neteller.com"], "keywords": ["neteller"]},
+    {"name": "Payoneer", "domains": ["payoneer.com"], "keywords": ["payoneer"]},
+    {"name": "Western Union", "domains": ["westernunion.com"], "keywords": ["westernunion"]},
+    {"name": "MoneyGram", "domains": ["moneygram.com"], "keywords": ["moneygram"]},
+    {"name": "Alipay", "domains": ["alipay.com", "alipayplus.com"], "keywords": ["alipay"]},
+    {"name": "Interac", "domains": ["interac.ca"], "keywords": ["etransfer"]},
+    {"name": "Remitly", "domains": ["remitly.com"], "keywords": ["remitly"]},
+    {"name": "Xoom", "domains": ["xoom.com"], "keywords": ["xoom"]},
+    {"name": "GoCardless", "domains": ["gocardless.com"], "keywords": ["gocardless"]}
+  ]
+}

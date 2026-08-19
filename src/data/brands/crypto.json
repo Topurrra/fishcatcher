@@ -1,0 +1,30 @@
+{
+  "brands": [
+    {"name": "Coinbase", "domains": ["coinbase.com"], "keywords": ["coinbase"]},
+    {"name": "Binance", "domains": ["binance.com"], "keywords": ["binance"]},
+    {"name": "MetaMask", "domains": ["metamask.io"], "keywords": ["metamask"]},
+    {"name": "Trezor", "domains": ["trezor.io"], "keywords": ["trezor"]},
+    {"name": "Ledger", "domains": ["ledger.com"], "keywords": ["ledgerwallet", "ledger-live"]},
+    {"name": "Kraken", "domains": ["kraken.com"], "keywords": ["kraken"]},
+    {"name": "Crypto.com", "domains": ["crypto.com"], "keywords": ["crypto.com", "cryptocom"]},
+    {"name": "Gemini", "domains": ["gemini.com"], "keywords": ["gemini.com", "gemini-exchange"]},
+    {"name": "KuCoin", "domains": ["kucoin.com"], "keywords": ["kucoin"]},
+    {"name": "OKX", "domains": ["okx.com"], "keywords": ["okx-login", "okx-wallet"]},
+    {"name": "Bybit", "domains": ["bybit.com", "bybitglobal.com"], "keywords": ["bybit"]},
+    {"name": "Bitfinex", "domains": ["bitfinex.com"], "keywords": ["bitfinex"]},
+    {"name": "Bitstamp", "domains": ["bitstamp.net"], "keywords": ["bitstamp"]},
+    {"name": "Gate.io", "domains": ["gate.io"], "keywords": ["gateio", "gate-io"]},
+    {"name": "Blockchain.com", "domains": ["blockchain.com"], "keywords": ["blockchain.com", "blockchain-com"]},
+    {"name": "Exodus", "domains": ["exodus.com"], "keywords": ["exodus-wallet", "exoduswallet"]},
+    {"name": "Phantom", "domains": ["phantom.app"], "keywords": ["phantom-wallet", "phantomwallet"]},
+    {"name": "Trust Wallet", "domains": ["trustwallet.com"], "keywords": ["trustwallet", "trust-wallet"]},
+    {"name": "Uniswap", "domains": ["uniswap.org", "uniswapfoundation.org"], "keywords": ["uniswap"]},
+    {"name": "OpenSea", "domains": ["opensea.io"], "keywords": ["opensea"]},
+    {"name": "Bitget", "domains": ["bitget.com"], "keywords": ["bitget"]},
+    {"name": "HTX", "domains": ["htx.com", "huobi.com"], "keywords": ["huobi"]},
+    {"name": "eToro", "domains": ["etoro.com"], "keywords": ["etoro.com", "etoro-login"]},
+    {"name": "Robinhood", "domains": ["robinhood.com"], "keywords": ["robinhood"]},
+    {"name": "Electrum", "domains": ["electrum.org"], "keywords": ["electrum"]},
+    {"name": "Bitpanda", "domains": ["bitpanda.com"], "keywords": ["bitpanda"]}
+  ]
+}

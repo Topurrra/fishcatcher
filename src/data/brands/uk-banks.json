@@ -1,0 +1,19 @@
+{
+  "brands": [
+    {"name": "HSBC", "domains": ["hsbc.com", "hsbc.co.uk"], "keywords": ["hsbc"]},
+    {"name": "Barclays", "domains": ["barclays.co.uk", "barclays.com"], "keywords": ["barclays"]},
+    {"name": "Santander", "domains": ["santander.com", "santander.co.uk"], "keywords": ["santander"]},
+    {"name": "Lloyds Bank", "domains": ["lloydsbank.com", "lloydstsb.com", "lloydsbanktrade.com"], "keywords": ["lloyds"]},
+    {"name": "NatWest", "domains": ["natwest.com"], "keywords": ["natwest"]},
+    {"name": "Halifax", "domains": ["halifax.co.uk"], "keywords": ["halifax.co.uk", "halifax-online", "halifax-secure", "halifaxbank"]},
+    {"name": "Nationwide", "domains": ["nationwide.co.uk"], "keywords": ["nationwide.co.uk", "nationwide-online", "nationwide-secure"]},
+    {"name": "Monzo", "domains": ["monzo.com"], "keywords": ["monzo"]},
+    {"name": "Starling Bank", "domains": ["starlingbank.com"], "keywords": ["starlingbank", "starling-bank"]},
+    {"name": "TSB", "domains": ["tsb.co.uk"], "keywords": ["tsb-bank", "tsbbank"]},
+    {"name": "Metro Bank", "domains": ["metrobankonline.co.uk"], "keywords": ["metrobank"]},
+    {"name": "Bank of Scotland", "domains": ["bankofscotland.co.uk"], "keywords": ["bankofscotland"]},
+    {"name": "First Direct", "domains": ["firstdirect.com"], "keywords": ["firstdirect"]},
+    {"name": "Co-operative Bank", "domains": ["co-operativebank.co.uk"], "keywords": ["cooperativebank", "co-operativebank"]},
+    {"name": "Virgin Money", "domains": ["virginmoney.com"], "keywords": ["virginmoney"]}
+  ]
+}

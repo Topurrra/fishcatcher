@@ -1,0 +1,18 @@
+{
+  "brands": [
+    {"name": "IRS", "domains": ["irs.gov"], "keywords": ["irs-gov", "irs-tax", "irs-refund"]},
+    {"name": "Social Security", "domains": ["ssa.gov"], "keywords": ["socialsecurity", "ssa-gov"]},
+    {"name": "HMRC", "domains": ["hmrc.gov.uk", "gov.uk"], "keywords": ["hmrc"]},
+    {"name": "UK Government", "domains": ["gov.uk"], "keywords": ["gov-uk", "govuk", "dvla"]},
+    {"name": "Canada Revenue Agency", "domains": ["canada.ca"], "keywords": ["cra-arc", "canadarevenue", "cra-refund"]},
+    {"name": "Australian Taxation Office", "domains": ["ato.gov.au"], "keywords": ["ato-gov", "ato-refund", "mygov-au"]},
+    {"name": "Impots (France)", "domains": ["impots.gouv.fr"], "keywords": ["impots"]},
+    {"name": "ELSTER", "domains": ["elster.de"], "keywords": ["elster-online", "elsteronline", "elster-steuer"]},
+    {"name": "Agenzia delle Entrate", "domains": ["agenziaentrate.gov.it"], "keywords": ["agenziaentrate"]},
+    {"name": "SAT (Mexico)", "domains": ["sat.gob.mx"], "keywords": ["sat-gob"]},
+    {"name": "Income Tax India", "domains": ["incometax.gov.in"], "keywords": ["incometax"]},
+    {"name": "SARS", "domains": ["sars.gov.za"], "keywords": ["sars-efiling", "sarsefiling"]},
+    {"name": "Skatteverket", "domains": ["skatteverket.se"], "keywords": ["skatteverket"]},
+    {"name": "Belastingdienst", "domains": ["belastingdienst.nl"], "keywords": ["belastingdienst"]}
+  ]
+}

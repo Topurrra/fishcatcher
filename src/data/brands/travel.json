@@ -1,0 +1,25 @@
+{
+  "brands": [
+    {"name": "Uber", "domains": ["uber.com"], "keywords": ["uber-account", "ubereats"]},
+    {"name": "Lyft", "domains": ["lyft.com"], "keywords": ["lyft"]},
+    {"name": "DoorDash", "domains": ["doordash.com"], "keywords": ["doordash"]},
+    {"name": "Grubhub", "domains": ["grubhub.com"], "keywords": ["grubhub"]},
+    {"name": "Deliveroo", "domains": ["deliveroo.co.uk", "deliveroo.it", "deliveroo.ae", "deliveroo.be", "deliveroo.fr", "deliveroo.ie", "deliveroo.nl", "deliveroo.com.sg"], "keywords": ["deliveroo"]},
+    {"name": "Just Eat", "domains": ["just-eat.co.uk", "just-eat.ch", "just-eat.ie", "just-eat.fr", "just-eat.es", "justeattakeaway.com"], "keywords": ["justeat", "just-eat"]},
+    {"name": "Airbnb", "domains": ["airbnb.com", "airbnb.at", "airbnb.cz", "airbnb.cn", "airbnb.pl", "airbnb.pt", "airbnb.no", "airbnb.co.za", "airbnb.com.sg", "airbnb.co.uk", "airbnb.de", "airbnb.fr", "airbnb.es", "airbnb.it", "airbnb.ca", "airbnb.com.au", "airbnb.se", "airbnb.gr", "airbnb.com.co", "airbnb.co.kr", "airbnb.fi", "airbnb.dk", "airbnb.ae", "airbnb.ch", "airbnb.ie", "airbnb.nl", "airbnb.be", "airbnb.mx", "airbnb.com.br", "airbnb.ru", "airbnb.co.in", "airbnb.co.nz", "airbnb.hu", "airbnb.gy"], "keywords": ["airbnb"]},
+    {"name": "Booking.com", "domains": ["booking.com"], "keywords": ["booking.com", "bookingcom", "booking-com"]},
+    {"name": "Expedia", "domains": ["expedia.com", "expedia.es", "expedia.de", "expedia.co.uk", "expedia.fr", "expedia.ca", "expedia.co.kr", "expedia.co.th", "expedia.com.sg", "expedia-aarp.com", "expedia.co.nz", "expedia.com.tw", "expedia.ie", "expedia.com.hk", "expedia.mx", "expedia.be", "expedia.at", "expedia.it", "expedia.nl", "expedia.se", "expedia.dk", "expedia.no", "expedia.fi", "expedia.co.jp", "expedia.com.br", "expedia.co.in"], "keywords": ["expedia"]},
+    {"name": "Ryanair", "domains": ["ryanair.com"], "keywords": ["ryanair"]},
+    {"name": "easyJet", "domains": ["easyjet.com"], "keywords": ["easyjet"]},
+    {"name": "Lufthansa", "domains": ["lufthansa.com", "lufthansa.de"], "keywords": ["lufthansa"]},
+    {"name": "Emirates", "domains": ["emirates.com"], "keywords": ["emirates.com", "emirates-airline"]},
+    {"name": "Delta Air Lines", "domains": ["delta.com"], "keywords": ["deltaairlines", "delta-airlines"]},
+    {"name": "United Airlines", "domains": ["united.com"], "keywords": ["unitedairlines", "united-airlines"]},
+    {"name": "American Airlines", "domains": ["aa.com", "americanairlines.com", "americanairlines.de"], "keywords": ["americanairlines"]},
+    {"name": "British Airways", "domains": ["britishairways.com"], "keywords": ["britishairways"]},
+    {"name": "Air France", "domains": ["airfrance.com", "airfrance.fr", "airfrance.de", "airfrance.es", "airfrance.co.uk", "airfrance.co.jp", "airfrance.us"], "keywords": ["airfrance"]},
+    {"name": "KLM", "domains": ["klm.com"], "keywords": ["klm.com", "klm-airlines", "klm-flight"]},
+    {"name": "Qantas", "domains": ["qantas.com"], "keywords": ["qantas"]},
+    {"name": "Turkish Airlines", "domains": ["turkishairlines.com"], "keywords": ["turkishairlines"]}
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "brands": [
+    {"name": "USPS", "domains": ["usps.com"], "keywords": ["usps"]},
+    {"name": "FedEx", "domains": ["fedex.com"], "keywords": ["fedex"]},
+    {"name": "DHL", "domains": ["dhl.com", "dhl.de"], "keywords": ["dhl"]},
+    {"name": "Royal Mail", "domains": ["royalmail.com"], "keywords": ["royalmail"]},
+    {"name": "UPS", "domains": ["ups.com"], "keywords": ["ups-track", "ups-delivery", "ups-parcel", "ups-package"]},
+    {"name": "Evri", "domains": ["evri.com"], "keywords": ["evri"]},
+    {"name": "Hermes", "domains": ["myhermes.de"], "keywords": ["myhermes"]},
+    {"name": "DPD", "domains": ["dpd.com", "dpd.de", "dpd.fr", "dpd.co.uk", "dpd.com.pl", "dpdgroup.com"], "keywords": ["dpd"]},
+    {"name": "GLS", "domains": ["gls-group.eu"], "keywords": ["gls-pakete", "gls-parcel", "gls-group"]},
+    {"name": "TNT", "domains": ["tnt.com"], "keywords": ["tnt-express", "tntexpress"]},
+    {"name": "Canada Post", "domains": ["canadapost-postescanada.ca"], "keywords": ["canadapost"]},
+    {"name": "Australia Post", "domains": ["auspost.com.au"], "keywords": ["auspost"]},
+    {"name": "An Post", "domains": ["anpost.ie"], "keywords": ["anpost.ie", "anpost-delivery", "an-post"]},
+    {"name": "PostNL", "domains": ["postnl.nl"], "keywords": ["postnl"]},
+    {"name": "Deutsche Post", "domains": ["deutschepost.de"], "keywords": ["deutschepost"]},
+    {"name": "La Poste", "domains": ["laposte.fr", "lapostegroupe.com", "lapostemobile.fr"], "keywords": ["laposte", "colissimo"]},
+    {"name": "Correos", "domains": ["correos.es", "correos.cl"], "keywords": ["correos"]},
+    {"name": "Poste Italiane", "domains": ["poste.it"], "keywords": ["posteitaliane", "postepay"]},
+    {"name": "Chronopost", "domains": ["chronopost.fr"], "keywords": ["chronopost"]},
+    {"name": "InPost", "domains": ["inpost.pl", "inpost.co.uk"], "keywords": ["inpost"]},
+    {"name": "Aramex", "domains": ["aramex.com"], "keywords": ["aramex"]},
+    {"name": "SF Express", "domains": ["sf-express.com"], "keywords": ["sf-express"]},
+    {"name": "Japan Post", "domains": ["japanpost.jp"], "keywords": ["japanpost"]},
+    {"name": "PostNord", "domains": ["postnord.se", "postnord.com"], "keywords": ["postnord"]},
+    {"name": "bpost", "domains": ["bpost.be"], "keywords": ["bpost"]},
+    {"name": "Swiss Post", "domains": ["post.ch"], "keywords": ["swisspost", "post-ch"]},
+    {"name": "CTT", "domains": ["ctt.pt"], "keywords": ["ctt-correios", "ctt-expresso", "ctt-pt"]},
+    {"name": "Yodel", "domains": ["yodel.co.uk"], "keywords": ["yodel"]}
+  ]
+}

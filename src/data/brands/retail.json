@@ -1,0 +1,28 @@
+{
+  "brands": [
+    {"name": "Costco", "domains": ["costco.com", "costco.ca", "costco.co.uk", "costco.com.au", "costco.com.tw", "costco.com.mx"], "keywords": ["costco"]},
+    {"name": "Best Buy", "domains": ["bestbuy.com"], "keywords": ["bestbuy"]},
+    {"name": "Home Depot", "domains": ["homedepot.com", "homedepot.com.mx", "homedepot.ca"], "keywords": ["homedepot"]},
+    {"name": "Lowe's", "domains": ["lowes.com"], "keywords": ["lowes.com", "lowes-order"]},
+    {"name": "Etsy", "domains": ["etsy.com"], "keywords": ["etsy.com", "etsy-login"]},
+    {"name": "AliExpress", "domains": ["aliexpress.com"], "keywords": ["aliexpress"]},
+    {"name": "Alibaba", "domains": ["alibaba.com"], "keywords": ["alibaba"]},
+    {"name": "Taobao", "domains": ["taobao.com"], "keywords": ["taobao"]},
+    {"name": "Shein", "domains": ["shein.com", "shein.com.mx", "sheingroup.com"], "keywords": ["shein"]},
+    {"name": "Temu", "domains": ["temu.com"], "keywords": ["temu.com", "temu-app", "temu-rewards"]},
+    {"name": "Rakuten", "domains": ["rakuten.co.jp", "rakuten.com", "rakuten.ca"], "keywords": ["rakuten"]},
+    {"name": "MercadoLibre", "domains": ["mercadolibre.com", "mercadolivre.com.br", "mercadolibre.com.ar", "mercadolibre.com.mx", "mercadolibre.cl", "mercadolibre.com.co", "mercadolibre.com.pe", "mercadolibre.com.ec"], "keywords": ["mercadolibre", "mercadolivre", "mercadopago"]},
+    {"name": "Allegro", "domains": ["allegro.pl", "allegro.sk", "allegro.hu", "allegro.cz"], "keywords": ["allegro"]},
+    {"name": "Zalando", "domains": ["zalando.de", "zalando.at", "zalando.be", "zalando.ch", "zalando.es", "zalando.fr", "zalando.it", "zalando.nl", "zalando.pl", "zalando.se", "zalando.co.uk", "zalando.dk", "zalando.ie", "zalando.no", "zalando.fi"], "keywords": ["zalando"]},
+    {"name": "ASOS", "domains": ["asos.com"], "keywords": ["asos"]},
+    {"name": "Argos", "domains": ["argos.co.uk"], "keywords": ["argos"]},
+    {"name": "Tesco", "domains": ["tesco.com", "tescobank.com"], "keywords": ["tesco.com", "tesco-online", "tescobank"]},
+    {"name": "Carrefour", "domains": ["carrefour.com", "carrefour.fr", "carrefour.be", "carrefour.pl", "carrefour.ro", "carrefour.eu", "carrefour.it", "carrefour.es", "carrefour.com.tw", "carrefour.com.br", "carrefoursa.com"], "keywords": ["carrefour"]},
+    {"name": "Coupang", "domains": ["coupang.com"], "keywords": ["coupang"]},
+    {"name": "Flipkart", "domains": ["flipkart.com"], "keywords": ["flipkart"]},
+    {"name": "Wildberries", "domains": ["wildberries.ru"], "keywords": ["wildberries"]},
+    {"name": "Geico", "domains": ["geico.com"], "keywords": ["geico"]},
+    {"name": "State Farm", "domains": ["statefarm.com", "statefarmarena.com"], "keywords": ["statefarm"]},
+    {"name": "Allstate", "domains": ["allstate.com", "allstate.ca"], "keywords": ["allstate.com", "allstate-login"]}
+  ]
+}

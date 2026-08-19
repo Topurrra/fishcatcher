@@ -1,0 +1,9 @@
+{
+  "brands": [
+    { "name": "Bank of Georgia", "domains": ["bog.ge"], "keywords": ["bog"] },
+    { "name": "TBC Bank", "domains": ["tbcbank.ge"], "keywords": ["tbc"] },
+    { "name": "Liberty Bank", "domains": ["libertybank.ge"], "keywords": ["liberty"] },
+    { "name": "Credo Bank", "domains": ["credobank.ge"], "keywords": ["credo"] },
+    { "name": "Georgian Government", "domains": ["gov.ge", "mygov.ge", "rs.ge", "nbg.ge"], "keywords": ["mygov", "gov.ge"] }
+  ]
+}
