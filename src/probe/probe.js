@@ -237,6 +237,26 @@
     // extension context not available
   }
 
+  // Just-in-time nudge: the FIRST time a password or one-time-code field gains
+  // focus, ask the worker whether this page is high/critical. Unlike the
+  // load-time banner this is not gated on strict mode — it fires at the moment
+  // of typing a credential — and it still never blocks.
+  let credentialAsked = false;
+  document.addEventListener('focusin', (e) => {
+    if (credentialAsked) return;
+    const t = e.target;
+    if (!(t instanceof HTMLInputElement)) return;
+    if (t.type !== 'password' && t.getAttribute('autocomplete') !== 'one-time-code') return;
+    credentialAsked = true;
+    try {
+      Promise.resolve(chrome.runtime.sendMessage({ type: 'credential-focus' }))
+        .then((res) => { if (res?.payload) showBanner(res.payload); })
+        .catch(() => {});
+    } catch {
+      // extension context not available
+    }
+  }, true);
+
   chrome.runtime.onMessage.addListener((m, _sender, respond) => {
     if (m.type === 'collect-links') {
       respond({ links: collectLinks(true) });
@@ -313,6 +333,17 @@
       send({ type: 'banner-dismissed', url: location.href });
     });
     root.appendChild(main);
+    if (payload.realSite && payload.openReal) {
+      // "Open <real domain>": the safe action in one tap. The worker validates
+      // the domain against its own brand list before opening anything.
+      const open = document.createElement('button');
+      open.textContent = payload.openReal;
+      open.style.cssText = 'background:#0e7c74;color:#fff;border:1px solid transparent;border-radius:6px;padding:4px 10px;cursor:pointer;font:inherit;flex:none';
+      open.addEventListener('click', () => {
+        send({ type: 'open-real-site', domain: payload.realSite });
+      });
+      root.appendChild(open);
+    }
     root.appendChild(btn);
   }
 

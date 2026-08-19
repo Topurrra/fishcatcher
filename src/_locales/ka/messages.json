@@ -438,5 +438,33 @@
   "openRealSite": {
     "message": "გახსენით $1",
     "description": "Button: open the real site of the impersonated brand; $1 = brand domain"
+  },
+  "welcomeTitle": {
+    "message": "Fish Catcher მზადაა",
+    "description": "First-run page heading and tab title"
+  },
+  "welcomeIntro": {
+    "message": "ის ამოწმებს ყველა გახსნილ გვერდს თქვენსავე მოწყობილობაზე და მარტივი ენით გაფრთხილებთ, როცა გვერდი ფიშინგს ჰგავს. ის არასდროს ბლოკავს გვერდს.",
+    "description": "First-run page: one-sentence description"
+  },
+  "welcomeLevels": {
+    "message": "ხელსაწყოთა ზოლის ხატულა ოთხი ფერიდან ერთ-ერთს აჩვენებს",
+    "description": "First-run page: heading above the four risk levels"
+  },
+  "welcomeOpenPanel": {
+    "message": "დააწკაპუნეთ Fish Catcher-ის ხატულაზე ხელსაწყოთა ზოლში, რომ ნახოთ მიმდინარე გვერდის შეფასება და მისი მიზეზები.",
+    "description": "First-run page: how to open the panel (side panel on Chromium, popup on Firefox)"
+  },
+  "welcomeTryDemo": {
+    "message": "სცადეთ სატესტო გვერდზე",
+    "description": "First-run page: button opening the demo page on fishcatcher.dev"
+  },
+  "welcomeSettings": {
+    "message": "პარამეტრები არასავალდებულოა. ყველაფერი თავიდანვე მუშაობს.",
+    "description": "First-run page: note that no setup is needed"
+  },
+  "welcomeOpenSettings": {
+    "message": "პარამეტრების გახსნა",
+    "description": "First-run page: link to the options page"
   }
 }

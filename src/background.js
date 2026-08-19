@@ -238,7 +238,9 @@ async function bannerPayload(result) {
     domain: result.registrable,
     title: await getMessage(result.level === 'critical' ? 'levelCritical' : 'levelHigh'),
     reasons: await Promise.all(result.reasons.map((r) => getMessage(r.key, r.params.map(String)))),
-    dismiss: await getMessage('bannerDismiss')
+    dismiss: await getMessage('bannerDismiss'),
+    realSite: result.realSite ?? null,
+    openReal: result.realSite ? await getMessage('openRealSite', [result.realSite]) : null
   };
 }
 
@@ -395,6 +397,13 @@ function createMenus() {
 }
 chrome.runtime.onInstalled.addListener(createMenus);
 chrome.runtime.onStartup.addListener(createMenus);
+
+// First install only (never on update): a short local welcome page.
+chrome.runtime.onInstalled.addListener((details) => {
+  if (details.reason === 'install') {
+    chrome.tabs.create({ url: chrome.runtime.getURL('onboarding/welcome.html') });
+  }
+});
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === 'check-qr' && info.srcUrl) {
@@ -603,6 +612,24 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         sendResponse({ payload: bannerAllowed(bTab, sender.tab?.url, bResult, bStrict) ? await bannerPayload(bResult) : null });
         break;
       }
+      case 'credential-focus': {
+        // Just-in-time nudge: a password/OTP field gained focus on this page.
+        // On high/critical the banner shows regardless of strict mode — this is
+        // the moment that matters — and it still never blocks. A banner the
+        // user already dismissed for this url stays dismissed (bannerAllowed).
+        const cTab = sender.tab?.id;
+        const cResult = cTab != null ? results.get(cTab) : null;
+        sendResponse({ payload: bannerAllowed(cTab, sender.tab?.url, cResult, true) ? await bannerPayload(cResult) : null });
+        break;
+      }
+      case 'open-real-site':
+        // Only a domain from our own brand list may be opened — never a free
+        // string chosen by the page.
+        if (data.brands.some((b) => (b.domains ?? []).includes(msg.domain))) {
+          chrome.tabs.create({ url: `https://${msg.domain}/` });
+        }
+        sendResponse({ ok: true });
+        break;
       case 'scan-links': {
         let links = null;
         try {

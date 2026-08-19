@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fish Catcher</title>
+  <link rel="stylesheet" href="../ui/base.css">
+  <link rel="stylesheet" href="welcome.css">
+</head>
+<body>
+  <main>
+    <header>
+      <img src="../icons/icon48-low.png" alt="">
+      <h1 data-i18n="appName">Fish Catcher</h1>
+    </header>
+
+    <h2 class="welcome-title" data-i18n="welcomeTitle"></h2>
+    <p class="intro" data-i18n="welcomeIntro"></p>
+
+    <p class="section-label" data-i18n="welcomeLevels"></p>
+    <ul class="levels">
+      <li class="l-low"><span class="dot"></span><span data-i18n="levelLow"></span></li>
+      <li class="l-elevated"><span class="dot"></span><span data-i18n="levelElevated"></span></li>
+      <li class="l-high"><span class="dot"></span><span data-i18n="levelHigh"></span></li>
+      <li class="l-critical"><span class="dot"></span><span data-i18n="levelCritical"></span></li>
+    </ul>
+
+    <p data-i18n="welcomeOpenPanel"></p>
+
+    <p class="actions">
+      <a class="btn" href="https://fishcatcher.dev/demo" target="_blank" rel="noopener" data-i18n="welcomeTryDemo"></a>
+    </p>
+
+    <p class="note">
+      <span data-i18n="welcomeSettings"></span>
+      <a href="#" id="open-settings" data-i18n="welcomeOpenSettings"></a>
+    </p>
+  </main>
+  <script type="module" src="welcome.js"></script>
+</body>
+</html>

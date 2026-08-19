@@ -1,0 +1,50 @@
+/* First-run page. All colors come from ../ui/base.css tokens (light + dark). */
+main {
+  max-width: 560px;
+  margin: 48px auto;
+  padding: 0 20px 32px;
+  font-size: 14px;
+}
+
+.welcome-title {
+  font-size: 21px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+.intro { color: var(--muted); margin-bottom: 4px; }
+
+.levels { list-style: none; display: grid; gap: 8px; margin: 4px 0 18px; }
+
+.levels li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-row);
+}
+
+.levels .dot { width: 11px; height: 11px; border-radius: 50%; flex: none; }
+.l-low .dot { background: var(--risk-low); }
+.l-elevated .dot { background: var(--risk-elevated); }
+.l-high .dot { background: var(--risk-high); }
+.l-critical .dot { background: var(--risk-critical); }
+
+.actions { margin: 18px 0; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent);
+  color: #fff;
+  border-radius: var(--r-control);
+  padding: 9px 16px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.btn:hover { filter: brightness(1.08); }
+
+.note { color: var(--muted); margin-top: 6px; }

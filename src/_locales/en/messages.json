@@ -438,5 +438,33 @@
   "openRealSite": {
     "message": "Open $1",
     "description": "Button: open the real site of the impersonated brand; $1 = brand domain"
+  },
+  "welcomeTitle": {
+    "message": "Fish Catcher is ready",
+    "description": "First-run page heading and tab title"
+  },
+  "welcomeIntro": {
+    "message": "It checks every page you open, on your device, and warns you in plain language when a page looks like phishing. It never blocks a page.",
+    "description": "First-run page: one-sentence description"
+  },
+  "welcomeLevels": {
+    "message": "The toolbar icon shows one of four colors",
+    "description": "First-run page: heading above the four risk levels"
+  },
+  "welcomeOpenPanel": {
+    "message": "Click the Fish Catcher icon in the toolbar to see the verdict for the current page and the reasons behind it.",
+    "description": "First-run page: how to open the panel (side panel on Chromium, popup on Firefox)"
+  },
+  "welcomeTryDemo": {
+    "message": "Try it on a test page",
+    "description": "First-run page: button opening the demo page on fishcatcher.dev"
+  },
+  "welcomeSettings": {
+    "message": "Settings are optional. Everything works out of the box.",
+    "description": "First-run page: note that no setup is needed"
+  },
+  "welcomeOpenSettings": {
+    "message": "Open settings",
+    "description": "First-run page: link to the options page"
   }
 }
