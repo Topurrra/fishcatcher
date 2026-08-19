@@ -77,9 +77,13 @@ export function runSignals(ctx, data) {
   // collides with real brands by chance, e.g. ft.com, go.com, box.com).
   // Without this guard, google.ca / github.io / goo.gl / redhat.com all fire.
   if (!ctx.knownLegit) {
-    // S1 — brand impersonation via typo (Levenshtein ≤ 2)
+    // S1 — brand impersonation via typo (Levenshtein ≤ 2). A brand's own listed
+    // domain is never an impersonation of that brand (regional sites like
+    // vanguard.ca or protonmail.ch sit within edit distance 2 of the main
+    // domain); same own-domain guard S3 already has.
     if (sld.length >= 5) {
       for (const brand of data.brands) {
+        if (brand.domains.includes(ctx.registrable)) continue;
         const hit = brand.domains.find((d) => d !== ctx.registrable && levenshtein(ctx.registrable, d) <= 2);
         if (hit) {
           add(45, 'reasonBrand', [hit, ctx.registrable]);

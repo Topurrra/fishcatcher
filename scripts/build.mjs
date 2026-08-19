@@ -96,6 +96,8 @@ function main() {
   for (const target of ['chrome', 'firefox']) {
     const out = join(dist, target);
     cpSync(src, out, { recursive: true });
+    // brand packs are sources for scripts/build-brands.mjs; only the merged data/brands.json ships
+    rmSync(join(out, 'data', 'brands'), { recursive: true, force: true });
     for (const locale of readdirSync(join(out, '_locales'))) {
       if (!SHIPPED_LOCALES.includes(locale)) rmSync(join(out, '_locales', locale), { recursive: true });
     }
