@@ -281,6 +281,9 @@ async function maybeSeniorNotify(tabId, url, result) {
 async function flagDeviceCode(tabId, url) {
   await ready;
   const base = analyzeUrl(url, data) ?? { url, host: '', registrable: '', score: 0, level: 'low', reasons: [] };
+  // Text alone never escalates a safe-listed, trusted or known-legitimate site:
+  // those are docs and lessons that explain the scam, not the scam.
+  if (data.safeList.has(base.registrable) || data.trustList.has(base.registrable) || data.safeBloom?.has(base.registrable)) return;
   const result = {
     ...base,
     score: 100,

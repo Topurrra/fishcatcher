@@ -62,7 +62,7 @@
 
     // Device-code bridge: reuse the S14 matcher over the page body.
     const body = document.body?.innerText ?? '';
-    if (body && body.length < 200000 && matchDeviceCodeScam(body)) kinds.add('deviceCode');
+    if (body && body.length < 200000 && matchDeviceCodeScam(body, document.title)) kinds.add('deviceCode');
 
     if (!kinds.size) return null;
 
@@ -308,7 +308,7 @@
   chrome.storage.local.get('opt:strict', (stored) => {
     if (!stored['opt:strict']) return;
     const text = document.body?.innerText ?? '';
-    if (text && text.length < 200000 && matchDeviceCodeScam(text)) {
+    if (text && text.length < 200000 && matchDeviceCodeScam(text, document.title)) {
       send({ type: 'devicecode-scam' });
     }
   });

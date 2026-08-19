@@ -256,10 +256,15 @@ check('engine: S13 password-form probe adds weight', () => {
 });
 
 check('engine: S14 device-code text matcher', () => {
-  assert.ok(matchDeviceCodeScam('To receive your prize, visit microsoft.com/link and enter the code shown below'));
-  assert.ok(matchDeviceCodeScam('გაიარეთ ავტორიზაცია: devicelogin და შეიყვანეთ code'));
+  assert.ok(matchDeviceCodeScam('To receive your prize, visit microsoft.com/link and enter the code WDJB-MFQK shown below'));
+  assert.ok(matchDeviceCodeScam('Open google.com/device and type this code: ABCD12345 to claim'));
+  assert.ok(matchDeviceCodeScam('გაიარეთ ავტორიზაცია: devicelogin და შეიყვანეთ code GHTR-PLMN'));
   assert.ok(!matchDeviceCodeScam('Documentation for microsoft.com/link API'));
   assert.ok(!matchDeviceCodeScam('Enter your verification code on your bank page'));
+  // no actual code on the page: an explanation, not a lure
+  assert.ok(!matchDeviceCodeScam('To receive your prize, visit microsoft.com/link and enter the code shown below'));
+  // a lesson about the scam (title says so) never fires, even with a sample code
+  assert.ok(!matchDeviceCodeScam('1 A message arrives with a code WDJB-MFQK 2 You open the real microsoft.com/link 3 You type the code', 'What Is a Device Code Phishing Attack'));
 });
 
 check('manifest: probe content script registered', () => {
