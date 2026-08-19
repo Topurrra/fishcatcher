@@ -166,7 +166,7 @@ for (const c of COMPARE) {
     { '@context': 'https://schema.org', '@type': 'Article', headline: meta.title, description: meta.desc, url: BASE + url, mainEntityOfPage: BASE + url, datePublished: DATE, dateModified: DATE, inLanguage: 'en', author: { '@type': 'Organization', name: 'Fish Catcher' }, publisher: { '@type': 'Organization', name: 'Fish Catcher', url: BASE } },
     crumb([{ name: 'Home', path: '/' }, { name: c.h1, path: url }])
   ];
-  const html = articlePage({ url, title: meta.title, description: meta.desc, h1: c.h1, pill: 'Honest comparison', breadcrumb: [{ name: 'Home', path: '/' }, { name: c.h1 }], bodyHtml: body, jsonld, backHref: '/docs', backLabel: 'Docs', backText: 'Documentation' });
+  const html = articlePage({ url, title: meta.title, description: meta.desc, h1: c.h1, pill: 'Comparison', breadcrumb: [{ name: 'Home', path: '/' }, { name: c.h1 }], bodyHtml: body, jsonld, backHref: '/docs', backLabel: 'Docs', backText: 'Documentation' });
   writeFileSync(join(SITE, c.file + '.html'), html);
   built.push(c.file);
 }
