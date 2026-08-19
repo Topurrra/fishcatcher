@@ -1,12 +1,14 @@
 body {
-  width: 320px;
+  width: 360px;
   padding: 14px;
 }
 
 .actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-top: 12px;
 }
 
-.actions button { flex: 1; }
+/* Three buttons must never overflow the popup: grow to fill, wrap when they cannot. */
+.actions button { flex: 1 1 auto; min-width: 0; }
