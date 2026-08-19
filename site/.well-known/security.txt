@@ -1,0 +1,7 @@
+# Fish Catcher security contact (RFC 9116)
+Contact: https://github.com/Topurrra/fishcatcher/security/advisories/new
+Contact: https://github.com/Topurrra/fishcatcher/issues
+Expires: 2027-08-19T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://fishcatcher.dev/.well-known/security.txt
+Policy: https://fishcatcher.dev/transparency

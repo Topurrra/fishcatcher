@@ -18,13 +18,16 @@
 <meta name="twitter:title" content="Fish Catcher vs Chrome Safe Browsing: What Each One Catches">
 <meta name="twitter:description" content="Fish Catcher adds local, plain-language phishing warnings on top of the Safe Browsing list already in Chrome and Firefox. See what each one actually catches.">
 <meta name="twitter:image" content="https://fishcatcher.dev/assets/og.jpg">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icon-128.png" sizes="128x128">
 <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/docs.css">
+<link rel="stylesheet" href="/assets/diagrams.css">
 <script src="/assets/theme-init.js"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Fish Catcher vs Chrome Safe Browsing: What Each One Catches","description":"Fish Catcher adds local, plain-language phishing warnings on top of the Safe Browsing list already in Chrome and Firefox. See what each one actually catches.","url":"https://fishcatcher.dev/fishcatcher-vs-safe-browsing","mainEntityOfPage":"https://fishcatcher.dev/fishcatcher-vs-safe-browsing","datePublished":"2026-08-11","dateModified":"2026-08-11","inLanguage":"en","author":{"@type":"Organization","name":"Fish Catcher"},"publisher":{"@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Fish Catcher vs Chrome Safe Browsing: What Each One Catches","description":"Fish Catcher adds local, plain-language phishing warnings on top of the Safe Browsing list already in Chrome and Firefox. See what each one actually catches.","url":"https://fishcatcher.dev/fishcatcher-vs-safe-browsing","mainEntityOfPage":"https://fishcatcher.dev/fishcatcher-vs-safe-browsing","datePublished":"2026-08-11","dateModified":"2026-08-19","inLanguage":"en","author":{"@type":"Organization","name":"Fish Catcher"},"publisher":{"@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fishcatcher.dev/"},{"@type":"ListItem","position":2,"name":"Fish Catcher vs built-in Safe Browsing","item":"https://fishcatcher.dev/fishcatcher-vs-safe-browsing"}]}</script>
 </head>
 <body>
@@ -47,42 +50,91 @@
     <div class="breadcrumb"><a href="/">Home</a> / Fish Catcher vs built-in Safe Browsing</div>
     <h1>Fish Catcher vs built-in Safe Browsing</h1>
     <div class="meta-row">
-      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.5"/></svg> Updated <time datetime="2026-08-11">11 August 2026</time></span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.5"/></svg> Updated <time datetime="2026-08-19">19 August 2026</time></span>
       <span class="sep"></span>
       <a href="https://github.com/Topurrra/fishcatcher"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11 11 0 0 1 6 0C17 4.6 18 4.9 18 4.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg> View source</a>
     </div>
     <div class="rule"><span class="line"></span><span class="pill-mono">Honest comparison</span><span class="line"></span></div>
 
-<p class="lead-p">Fish Catcher is a free, open-source add-on that gives local, plain-language phishing warnings; built-in Safe Browsing is the cloud list already inside Chrome and Firefox that warns or blocks known dangerous sites.</p>
+<p class="lead-p">Safe Browsing is already inside Chrome and Firefox: it matches the pages you visit against Google’s list of known bad sites and blocks them with a red warning. Fish Catcher is an add-on that reads the page itself and warns, in plain words, before a scam is on anyone’s list.</p>
 
-<h2 id="approach">A layer you add versus a layer already there</h2>
-<p>Google Safe Browsing is built into most major browsers and generally runs by default. It checks the sites you visit against a cloud list of known dangerous pages and steps in with a full-page warning or block when there is a match. It is well maintained, widely trusted, and requires no setup because it is already on. The trade-off is that it works from a list of sites that are already known to be bad, and its checks involve the browser's cloud service rather than staying entirely on your device.</p>
-<p>Fish Catcher is something you choose to add. Its default checks run in your browser, nothing about the page leaves the device by default, and there is no account. Instead of relying on a page already being on a known-bad list, it reads the page and link in front of you and reasons about them, then shows a risk color and a plain-language reason. It warns rather than blocks. The two approaches are complementary: one catches sites already known to be dangerous, the other looks for the signs of a scam before a site is widely listed.</p>
+<h2 id="data">Where your data goes</h2>
+<figure class="diagram">
+<svg class="cmp-flow" viewBox="0 0 640 220" role="img" aria-labelledby="flow-title" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+<title id="flow-title">Where your data goes: Fish Catcher keeps the check on your device; Safe Browsing sends partial hashes of the address to Google</title>
+<defs><symbol id="fc-fish" viewBox="0 0 14 11" shape-rendering="crispEdges"><path class="d" d="M6 0h2v1h-2zM5 1h5v1h-5zM1 2h1v1h-1zM4 2h1v1h-1zM10 2h1v1h-1zM0 3h3v1h-3zM10 3h1v1h-1zM0 4h3v1h-3zM11 4h1v1h-1zM0 5h2v1h-2zM12 5h1v1h-1zM0 6h3v1h-3zM12 6h1v1h-1zM0 7h3v1h-3zM11 7h1v1h-1zM1 8h1v1h-1zM4 8h1v1h-1zM10 8h1v1h-1zM5 9h5v1h-5zM6 10h2v1h-2z"/><path class="m" d="M11 3h1v1h-1zM12 4h1v1h-1zM13 5h1v1h-1zM13 6h1v1h-1zM12 7h1v1h-1z"/><path class="b" d="M5 2h5v1h-5zM3 3h7v1h-7zM3 4h5v1h-5zM10 4h1v1h-1zM2 5h6v1h-6zM10 5h2v1h-2zM3 6h3v1h-3zM10 6h2v1h-2zM3 7h3v1h-3zM10 7h1v1h-1zM5 8h5v1h-5z"/><path class="l" d="M8 4h2v1h-2zM8 5h1v1h-1zM6 6h4v1h-4zM6 7h4v1h-4z"/><path class="p" d="M9 5h1v1h-1z"/></symbol></defs>
+<text x="1" y="18" font-size="13" font-weight="600">With Fish Catcher</text>
+<rect class="dv" x="1" y="34" width="308" height="140" rx="10"/>
+<text class="muted" x="14" y="52" font-size="12">Your device</text>
+<rect class="bw" x="30" y="60" width="130" height="96" rx="6"/>
+<path class="hl" d="M30 76h130"/>
+<circle class="dot" cx="40" cy="68" r="2.5"/><circle class="dot" cx="49" cy="68" r="2.5"/><circle class="dot" cx="58" cy="68" r="2.5"/>
+<use href="#fc-fish" x="74" y="100" width="42" height="33"/>
+<path class="loop" d="M250 80.3A32 32 0 1 1 218 80.3"/>
+<path class="loop" d="M213.9 87.3 218 80.3 209.9 80.3"/>
+<path class="loop" d="M224 109l7 7 13-14"/>
+<text class="muted" x="234" y="160" font-size="12" text-anchor="middle">Checks run here</text>
+<text class="muted" x="155" y="196" font-size="12" text-anchor="middle">Nothing about the page leaves your browser</text>
+<text x="331" y="18" font-size="13" font-weight="600">With Safe Browsing</text>
+<rect class="dv" x="331" y="34" width="150" height="140" rx="10"/>
+<text class="muted" x="344" y="52" font-size="12">Your device</text>
+<rect class="bw" x="341" y="60" width="130" height="96" rx="6"/>
+<path class="hl" d="M341 76h130"/>
+<circle class="dot" cx="351" cy="68" r="2.5"/><circle class="dot" cx="360" cy="68" r="2.5"/><circle class="dot" cx="369" cy="68" r="2.5"/>
+<rect class="dot" x="355" y="92" width="78" height="4" rx="2"/><rect class="dot" x="355" y="104" width="100" height="4" rx="2"/><rect class="dot" x="355" y="116" width="60" height="4" rx="2"/><rect class="dot" x="355" y="128" width="88" height="4" rx="2"/>
+<path class="out" d="M471 108H507"/>
+<path class="out" d="M501 103l7 5-7 5"/>
+<rect class="bw" x="512" y="60" width="127" height="96" rx="10"/>
+<rect class="srv" x="558" y="80" width="35" height="12" rx="2"/><rect class="srv" x="558" y="96" width="35" height="12" rx="2"/>
+<circle class="sd" cx="564" cy="86" r="1.5"/><circle class="sd" cx="564" cy="102" r="1.5"/>
+<text x="575.5" y="134" font-size="12" text-anchor="middle">Google servers</text>
+<text class="muted" x="485" y="196" font-size="12" text-anchor="middle">Sends partial hashes of the address to Google</text>
+</svg>
+<figcaption>Fish Catcher reads the page inside your browser and keeps the result there. Safe Browsing’s standard mode sends partial hashes of the address to Google to match against its list; Enhanced protection sends full URLs.</figcaption>
+</figure>
 
-<h2 id="detection">Different kinds of coverage</h2>
-<p>Safe Browsing's strength is a large, continuously updated cloud list maintained by Google and used across browsers. For sites that are already reported and confirmed dangerous, it is fast and broad, and it will often block them outright. Its focus is that known-bad list rather than per-page heuristic analysis of a site you have never visited.</p>
-<p>Fish Catcher aims at the gap before a site lands on such a list. It flags lookalike domains and homoglyphs, URL tricks, and fake login forms, and it uses a bundled blocklist plus a daily community feed from Phishing.Database, URLhaus, and OpenPhish. It adds an on-device model for machine-generated domains, checks for adversary-in-the-middle and device-code scams, ships scam packs for wallet-phrase and fake tech-support pages, and includes a download guard. Across 100,000 Majestic Million domains its measured false-positive rate was 0.005%, reproducible with a script in the project. You can also enable Safe Browsing inside Fish Catcher as an optional extra layer, using your own key.</p>
+<h2 id="compare">Side by side</h2>
+<table class="cmp-score">
+<thead><tr><th></th><th scope="col"><svg class="cmp-fish" viewBox="0 0 14 11" width="28" height="22" aria-hidden="true"><use href="#fc-fish"/></svg>Fish Catcher</th><th scope="col">Safe Browsing</th></tr></thead>
+<tbody>
+<tr><th scope="row">Privacy</th><td data-col="Fish Catcher"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Checks stay on your device</td><td data-col="Safe Browsing"><svg class="g part" role="img" viewBox="0 0 20 20" aria-label="Partly"><path d="M5 10h10"/></svg>Partial URL hashes go to Google</td></tr>
+<tr><th scope="row">Open source</th><td data-col="Fish Catcher"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>MIT licensed, code on GitHub</td><td data-col="Safe Browsing"><svg class="g part" role="img" viewBox="0 0 20 20" aria-label="Partly"><path d="M5 10h10"/></svg>Browser code open, list is Google’s</td></tr>
+<tr><th scope="row">Blocks or warns</th><td data-col="Fish Catcher"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Warns, never blocks</td><td data-col="Safe Browsing"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Blocks with a red full-page warning</td></tr>
+<tr><th scope="row">How it detects</th><td data-col="Fish Catcher"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Reads the page for scam signals</td><td data-col="Safe Browsing"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Matches Google’s list of known bad pages</td></tr>
+<tr><th scope="row">Cost</th><td data-col="Fish Catcher"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Free, no account</td><td data-col="Safe Browsing"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Free, already on</td></tr>
+<tr><th scope="row">Best for</th><td data-col="Fish Catcher"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Catching scams not yet listed</td><td data-col="Safe Browsing"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Known bad pages, zero setup</td></tr>
+</tbody>
+</table>
+<p class="cmp-note">Competitor details are from their public documentation as of August 2026; tell us if something changed.</p>
 
-<div class="table-wrap"><table><thead><tr><th>Aspect</th><th>Fish Catcher</th><th>Built-in Safe Browsing</th></tr></thead><tbody>
-<tr><td>Privacy model</td><td>Local-first; nothing about the page leaves the browser by default; no account, no tracking</td><td>Cloud list and lookup run by the browser vendor; some data is typically involved in checks</td></tr>
-<tr><td>Open source</td><td>Yes, MIT licensed</td><td>Proprietary service built into the browser</td></tr>
-<tr><td>Blocks vs warns</td><td>Warns, never blocks; you decide</td><td>Typically warns and blocks known dangerous sites</td></tr>
-<tr><td>Detection approach</td><td>On-device heuristics and model, bundled and daily blocklists, plus optional Safe Browsing</td><td>Cloud list of known-dangerous sites, matched as you browse</td></tr>
-<tr><td>Cost</td><td>Free</td><td>Free and already included</td></tr>
-<tr><td>Best for</td><td>Catching scam signals before a site is widely listed, with clear reasons</td><td>Broad, low-effort coverage of sites already known to be dangerous</td></tr>
-</tbody></table></div>
+<h2 id="pick">Which to pick</h2>
+<p>Keep Safe Browsing on either way. The question is whether to add Fish Catcher beside it.</p>
+<div class="cmp-pick">
+<div><h3>Pick Fish Catcher if</h3><ul>
+<li>You want a warning that says what looks wrong, not only a red page.</li>
+<li>You want scams caught before they reach a blocklist.</li>
+<li>You want the check to stay on your device.</li>
+</ul></div>
+<div><h3>Pick Safe Browsing if</h3><ul>
+<li>You want zero setup.</li>
+<li>You mainly want known bad pages blocked outright.</li>
+<li>You are fine with Google seeing partial hashes of what you visit.</li>
+</ul></div>
+</div>
 
-<h2 id="who">Who should pick which</h2>
-<p>This is less an either-or than the other comparisons. Safe Browsing is already protecting most people and there is little reason to turn it off. Fish Catcher is worth adding if you want warnings that reason about a page rather than only checking a known-bad list, if you want to see the specific reason a page looks risky, and if you prefer that your default checks stay on your device. Running both gives you a known-bad list plus a heuristic layer that can catch newer or more targeted scams.</p>
-
-<h3 style="font-weight:600">Where Fish Catcher is weaker</h3>
-<p>Fish Catcher is new and less battle-tested than Safe Browsing, which has years of scale behind it. Its bundled and feed blocklist is much smaller than the cloud list Safe Browsing draws on, so for sites that are already confirmed dangerous, Safe Browsing will often have wider and faster coverage. Fish Catcher warns rather than blocks, so it will not stop you the way a full-page block does. And by default it does not use a cloud reputation service, though you can add Safe Browsing as an opt-in layer.</p>
+<h2 id="weaker">Where Fish Catcher is weaker</h2>
+<ul>
+<li>Safe Browsing has years of scale behind it. Fish Catcher is new.</li>
+<li>Its blocklist is far smaller than Google’s list.</li>
+<li>It warns but never blocks, so it will not stop a page from loading.</li>
+<li>By default it uses no cloud reputation service; Safe Browsing inside Fish Catcher is opt-in.</li>
+</ul>
 
 <h2 id="faq">Common questions</h2>
 <h3>If my browser already has Safe Browsing, do I need Fish Catcher?</h3>
-<p>You do not need it, but it covers a different gap. Safe Browsing is strongest on sites already known to be dangerous. Fish Catcher looks for scam signals on pages that may not be listed yet, and it explains why a page looks risky. Many people run both.</p>
+<p>No, but it covers a different gap. Safe Browsing knows sites that were already reported; Fish Catcher reads the page in front of you and says why it looks risky.</p>
 <h3>Should I turn off Safe Browsing if I install Fish Catcher?</h3>
-<p>No. Leave Safe Browsing on. The two are designed to complement each other, and keeping both means you get a broad known-bad list plus an on-device heuristic layer. Fish Catcher warns rather than blocks, so it does not replace the block behavior Safe Browsing provides.</p>
+<p>No, leave it on. Fish Catcher warns and never blocks, so it does not replace the red full-page block.</p>
 
     <h2 id="others">Other comparisons</h2>
     <div class="article-cards">
@@ -91,7 +143,7 @@
     </div>
 
     <div class="prevnext">
-      <a href="/docs"><small>Docs</small>Documentation</a>
+      <a href="/docs"><small>Read</small>Docs</a>
       <a class="nx" href="/"><small>Home</small>Back to the overview</a>
     </div>
   </article>

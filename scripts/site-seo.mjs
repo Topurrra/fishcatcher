@@ -1,3 +1,5 @@
+// HISTORICAL. This generator ran once (August 2026) from body fragments in _frag/, which are
+// not in the repo. The HTML under site/ is hand-maintained now; do not re-run this over it.
 // One-shot site build/enhance for SEO + AEO + GEO. Assembles the new content
 // pages from body fragments and enhances the existing pages with canonical,
 // Open Graph, JSON-LD, clean-URL hrefs, and a CSP-clean theme init. Output is
@@ -71,7 +73,9 @@ function head({ url, title, description, ogType = 'website', jsonld = [], docsCs
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(description)}">
 <meta name="twitter:image" content="${OG}">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icon-128.png" sizes="128x128">
 <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">${docsCss ? '\n<link rel="stylesheet" href="/assets/docs.css">' : ''}

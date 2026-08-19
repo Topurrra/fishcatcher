@@ -18,13 +18,16 @@
 <meta name="twitter:title" content="How to Spot a Fake Login Page Before You Type Your Password">
 <meta name="twitter:description" content="A fake login page copies a real sign-in screen to steal what you type. Learn the signs that give one away and how to check before you enter a password.">
 <meta name="twitter:image" content="https://fishcatcher.dev/assets/og.jpg">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icon-128.png" sizes="128x128">
 <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/docs.css">
+<link rel="stylesheet" href="/assets/diagrams.css">
 <script src="/assets/theme-init.js"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"How to Spot a Fake Login Page Before You Type Your Password","description":"A fake login page copies a real sign-in screen to steal what you type. Learn the signs that give one away and how to check before you enter a password.","url":"https://fishcatcher.dev/fake-login-page","mainEntityOfPage":"https://fishcatcher.dev/fake-login-page","datePublished":"2026-08-11","dateModified":"2026-08-11","inLanguage":"en","author":{"@type":"Organization","name":"Fish Catcher"},"publisher":{"@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"How to Spot a Fake Login Page Before You Type Your Password","description":"A fake login page copies a real sign-in screen to steal what you type. Learn the signs that give one away and how to check before you enter a password.","url":"https://fishcatcher.dev/fake-login-page","mainEntityOfPage":"https://fishcatcher.dev/fake-login-page","datePublished":"2026-08-11","dateModified":"2026-08-19","inLanguage":"en","author":{"@type":"Organization","name":"Fish Catcher"},"publisher":{"@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fishcatcher.dev/"},{"@type":"ListItem","position":2,"name":"Learn","item":"https://fishcatcher.dev/learn"},{"@type":"ListItem","position":3,"name":"How to spot a fake login page","item":"https://fishcatcher.dev/fake-login-page"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to spot a fake login page","description":"Three checks that tell a fake sign-in screen apart from the real one before you type a password.","totalTime":"PT2M","inLanguage":"en","step":[{"@type":"HowToStep","position":1,"name":"Check the web address first","text":"Read the address from right to left. The real owner is the part just before the first single slash. If that is not the site you expect, stop.","url":"https://fishcatcher.dev/fake-login-page#check-the-address"},{"@type":"HowToStep","position":2,"name":"Watch how the page behaves","text":"A copied login screen can look perfect. Urgency, a password prompt you did not ask for, or a page reached from a link in a message are all warning signs.","url":"https://fishcatcher.dev/fake-login-page#watch-the-behavior"},{"@type":"HowToStep","position":3,"name":"Protect yourself","text":"Open sites yourself from a bookmark instead of clicking links, and use passkeys or a security key, which refuse to work on the wrong site.","url":"https://fishcatcher.dev/fake-login-page#protect-yourself"}]}</script>
 </head>
@@ -51,7 +54,7 @@
     </div>
     <nav class="tree" aria-label="Learn navigation">
       <a class="area" href="/">Home</a>
-      <a class="area" href="/docs">Documentation</a>
+      <a class="area" href="/docs">Docs</a>
       <a class="area current" href="/learn">Learn</a>
       <div class="sub">
         <a href="/learn">Overview</a>
@@ -73,7 +76,7 @@
     <div class="breadcrumb"><a href="/">Home</a> / <a href="/learn">Learn</a> / How to spot a fake login page</div>
     <h1>How to spot a fake login page</h1>
     <div class="meta-row">
-      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.5"/></svg> Updated <time datetime="2026-08-11">11 August 2026</time></span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.5"/></svg> Updated <time datetime="2026-08-19">19 August 2026</time></span>
       <span class="sep"></span>
       <a href="https://github.com/Topurrra/fishcatcher"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11 11 0 0 1 6 0C17 4.6 18 4.9 18 4.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg> View source</a>
     </div>
@@ -82,50 +85,69 @@
 <p class="lead-p">A fake login page is a copy of a real sign-in screen built to steal the username and password you type into it.</p>
 
 <h2 id="how-it-works">How a fake login page works</h2>
-<p>Scammers copy a familiar sign-in screen. It might look like your bank, your email, or a shopping account. The page can be a near-perfect match. The logo, the colors, and the layout can all look correct.</p>
-<p>The trick is not in how the page looks. It is in where the page lives and what it does with what you type. A real login sends your password to the company that owns the account. A fake one sends it to a stranger. That stranger then signs in as you, often within minutes.</p>
-<p>You usually reach these pages through a link. The link arrives in an email, a text message, an ad, or a search result. The message tries to rush you. It says your account is locked, a payment failed, or a package is stuck. The goal is to make you act before you look.</p>
+<p>Scammers copy a familiar sign-in screen: your bank, your email, a shop. The logo, the colors, and the layout can be a perfect match. The trick is not how the page looks but where it sends what you type.</p>
+<figure class="diagram">
+<svg viewBox="0 0 640 190" role="img" aria-labelledby="d-lanes-title"><title id="d-lanes-title">Real login versus fake login</title>
+<defs><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5 0 10z" style="fill:var(--muted)"/></marker></defs>
+<text x="20" y="22" font-size="12" class="muted">Real login</text>
+<rect x="20" y="34" width="120" height="44" rx="6" style="fill:var(--surface-2);stroke:var(--muted)" stroke-width="1.5"/>
+<text x="80" y="61" font-size="13" text-anchor="middle">Your password</text>
+<line x1="146" y1="56" x2="224" y2="56" style="stroke:var(--muted)" stroke-width="1.5" marker-end="url(#arw)"/>
+<rect x="230" y="34" width="180" height="44" rx="6" style="fill:var(--surface-2);stroke:var(--muted)" stroke-width="1.5"/>
+<text x="320" y="52" font-size="13" text-anchor="middle">Real sign-in page</text>
+<text x="320" y="70" font-size="11" text-anchor="middle" class="mono muted">login.bank.com</text>
+<line x1="416" y1="56" x2="494" y2="56" style="stroke:var(--muted)" stroke-width="1.5" marker-end="url(#arw)"/>
+<rect x="500" y="34" width="120" height="44" rx="6" style="fill:var(--surface-2);stroke:var(--muted)" stroke-width="1.5"/>
+<text x="560" y="61" font-size="13" text-anchor="middle">The bank</text>
+<text x="20" y="118" font-size="12" class="muted">Fake login</text>
+<rect x="20" y="130" width="120" height="44" rx="6" style="fill:var(--surface-2);stroke:var(--muted)" stroke-width="1.5"/>
+<text x="80" y="157" font-size="13" text-anchor="middle">Your password</text>
+<line x1="146" y1="152" x2="224" y2="152" style="stroke:var(--muted)" stroke-width="1.5" marker-end="url(#arw)"/>
+<rect x="230" y="130" width="180" height="44" rx="6" style="fill:var(--surface-2);stroke:var(--red)" stroke-width="1.5"/>
+<text x="320" y="148" font-size="13" text-anchor="middle">Fake sign-in page</text>
+<text x="320" y="166" font-size="11" text-anchor="middle" class="mono muted">bank-login-secure.net</text>
+<line x1="416" y1="152" x2="494" y2="152" style="stroke:var(--muted)" stroke-width="1.5" marker-end="url(#arw)"/>
+<rect x="500" y="130" width="120" height="44" rx="6" style="fill:var(--surface-2);stroke:var(--red)" stroke-width="1.5"/>
+<text x="560" y="157" font-size="13" text-anchor="middle">A stranger</text>
+</svg>
+<figcaption>Same screen, different destination. Only the address tells you which lane you are in.</figcaption>
+</figure>
 
 <h2 id="check-the-address">Check the web address first</h2>
-<p>The address bar is the most reliable place to look. The design of a page can be faked. The real domain is much harder to fake. Read the address slowly, from the end of the site name backward.</p>
+<p>A design can be faked. The domain is much harder. Read it from the end backward.</p>
 <ul>
-<li>Look at the main domain, the part right before the first single slash. For a real Google sign-in that part is google.com. If it reads goggle-login.com or account-secure.net, it is not Google.</li>
-<li>Watch for small misspellings and swapped letters. paypa1.com uses the number one in place of the letter L. micros0ft.com uses a zero. These are easy to miss at a glance.</li>
-<li>Be careful with extra words glued to a brand name. secure-appleid-login.com is not apple.com. The real brand is a full domain, not a word buried in a longer address.</li>
-<li>Do not trust the padlock alone. A padlock means the connection is encrypted. It does not mean the site is honest. Many phishing pages have a padlock.</li>
-<li>Be wary of a raw address made of numbers, like 185.42.10.9, or a very long chain of dots before the real name. Real companies rarely ask you to sign in at an address like that.</li>
+<li>The main domain is the part right before the first single slash: google.com, not goggle-login.com or account-secure.net.</li>
+<li>Watch for swapped letters: paypa1.com uses a one for the L, micros0ft.com a zero.</li>
+<li>Extra words glued to a brand: secure-appleid-login.com is not apple.com.</li>
+<li>A raw address of numbers, like 185.42.10.9, or a long chain of dots before the real name.</li>
 </ul>
 
 <h2 id="watch-the-behavior">Watch how the page behaves</h2>
-<p>The page itself can give warnings if you slow down and notice them.</p>
 <ul>
-<li>You did not go looking for it. A login screen that pops up from a link you did not expect deserves a second look.</li>
-<li>It asks for too much. A normal sign-in wants a username and a password. A fake one may also ask for your full card number, a PIN, or your recovery phrase. Legitimate sign-in pages do not ask for those together.</li>
-<li>The page shows a code and asks you to approve it, or asks you to read a code out to someone. This is a device-code scam. Approving that code can hand your account to an attacker.</li>
-<li>It pressures you. Countdown timers and threats about losing access are there to stop you from checking the address.</li>
-<li>Links go nowhere. On a fake page, the help, privacy, and contact links are often dead or point to odd addresses.</li>
+<li>You did not go looking for it. A login screen that appears from an unexpected link deserves a second look.</li>
+<li>It asks for too much: a full card number, a PIN, or a recovery phrase alongside the password.</li>
+<li>It shows a code to approve or read out to someone: a device-code scam.</li>
+<li>It pressures you with countdown timers and threats about losing access, so you will not check the address.</li>
 </ul>
 
 <h2 id="protect-yourself">How to protect yourself</h2>
-<p>A few steady habits close off most of these attacks.</p>
 <ul>
-<li>Do not sign in from links in messages. Open a new tab and type the address yourself, or use a bookmark you saved earlier.</li>
-<li>Use a password manager. It fills your password only on the exact site it was saved for. If it does not offer to fill on a page that looks right, treat that as a warning.</li>
-<li>Turn on two-step verification where you can. Even if a password leaks, the second step blocks most sign-in attempts.</li>
-<li>Never approve a sign-in code you did not start yourself, and never read one aloud to anyone.</li>
-<li>If you are unsure, stop. Close the tab. Contact the company through a number or address you already trust.</li>
+<li>Do not sign in from links in messages. Open a new tab and type the address, or use a bookmark.</li>
+<li>A password manager fills your password only on the exact site it was saved for, so its silence on a page that looks right is a warning.</li>
+<li>Turn on two-step verification. Even if a password leaks, the second step blocks most sign-ins.</li>
+<li>If you are unsure, stop. Close the tab and contact the company through a number you already trust.</li>
 </ul>
-<p>A tool can watch for these signals while you browse. Fish Catcher is a free, open-source browser extension that checks the page on your device and warns you in plain language when a login screen sits on a lookalike domain or on a site it does not recognize. It shows a simple color, from green for no suspicious signs up to red for strong signs of a fake. It never blocks the page. You stay in control and decide what to do next.</p>
+<p>Fish Catcher warns you in plain language when a login screen sits on a lookalike domain or a site it does not recognize. It never blocks the page.</p>
 
 <h2 id="faq">Common questions</h2>
 <h3>The page looks exactly like the real one. Does that mean it is safe?</h3>
-<p>No. Looks are the easiest part to copy. A scammer can save the real page and change only where your password is sent. Judge the web address and the behavior, not the design.</p>
+<p>No. Looks are the easiest part to copy. A scammer can save the real page and change only where your password goes.</p>
 
 <h3>There is a padlock in the address bar. Is that enough?</h3>
-<p>No. The padlock only means the connection is encrypted so others cannot read it in transit. It says nothing about who owns the site. Many phishing pages have a valid padlock.</p>
+<p>No. The padlock means the connection is encrypted. It says nothing about who owns the site, and many phishing pages have one.</p>
 
 <h3>I already typed my password into a page I now think was fake. What should I do?</h3>
-<p>Change that password right away, on the real site, opened by typing the address yourself. If you reused that password elsewhere, change it there too. Turn on two-step verification, then watch the account for sign-ins you do not recognize.</p>
+<p>Change that password right away on the real site, opened by typing the address yourself, and on any other site where you reused it.</p>
 
     <div class="prevnext">
       <a href="/learn"><small>Learn</small>All lessons</a>

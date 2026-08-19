@@ -123,14 +123,6 @@
     "message": "არასავალდებულო. მხოლოდ JSON-ფაილი იტვირთება. არაფერი გადის თქვენი მოწყობილობიდან.",
     "description": "Options: remote update privacy note"
   },
-  "langLabel": {
-    "message": "ენა",
-    "description": "Options: language selector label"
-  },
-  "langAuto": {
-    "message": "ავტომატური (ბრაუზერის ენა)",
-    "description": "Options: follow browser language"
-  },
   "trustTitle": {
     "message": "ნდობით აღნიშნული საიტები",
     "description": "Options: trusted sites section heading"
@@ -186,6 +178,14 @@
   "qrResultNote": {
     "message": "სკანირებული QR-კოდის შედეგი:",
     "description": "Panel note above a QR check result"
+  },
+  "qrUnreadable": {
+    "message": "ამ სურათიდან QR-კოდის წაკითხვა ვერ მოხერხდა. სცადეთ მისი შენახვა და პანელში „QR სურათის შემოწმების“ გამოყენება.",
+    "description": "Context-menu QR check: image could not be fetched or decoded"
+  },
+  "qrNotUrl": {
+    "message": "ეს QR-კოდი ვებმისამართს არ შეიცავს, ამიტომ შესამოწმებელი არაფერია.",
+    "description": "Context-menu QR check: payload is not an http(s) URL"
   },
   "ctxCheckQr": {
     "message": "QR-კოდის შემოწმება FishCatcher-ით",

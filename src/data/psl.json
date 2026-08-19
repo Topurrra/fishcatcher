@@ -21,6 +21,18 @@
     "com.az", "com.am", "com.kz", "com.uz",
     "co.ke", "com.ng", "com.gh", "co.tz", "co.ug",
     "com.pk", "com.bd", "com.lk", "com.np",
-    "eu.org", "us.com", "uk.com", "ru.com", "sa.com"
+    "eu.org", "us.com", "uk.com", "ru.com", "sa.com",
+
+    "github.io", "githubusercontent.com", "gitlab.io",
+    "netlify.app", "vercel.app", "web.app", "firebaseapp.com", "appspot.com",
+    "pages.dev", "workers.dev", "r2.dev", "trycloudflare.com",
+    "weebly.com", "wixsite.com", "wordpress.com", "webflow.io", "carrd.co",
+    "blogspot.com", "blogspot.co.uk", "blogspot.de", "blogspot.fr", "blogspot.in", "blogspot.com.br",
+    "glitch.me", "repl.co", "replit.app", "surge.sh", "herokuapp.com", "onrender.com", "fly.dev",
+    "azurewebsites.net", "azurestaticapps.net", "blob.core.windows.net", "web.core.windows.net",
+    "amazonaws.com", "s3.amazonaws.com", "cloudfront.net", "storage.googleapis.com",
+    "ipfs.io", "dweb.link", "ipfs.dweb.link",
+    "000webhostapp.com", "godaddysites.com", "mystrikingly.com",
+    "ngrok.io", "ngrok-free.app", "ngrok.app", "loca.lt", "serveo.net", "duckdns.org"
   ]
 }

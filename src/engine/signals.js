@@ -43,6 +43,8 @@ export function isLocalHost(host) {
     (a === 169 && b === 254);
 }
 
+const S3_DIGIT_FOLD = { '0': 'o', '1': 'l', '3': 'e', '4': 'a', '5': 's', '7': 't', '8': 'b', '@': 'a' };
+
 export function runSignals(ctx, data) {
   const { url, host } = ctx;
   const reasons = [];
@@ -96,10 +98,16 @@ export function runSignals(ctx, data) {
       }
     }
 
-    // S3 — brand name present but registrable domain is not the brand's
+    // S3 — brand name present but registrable domain is not the brand's.
+    // Only the attacker-controlled part of the host counts: the public suffix is
+    // dropped so tenants of github.io / storage.googleapis.com do not hit their
+    // own host's brand. Digit homoglyphs (amaz0n, paypa1) are folded too, but only
+    // for keywords of 4+ chars so short ones (bog, tbc, aws) do not match noise.
+    const owned = host.slice(0, host.length - (ctx.registrable.length - sld.length));
+    const ownedFold = owned.replace(/[0134578@]/g, (c) => S3_DIGIT_FOLD[c]);
     for (const brand of data.brands) {
       if (brand.domains.includes(ctx.registrable)) continue;
-      const kw = brand.keywords.find((k) => host.includes(k));
+      const kw = brand.keywords.find((k) => owned.includes(k) || (k.length >= 4 && ownedFold.includes(k)));
       if (kw) {
         add(40, 'reasonBrandSubdomain', [brand.name]);
         break;
@@ -118,13 +126,16 @@ export function runSignals(ctx, data) {
   const tld = host.split('.').pop();
   if (data.tlds[tld]) add(data.tlds[tld], 'reasonTld', [tld]);
 
-  // S7 — phishy keyword in host
-  const keyword = data.keywords.find((k) => host.includes(k));
+  // S7 — phishy keyword in host. Skipped on known-legitimate domains, where
+  // login./secure./account. subdomains are the norm, not a tell.
+  const keyword = ctx.knownLegit ? null : data.keywords.find((k) => host.includes(k));
   if (keyword) add(15, 'reasonKeyword', [keyword]);
 
-  // S8 — deep subdomain chain
+  // S8 — deep subdomain chain: two or more labels below the registrable domain
+  // (login.microsoft.com.evil.xyz fires, www.google.co.uk does not)
   const labelCount = host.split('.').length;
-  if (!isIp && labelCount >= 4) add(10, 'reasonSubdomains', [String(labelCount)]);
+  const extraLabels = labelCount - ctx.registrable.split('.').length;
+  if (!isIp && extraLabels >= 2) add(10, 'reasonSubdomains', [String(labelCount)]);
 
   // S9 — unencrypted connection
   if (url.protocol === 'http:') add(15, 'reasonHttp');

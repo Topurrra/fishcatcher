@@ -94,4 +94,4 @@ Then load it:
 - **Chrome, Brave, Edge, Opera:** open the extensions page, turn on Developer mode,
   choose Load unpacked, and pick `dist/chrome`.
 - **Firefox:** open `about:debugging`, choose This Firefox, Load Temporary Add-on,
-  and pick `dist/firefox/manifest.json`.
+  and pick `dist/firefox/manifest.json`. Firefox 128 or newer (Chrome family: 116 or newer).

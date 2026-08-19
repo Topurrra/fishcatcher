@@ -7,7 +7,9 @@
   <title>Fish Catcher: Free Phishing Detection Browser Extension</title>
   <meta name="description"
     content="A free, open-source browser extension that warns you in plain language when a website looks like phishing or a scam. On-device and private by default.">
-  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/icon-128.png" sizes="128x128">
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="canonical" href="https://fishcatcher.dev/">
   <meta property="og:type" content="website">
@@ -28,7 +30,7 @@
   <link rel="preload" href="/assets/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
   <script src="/assets/theme-init.js"></script>
   <script
-    type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Fish Catcher","applicationCategory":"BrowserApplication","operatingSystem":"Chrome, Brave, Edge, Opera, Firefox","description":"Fish Catcher warns you, in plain language, when a website looks like phishing or a scam. Free, open source, and on-device by default.","url":"https://fishcatcher.dev/","softwareVersion":"1.0.0","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"datePublished":"2026-08-11","dateModified":"2026-08-11","inLanguage":"en","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev"}}</script>
+    type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Fish Catcher","applicationCategory":"BrowserApplication","operatingSystem":"Chrome, Brave, Edge, Opera, Firefox","description":"Fish Catcher warns you, in plain language, when a website looks like phishing or a scam. Free, open source, and on-device by default.","url":"https://fishcatcher.dev/","softwareVersion":"1.0.0","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"datePublished":"2026-08-11","dateModified":"2026-08-19","inLanguage":"en","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev"}}</script>
   <script
     type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev","logo":"https://fishcatcher.dev/assets/og.jpg","sameAs":["https://github.com/Topurrra/fishcatcher","https://github.com/Topurrra/fishcatcher-registry"]}</script>
   <script
@@ -90,11 +92,12 @@
           </a>
           <a class="btn" href="#how">See how it works</a>
         </div>
-        <p class="note">Chrome, Brave, Edge, Opera and Firefox. English and Georgian.</p>
+        <p class="note">Chrome, Brave, Edge, Opera and Firefox. English, more languages coming.</p>
       </div>
     </div>
   </header>
 
+  <main>
   <section class="proof">
     <div class="wrap">
       <div class="cell"><b>On your device</b><span>Every check runs locally. Works offline.</span></div>
@@ -109,7 +112,7 @@
       <div class="rule reveal"><span class="line"></span><span class="pill-mono">How it protects you</span><span
           class="line"></span></div>
       <div class="head-block reveal">
-        <h2>Clear warnings, in words anyone understands.</h2>
+        <h2 id="warnings">Clear warnings, in words anyone understands.</h2>
         <p class="lead">Every check runs on your device. When something looks off, Fish Catcher tells you what and why,
           so you learn to spot it yourself.</p>
       </div>
@@ -260,7 +263,7 @@
   <section class="section-sm">
     <div class="wrap">
       <div class="head-block reveal">
-        <h2>Three steps, and none of them are yours.</h2>
+        <h2 id="steps">Three steps, and none of them are yours.</h2>
         <p class="lead">Fish Catcher works quietly in the background. You only hear from it when something is worth a
           second look.</p>
       </div>
@@ -288,7 +291,7 @@
     <div class="wrap split">
       <div class="head-block reveal">
         <p class="eyebrow">Your privacy</p>
-        <h2>It works for you, not on you.</h2>
+        <h2 id="privacy-promise">It works for you, not on you.</h2>
         <p class="lead">Fish Catcher does its checks locally, using lists that ship inside the extension. You can verify
           that by reading the code.</p>
       </div>
@@ -299,7 +302,7 @@
         </div>
         <div class="priv-item">
           <h3>Online checks are opt in</h3>
-          <p>Two optional features can look something up online. Both stay off until you turn them on, and each says
+          <p>Three optional features can look something up online. All stay off until you turn them on, and each says
             exactly what it sends.</p>
         </div>
         <div class="priv-item">
@@ -315,7 +318,7 @@
     <div class="wrap">
       <div class="callout reveal">
         <div>
-          <h2>Free to install, free forever.</h2>
+          <h2 id="free">Free to install, free forever.</h2>
           <p class="lead">Add Fish Catcher in about a minute. It protects you right away, and short, plain lessons help
             you learn to spot scams yourself.</p>
         </div>
@@ -326,6 +329,7 @@
       </div>
     </div>
   </section>
+  </main>
 
   <footer class="site-foot">
     <div class="wrap">

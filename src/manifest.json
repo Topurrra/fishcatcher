@@ -1,5 +1,6 @@
 {
   "manifest_version": 3,
+  "minimum_chrome_version": "116",
   "name": "__MSG_appName__",
   "short_name": "Fish Catcher",
   "version": "1.0.0",
@@ -35,12 +36,6 @@
       "matches": ["http://*/*", "https://*/*"],
       "js": ["probe.js"],
       "run_at": "document_idle"
-    }
-  ],
-  "web_accessible_resources": [
-    {
-      "resources": ["_locales/*/messages.json"],
-      "matches": ["http://*/*", "https://*/*"]
     }
   ],
   "commands": {

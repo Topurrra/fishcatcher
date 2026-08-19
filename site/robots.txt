@@ -2,8 +2,11 @@
 User-agent: *
 Allow: /
 
-# AI crawlers are explicitly welcome to read and cite this site.
+# AI answer engines and search are welcome to read and cite this site.
 User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: ClaudeBot
@@ -15,7 +18,15 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
+# Training-only crawlers are not. The content is MIT licensed in the repo;
+# cite the site, do not bulk-scrape it.
 User-agent: CCBot
-Allow: /
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+# Content Signals: fine for search and AI answers, not for model training.
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 
 Sitemap: https://fishcatcher.dev/sitemap.xml

@@ -1,7 +1,7 @@
 // Invariant checks: manifests, locales, icons, dist output (M0) + engine corpus (M1).
 // Run: node tests/verify.mjs (after node scripts/build.mjs)
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync, mkdtempSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
+import { readFileSync, existsSync, mkdtempSync, writeFileSync, mkdirSync, rmSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -10,7 +10,6 @@ import { analyzeUrl } from '../src/engine/analyzer.js';
 import { punyDecode, decodeHost, asciiFold, hasMixedScripts } from '../src/engine/punycode.js';
 import { registrableDomain } from '../src/engine/psl.js';
 import { levenshtein } from '../src/engine/signals.js';
-import { format } from '../src/ui/i18n.js';
 import { zipDirectory } from '../scripts/package.mjs';
 import { matchDeviceCodeScam } from '../src/engine/devicecode.js';
 import { Bloom } from '../src/engine/bloom.js';
@@ -88,7 +87,10 @@ check('dist: built for both targets', () => {
   assert.ok(firefox.sidebar_action, 'firefox dist has sidebar_action');
   assert.ok(existsSync(join(root, 'dist/chrome/popup/popup.html')));
   assert.ok(existsSync(join(root, 'dist/firefox/panel/panel.html')));
-  assert.ok(existsSync(join(root, 'dist/firefox/_locales/ka/messages.json')));
+  // English only ships for now; ka stays in src (key parity is enforced above).
+  assert.ok(existsSync(join(root, 'src/_locales/ka/messages.json')));
+  assert.ok(!existsSync(join(root, 'dist/chrome/_locales/ka')));
+  assert.ok(!existsSync(join(root, 'dist/firefox/_locales/ka')));
 });
 
 // ── M1: engine units ────────────────────────────────────────────
@@ -114,8 +116,8 @@ check('levenshtein: typo distance', () => {
 
 // ── M1: phishing corpus (must be flagged) ───────────────────────
 const phishing = [
-  ['http://micr0soft.com/login', 'high'],
-  ['https://paypa1.com/', 'high'],
+  ['http://micr0soft.com/login', 'critical'],
+  ['https://paypa1.com/', 'critical'],
   ['http://xn--pypal-4ve.com/', 'high'],
   ['https://login.microsoft.com.evil.ru/', 'high'],
   ['http://185.22.64.3/login', 'high'],
@@ -123,7 +125,7 @@ const phishing = [
   ['https://secure-verify-account.tk/', 'elevated'],
   ['https://a1b2c3.xyz/', 'high'],
   ['https://microsoft-login-2026.com/', 'critical'],
-  ['https://dhl-track-parcel.top/', 'high'],
+  ['https://dhl-track-parcel.top/', 'critical'],
   ['https://login.dhl-track-parcel.top/', 'critical']
 ];
 for (const [url, level] of phishing) {
@@ -212,11 +214,6 @@ check('locales: M2 popup strings present', () => {
 });
 
 // ── M3: strict mode, options, i18n override ─────────────────────
-check('i18n: $N substitution', () => {
-  assert.equal(format('Mentions $1 but is not a $1 domain', ['Microsoft']), 'Mentions Microsoft but is not a Microsoft domain');
-  assert.equal(format('No $1 here', []), 'No  here');
-});
-
 check('manifest: options page wired', () => {
   const m = readJson('src/manifest.json');
   assert.equal(m.options_ui.page, 'options/options.html');
@@ -234,7 +231,7 @@ check('bundle: i18n + banner bundled for both targets', () => {
 });
 
 check('locales: M3 options/banner strings present', () => {
-  for (const key of ['optionsHeading', 'strictLabel', 'strictHint', 'remoteLabel', 'remoteUrlLabel', 'remoteHint', 'langLabel', 'langAuto', 'trustTitle', 'trustEmpty', 'removeTrust', 'bannerDismiss']) {
+  for (const key of ['optionsHeading', 'strictLabel', 'strictHint', 'remoteLabel', 'remoteUrlLabel', 'remoteHint', 'trustTitle', 'trustEmpty', 'removeTrust', 'bannerDismiss']) {
     assert.ok(enMessages[key], `en has ${key}`);
   }
 });
@@ -321,7 +318,7 @@ check('safe-bloom: allowlist suppresses brand FPs, keeps typosquats flagged', ()
     assert.ok(r.level === 'low' || r.level === 'elevated', `${d} should not be high/critical (was ${r.level})`);
   }
   // ...but a real typosquat not on the allowlist still fires.
-  assert.equal(analyzeUrl('https://paypa1.com/', data).level, 'high');
+  assert.equal(analyzeUrl('https://paypa1.com/', data).level, 'critical');
 });
 
 check('rdap: registration date parsing + age', () => {
@@ -645,6 +642,131 @@ check('locales: scam-pack reason keys present', () => {
   for (const key of ['reasonCryptoSeed', 'reasonTechSupport']) {
     assert.ok(enMessages[key], `en has ${key}`);
   }
+});
+
+// ── store readiness: firefox data_collection_permissions, chrome min version, no WAR ──
+check('store: firefox manifest declares data collection + min version 128', () => {
+  const gecko = toFirefoxManifest(readJson('src/manifest.json')).browser_specific_settings.gecko;
+  assert.deepEqual(gecko.data_collection_permissions.required, ['none']);
+  assert.deepEqual(gecko.data_collection_permissions.optional, ['websiteActivity']);
+  assert.equal(gecko.strict_min_version, '128.0');
+});
+
+check('store: chrome manifest has min version 116 and no web_accessible_resources', () => {
+  const m = readJson('src/manifest.json');
+  assert.equal(m.minimum_chrome_version, '116');
+  assert.equal(m.web_accessible_resources, undefined);
+});
+
+check('store: only en locale ships; bundles use chrome.i18n, never fetch _locales', () => {
+  assert.deepEqual(readdirSync(join(root, 'dist/chrome/_locales')), ['en']);
+  for (const target of ['chrome', 'firefox']) {
+    for (const file of ['background.js', 'probe.js']) {
+      const src = readFileSync(join(root, `dist/${target}/${file}`), 'utf8');
+      assert.ok(src.includes('chrome.i18n.getMessage'), `${target}/${file}: uses chrome.i18n`);
+      assert.ok(!src.includes('_locales/'), `${target}/${file}: no _locales fetch`);
+    }
+  }
+});
+
+// ── worker: state recovery, alarm guard, QR fallback ──
+check('worker: alarm guarded with alarms.get before create', () => {
+  for (const target of ['chrome', 'firefox']) {
+    const src = readFileSync(join(root, `dist/${target}/background.js`), 'utf8');
+    const get = src.search(/alarms\??\.get\('fc-list-update'/);
+    const create = src.indexOf("alarms.create('fc-list-update'");
+    assert.ok(get >= 0 && create > get, `${target}: alarms.get precedes alarms.create`);
+    assert.ok(src.includes('REMOTE_REFRESH_MS'), `${target}: remote refresh constant`);
+  }
+});
+
+check('worker: QR screenshot fallback + resend-facts in both bundles', () => {
+  for (const target of ['chrome', 'firefox']) {
+    const bg = readFileSync(join(root, `dist/${target}/background.js`), 'utf8');
+    const probe = readFileSync(join(root, `dist/${target}/probe.js`), 'utf8');
+    assert.ok(bg.includes('captureVisibleTab'), `${target}: background uses captureVisibleTab`);
+    assert.ok(bg.includes("'resend-facts'") && probe.includes("'resend-facts'"), `${target}: resend-facts wired`);
+    assert.ok(bg.includes("'qr-image-rect'") && probe.includes("'qr-image-rect'"), `${target}: qr-image-rect wired`);
+  }
+});
+
+check('locales: QR fallback notes in en + ka', () => {
+  const ka = readJson('src/_locales/ka/messages.json');
+  for (const key of ['qrUnreadable', 'qrNotUrl']) {
+    assert.ok(enMessages[key]?.message, `en has ${key}`);
+    assert.ok(ka[key]?.message, `ka has ${key}`);
+  }
+});
+
+// ── engine: hosting suffixes, S8/S3/S13 fixes ──
+check('psl: multi-tenant hosting suffixes make each tenant its own registrable', () => {
+  assert.equal(registrableDomain('paypal-login.netlify.app', data.psl), 'paypal-login.netlify.app');
+  assert.equal(registrableDomain('user.github.io', data.psl), 'user.github.io');
+  assert.equal(registrableDomain('foo.web.app', data.psl), 'foo.web.app');
+  assert.equal(registrableDomain('x.blob.core.windows.net', data.psl), 'x.blob.core.windows.net');
+  // Longest suffix wins: s3.amazonaws.com over amazonaws.com.
+  assert.equal(registrableDomain('bucket.s3.amazonaws.com', data.psl), 'bucket.s3.amazonaws.com');
+  assert.equal(registrableDomain('cid.ipfs.dweb.link', data.psl), 'cid.ipfs.dweb.link');
+  // The bare suffix host is still itself.
+  assert.equal(registrableDomain('netlify.app', data.psl), 'netlify.app');
+});
+
+check('engine: Microsoft-branded password page on a netlify tenant is AiTM-flagged', () => {
+  const aitm = { interactions: ['password'], identityHints: { title: 'Sign in to your Microsoft account', ogSiteName: '', logoAlts: ['Microsoft'] }, resourceHosts: { 'login-msft.netlify.app': 20 }, faviconCrossOrigin: false };
+  const r = analyzeUrl('https://login-msft.netlify.app/', data, { aitm });
+  assert.ok(r.level === 'high' || r.level === 'critical', `level=${r.level} score=${r.score}`);
+  assert.ok(r.reasons.some((x) => x.key === 'reasonAitmMismatch'));
+  // Brand-in-tenant-name phishing on hosting suffixes is no longer hidden by the host's bloom entry.
+  for (const u of ['https://paypal-login.netlify.app/', 'https://microsoft-365-login.web.app/', 'https://office365-login.weebly.com/', 'https://login-microsoftonline.workers.dev/']) {
+    const x = analyzeUrl(u, data);
+    assert.ok(x.level === 'high' || x.level === 'critical', `${u} level=${x.level} score=${x.score}`);
+  }
+});
+
+check('engine: S8 counts labels below the registrable domain only', () => {
+  assert.ok(!analyzeUrl('https://www.google.co.uk/', data).reasons.some((x) => x.key === 'reasonSubdomains'));
+  assert.ok(analyzeUrl('https://a.b.example.com/', data).reasons.some((x) => x.key === 'reasonSubdomains'));
+  assert.ok(analyzeUrl('https://login.microsoft.com.evil.xyz/', data).reasons.some((x) => x.key === 'reasonSubdomains'));
+});
+
+check('engine: S3 folds digit homoglyphs, not legit digit domains', () => {
+  const r = analyzeUrl('https://amaz0n-prime.ru/', data);
+  assert.ok(r.reasons.some((x) => x.key === 'reasonBrandSubdomain'), `reasons=${r.reasons.map((x) => x.key)}`);
+  for (const u of ['https://go4it.com/', 'https://1password.com/', 'https://win10.com/', 'https://freeb00k.com/']) {
+    assert.ok(!analyzeUrl(u, data).reasons.some((x) => x.key === 'reasonBrandSubdomain'), u);
+  }
+  // The public suffix never counts as brand text: github.io / googleapis tenants stay clean.
+  for (const u of ['https://user.github.io/', 'https://x.storage.googleapis.com/', 'https://raw.githubusercontent.com/']) {
+    assert.ok(!analyzeUrl(u, data).reasons.some((x) => x.key === 'reasonBrandSubdomain'), u);
+  }
+});
+
+check('engine: S13 weighs 20 on unknown domains, 10 on known-legit ones', () => {
+  const unknown = analyzeUrl('https://random-unknown-site.com/', data, { hasPasswordForm: true });
+  assert.equal(unknown.reasons.find((x) => x.key === 'reasonPasswordForm').weight, 20);
+  assert.equal(unknown.level, 'elevated');
+  const bank = analyzeUrl('https://chase.com/', data, { hasPasswordForm: true });
+  assert.equal(bank.reasons.find((x) => x.key === 'reasonPasswordForm').weight, 10);
+  assert.equal(bank.level, 'low');
+});
+
+check('engine: legit login pages and hosting tenants stay low', () => {
+  for (const d of ['chase.com', 'bankofamerica.com', 'coinbase.com', 'github.com', 'accounts.google.com']) {
+    const r = analyzeUrl(`https://${d}/`, data, { hasPasswordForm: true });
+    assert.equal(r.level, 'low', `${d} score=${r.score} reasons=${r.reasons.map((x) => x.key)}`);
+  }
+  for (const d of ['myapp.netlify.app', 'user.github.io', 'foo.web.app']) {
+    const r = analyzeUrl(`https://${d}/`, data);
+    assert.equal(r.level, 'low', `${d} score=${r.score} reasons=${r.reasons.map((x) => x.key)}`);
+  }
+});
+
+check('engine: S7 keyword is skipped on known-legit domains', () => {
+  const legit = analyzeUrl('https://secure.wellsfargo.com/', data, { hasPasswordForm: true });
+  assert.ok(!legit.reasons.some((r) => r.key === 'reasonKeyword'), 'no keyword reason on a known-legit host');
+  assert.equal(legit.level, 'low');
+  const phish = analyzeUrl('https://secure-login-update.com/', data);
+  assert.ok(phish.reasons.some((r) => r.key === 'reasonKeyword'), 'keyword still fires on unknown hosts');
 });
 
 // ── report ──────────────────────────────────────────────────────

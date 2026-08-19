@@ -1,10 +1,12 @@
 // Stamps dist/chrome and dist/firefox from the shared src/ tree.
 // src/manifest.json is the Chromium source of truth; the Firefox variant is derived.
-import { cpSync, rmSync, readFileSync, writeFileSync } from 'node:fs';
+import { cpSync, rmSync, readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+// English only for now; src/_locales/ka stays in the repo (a test enforces key parity).
+const SHIPPED_LOCALES = ['en'];
 const src = join(root, 'src');
 const dist = join(root, 'dist');
 
@@ -23,7 +25,16 @@ export function toFirefoxManifest(m) {
     open_at_install: false
   };
   f.browser_specific_settings = {
-    gecko: { id: 'fishcatcher@keepitlocal.app', strict_min_version: '115.0' }
+    gecko: {
+      id: 'fishcatcher@keepitlocal.app',
+      // 128: before Firefox 127, MV3 content-script host permissions were not
+      // granted at install, so the page probe silently never ran.
+      strict_min_version: '128.0',
+      // Required by AMO for new submissions since Nov 2025. Nothing leaves the
+      // browser by default; the opt-in RDAP / Safe Browsing lookups send the
+      // visited domain or URL to a third party only after the user turns them on.
+      data_collection_permissions: { required: ['none'], optional: ['websiteActivity'] }
+    }
   };
   return f;
 }
@@ -84,6 +95,9 @@ function main() {
   for (const target of ['chrome', 'firefox']) {
     const out = join(dist, target);
     cpSync(src, out, { recursive: true });
+    for (const locale of readdirSync(join(out, '_locales'))) {
+      if (!SHIPPED_LOCALES.includes(locale)) rmSync(join(out, '_locales', locale), { recursive: true });
+    }
     writeFileSync(join(out, 'background.js'), background);
     writeFileSync(join(out, 'probe.js'), content);
     const manifest = JSON.parse(readFileSync(join(out, 'manifest.json'), 'utf8'));

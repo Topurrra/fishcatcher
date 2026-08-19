@@ -1,0 +1,37 @@
+/* Inline SVG diagrams and small charts used across docs, lessons and comparisons.
+   Every colour inside an SVG comes from the site tokens (var(--text), var(--muted),
+   var(--border), var(--accent), the four risk colours), so diagrams follow the theme.
+   Pixel art uses shape-rendering: crispEdges. No scripts, no external assets. */
+.diagram {
+  margin: 8px 0 1.4em;
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  padding: 18px 18px 14px;
+}
+.diagram svg { display: block; width: 100%; height: auto; overflow: visible; }
+.diagram svg text { font-family: var(--sans); fill: var(--text); }
+.diagram svg .mono { font-family: var(--mono); }
+.diagram svg .muted { fill: var(--muted); }
+.diagram svg .px { shape-rendering: crispEdges; }
+.diagram figcaption {
+  margin-top: 12px; color: var(--muted); font-size: 0.85rem; line-height: 1.5;
+}
+/* Tight variant for a diagram that sits inside running text */
+.diagram.inline { padding: 12px 14px 10px; }
+
+/* Horizontal bar chart built from plain HTML (no SVG needed for one dimension). */
+.bars { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.bars li { display: grid; grid-template-columns: minmax(96px, 0.28fr) 1fr auto; align-items: center; gap: 12px; font-size: 0.92rem; }
+.bars .bar { height: 12px; border-radius: 4px; background: var(--surface-2); overflow: hidden; }
+.bars .bar i { display: block; height: 100%; border-radius: 4px; background: var(--accent); min-width: 2px; }
+.bars .val { font-family: var(--mono); font-size: 0.82rem; color: var(--muted); white-space: nowrap; }
+.bars .lbl { color: var(--text); }
+
+/* Narrow screens: keep the labels legible and let the figure scroll sideways
+   instead of shrinking 13px SVG text to 7px. The page itself never scrolls. */
+@media (max-width: 640px) {
+  .diagram { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .diagram svg { min-width: 540px; }
+  .diagram figcaption { position: sticky; left: 0; }
+}

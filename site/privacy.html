@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fish Catcher Privacy: On-Device, No Tracking, No Server</title>
 <meta name="description" content="Fish Catcher runs on your device. No account, no tracking, and nothing about the pages you visit leaves your browser unless you switch on an optional online feature.">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icon-128.png" sizes="128x128">
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/docs.css">
 <link rel="canonical" href="https://fishcatcher.dev/privacy">
@@ -25,7 +27,7 @@
 <link rel="preload" href="/assets/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 <script src="/assets/theme-init.js"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fishcatcher.dev/"},{"@type":"ListItem","position":2,"name":"Privacy","item":"https://fishcatcher.dev/privacy"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Fish Catcher privacy policy","description":"Fish Catcher runs on your device. No account, no tracking, and nothing about the pages you visit leaves your browser unless you switch on an optional online feature.","url":"https://fishcatcher.dev/privacy","datePublished":"2026-08-11","dateModified":"2026-08-11","inLanguage":"en","publisher":{"@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Fish Catcher privacy policy","description":"Fish Catcher runs on your device. No account, no tracking, and nothing about the pages you visit leaves your browser unless you switch on an optional online feature.","url":"https://fishcatcher.dev/privacy","datePublished":"2026-08-11","dateModified":"2026-08-19","inLanguage":"en","publisher":{"@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev"}}</script>
 </head>
 <body>
 
@@ -53,7 +55,7 @@
     </div>
     <nav class="tree" aria-label="Privacy navigation">
       <a class="area" href="/">Home</a>
-      <a class="area" href="/docs">Documentation</a>
+      <a class="area" href="/docs">Docs</a>
       <a class="area" href="/learn">Learn</a>
       <a class="area current" href="/privacy">Privacy</a>
       <div class="sub">
@@ -82,58 +84,60 @@
     <div class="rule"><span class="line"></span><span class="pill-mono">On your device</span><span class="line"></span></div>
 
     <h2 id="summary">Summary</h2>
-    <p class="lead-p">Fish Catcher does its checks on your device. There is no account, no tracking, and nothing from the pages you visit is sent anywhere by default. A few optional features can look something up online, and each is off until you turn it on.</p>
+    <p class="lead-p">Fish Catcher does its checks on your device, with detection lists that ship inside the extension, and works with no internet connection. No account, no tracking, and nothing from the pages you visit is sent anywhere by default. A few optional features look things up online; each is off until you turn it on.</p>
 
     <h2 id="local">What stays on your device</h2>
-    <p>By default, Fish Catcher runs entirely locally, using detection lists that ship inside the extension. It works with no internet connection.</p>
     <ul>
-      <li>The addresses of the pages you visit are analyzed on your device and never uploaded.</li>
-      <li>QR codes you check are decoded on your device.</li>
+      <li>Page addresses are checked on your device, never uploaded.</li>
+      <li>The page is read locally only for small facts: a password or code field, the brand it claims to be, where its links point. Page text and what you type are never stored or sent.</li>
+      <li>QR codes are decoded on your device. If the right-click check cannot load the image, it may take a one-off screenshot of the visible tab to read the code; that stays in memory and is discarded.</li>
       <li>Link and download checks happen in your browser.</li>
     </ul>
 
     <h2 id="optional">Optional online features</h2>
-    <p>These are off by default. When enabled, each does exactly one thing and nothing more.</p>
     <h3>Threat-list updates</h3>
-    <p>Downloads a single Bloom-filter file once a day from the Fish Catcher registry, which merges three keyless public feeds: Phishing.Database, URLhaus by abuse.ch, and OpenPhish. It only downloads, it never uploads, and every check against the list happens on your device. As with any web request, the host can see your IP address and that a file was requested.</p>
+    <p>Downloads one Bloom-filter file a day from the Fish Catcher registry, which merges three keyless public feeds: Phishing.Database, URLhaus by abuse.ch, and OpenPhish. Download only; every check against the list happens on your device. Like any web request, the host sees your IP address and that a file was requested.</p>
     <h3>Domain-age check (RDAP)</h3>
-    <p>Asks a public directory service how old a domain is. It sends only the domain name of the site being checked, and nothing else.</p>
+    <p>Asks a public directory service how old a domain is. Sends only the domain name.</p>
     <h3>Google Safe Browsing</h3>
-    <p>Off by default. When you turn it on, Fish Catcher sends the address you visit to Google Safe Browsing, and it requires your own free Google API key. Leave it off to keep every check on your device.</p>
+    <p>Sends the address you visit to Google and needs your own free Google API key.</p>
     <h3>Download guard</h3>
-    <p>Local. When enabled, it needs download and notification access so it can warn you about a disguised download. Nothing is uploaded.</p>
-    <div class="callout"><p>You can leave all of these off and Fish Catcher still protects you with its local checks.</p></div>
+    <p>Local. Needs download and notification access to warn you about a disguised download. Nothing is uploaded.</p>
+    <h3>Family mode</h3>
+    <p>Local. A larger, plainer alert and, if you add a helper's email, a one-tap button that opens a pre-filled email in your own mail app. Nothing is sent until you press send; the helper address stays on your device.</p>
+    <p><b>Report this site</b> opens a pre-filled GitHub issue in a new tab with only the site's hostname, never the full address. Nothing is sent until you submit it yourself.</p>
 
     <h2 id="stored">What is stored on your device</h2>
-    <p>Fish Catcher stores a small amount of data in your browser's local storage, on your device only:</p>
+    <p>In your browser's local storage:</p>
     <ul>
-      <li>Your settings (which features are on, your language choice).</li>
+      <li>Your settings, including a Safe Browsing key or helper email if you added one.</li>
       <li>Sites you mark as trusted.</li>
-      <li>A cache tag so updates only download when the list has changed.</li>
+      <li>With threat-list updates on: the downloaded list plus a cache tag and timestamp, so it is fetched at most once a day and only when changed. Turning the feature off removes it all.</li>
     </ul>
-    <p>This never leaves your device and is removed when you uninstall the extension.</p>
+    <p>It never leaves your device and is removed when you uninstall.</p>
 
     <h2 id="permissions">Permissions</h2>
-    <p>Fish Catcher asks for the minimum it needs. Network permissions for the optional features are requested only at the moment you turn a feature on.</p>
+    <p>Network permissions are requested only when you turn a feature on.</p>
     <ul>
-      <li><b>Current tab and pages</b>, to read the address and page content of the tab you are on so it can check it.</li>
+      <li><b>Current tab and pages</b>, to read the address and content of the tab you are on, including the right-click QR check.</li>
       <li><b>Local storage</b>, for your settings and trusted sites.</li>
-      <li><b>Downloads and notifications</b>, requested only if you enable the download guard.</li>
+      <li><b>Downloads and notifications</b>, only if you enable the download guard or family mode.</li>
+      <li><b>Specific websites</b> (registry, RDAP directory, Google Safe Browsing), each only when you turn on that feature.</li>
     </ul>
 
     <h2 id="no">What we never do</h2>
     <ul>
-      <li>No analytics, no telemetry, no advertising, no third-party trackers.</li>
+      <li>No analytics, telemetry, advertising, or third-party trackers.</li>
       <li>No selling or sharing of any data.</li>
       <li>No account and no profile.</li>
     </ul>
-    <p>Because the extension is open source, you can verify all of this by reading the code.</p>
+    <p>It is open source; verify all of this in the code.</p>
 
     <h2 id="changes">Changes and contact</h2>
-    <p>If this policy changes, the updated version will be posted here and in the source repository. Questions or concerns can be raised on <a href="https://github.com/Topurrra/fishcatcher">the GitHub project</a>.</p>
+    <p>Changes are posted here and in the source repository. Questions go to <a href="https://github.com/Topurrra/fishcatcher">the GitHub project</a>.</p>
 
     <div class="prevnext">
-      <a href="/docs"><small>Docs</small>Documentation</a>
+      <a href="/docs"><small>Docs</small>Install and settings</a>
       <a class="nx" href="/"><small>Home</small>Back to the overview</a>
     </div>
   </main>

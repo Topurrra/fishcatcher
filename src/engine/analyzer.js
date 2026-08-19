@@ -39,10 +39,12 @@ export function analyzeUrl(input, data, opts) {
   const { score: baseScore, reasons } = runSignals({ url, host, registrable, knownLegit }, data);
   let score = baseScore;
 
-  // S13 — login form on a domain that is neither safe-listed nor trusted
+  // S13 — login form on a domain that is neither safe-listed nor trusted.
+  // Half weight on a known-legit (top-100k) domain: a login form there is normal.
   if (opts?.hasPasswordForm) {
-    score += 20;
-    reasons.push({ key: 'reasonPasswordForm', params: [], weight: 20 });
+    const w = knownLegit ? 10 : 20;
+    score += w;
+    reasons.push({ key: 'reasonPasswordForm', params: [], weight: w });
   }
 
   // S15 — freshly registered domain (opt-in RDAP cloud check)

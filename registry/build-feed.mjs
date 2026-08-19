@@ -10,7 +10,7 @@
 //   - community-reports.txt (optional, local)     — maintainer-confirmed reports
 //
 // The Bloom implementation MUST stay byte-compatible with src/engine/bloom.js
-// in the extension repo, or lookups will miss. No dependencies. Node 20+.
+// in the extension repo, or lookups will miss. No dependencies. Node 22+.
 // Run: node build-feed.mjs        (add --force to override the drop guard)
 //      node build-feed.mjs --selftest   (offline check of the pure logic)
 import { writeFileSync, readFileSync } from 'node:fs';

@@ -1,5 +1,5 @@
 import { applyI18n, getMessage } from '../ui/i18n.js';
-import { STATUS_ICONS, UI_ICONS } from '../ui/icons.js';
+import { setIcon, iconNode, UI_ICONS } from '../ui/icons.js';
 
 const LEVEL_LABEL = {
   low: 'levelLow',
@@ -54,7 +54,7 @@ async function render() {
 
 async function flashNote(key, params) {
   const el = $('action-note');
-  el.querySelector('.si-icon').innerHTML = UI_ICONS.check;
+  setIcon(el.querySelector('.si-icon'), 'check');
   el.querySelector('.si-text').textContent = await getMessage(key, params);
   el.hidden = false;
   clearTimeout(el._timer);
@@ -73,12 +73,14 @@ $('trust-btn').addEventListener('click', async (e) => {
 
 $('recheck-btn').addEventListener('click', async (e) => {
   const btn = e.currentTarget;
-  const original = btn.innerHTML;
+  const original = [...btn.childNodes];
   btn.disabled = true;
-  btn.innerHTML = `${UI_ICONS.spinner}<span>${await getMessage('checkingLabel')}</span>`;
+  const label = document.createElement('span');
+  label.textContent = await getMessage('checkingLabel');
+  btn.replaceChildren(iconNode(UI_ICONS.spinner), label);
   await chrome.runtime.sendMessage({ type: 'rescore', tabId: currentTabId });
   await render();
-  btn.innerHTML = original;
+  btn.replaceChildren(...original);
   btn.disabled = false;
 });
 

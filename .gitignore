@@ -9,3 +9,7 @@ docs/
 
 # voli project memory (local knowledge, not for the repo)
 .voli/
+
+# local scanner notes
+omnis-x-fp.md
+store/

@@ -1,6 +1,6 @@
 import { applyI18n, getMessage } from '../ui/i18n.js';
 import { initSettings } from '../ui/settings.js';
-import { STATUS_ICONS, UI_ICONS } from '../ui/icons.js';
+import { setIcon, iconNode, UI_ICONS } from '../ui/icons.js';
 
 const LEVEL_LABEL = {
   low: 'levelLow',
@@ -205,7 +205,7 @@ let checking = false; // suppress auto-render while a manual check is on screen
 
 async function flashNote(key, params) {
   const el = $('action-note');
-  el.querySelector('.si-icon').innerHTML = UI_ICONS.check;
+  setIcon(el.querySelector('.si-icon'), 'check');
   el.querySelector('.si-text').textContent = await getMessage(key, params);
   el.hidden = false;
   clearTimeout(el._timer);
@@ -215,7 +215,7 @@ async function flashNote(key, params) {
 async function showAge(on) {
   const el = $('age-status');
   if (!on) { el.hidden = true; return; }
-  el.querySelector('.si-icon').innerHTML = UI_ICONS.spinner;
+  setIcon(el.querySelector('.si-icon'), 'spinner');
   el.querySelector('.si-text').textContent = await getMessage('ageChecking');
   el.hidden = false;
 }
@@ -233,15 +233,17 @@ $('trust-btn').addEventListener('click', async (e) => {
 // One action: re-score the page AND deep-scan every link, with a spinner.
 $('recheck-btn').addEventListener('click', async (e) => {
   const btn = e.currentTarget;
-  const original = btn.innerHTML;
+  const original = [...btn.childNodes];
   checking = true;
   btn.disabled = true;
-  btn.innerHTML = `${UI_ICONS.spinner}<span>${await getMessage('checkingLabel')}</span>`;
+  const label = document.createElement('span');
+  label.textContent = await getMessage('checkingLabel');
+  btn.replaceChildren(iconNode(UI_ICONS.spinner), label);
   await chrome.runtime.sendMessage({ type: 'rescore', tabId: currentTabId });
   const { findings, scanned } = await chrome.runtime.sendMessage({ type: 'scan-links', tabId: currentTabId });
   const { result } = await chrome.runtime.sendMessage({ type: 'get-result', tabId: currentTabId });
   renderResult(result, null);
-  btn.innerHTML = original;
+  btn.replaceChildren(...original);
   btn.disabled = false;
   const summary = $('links-summary');
   summary.hidden = false;
@@ -286,7 +288,16 @@ $('tell-helper-btn').addEventListener('click', async (e) => {
   chrome.tabs.create({ url: `mailto:${helperEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}` });
 });
 
+// One-shot result handed over by the worker (QR check). A note without a
+// result (unreadable QR, non-URL payload) is still shown.
+async function takePending() {
+  const { result, note } = await chrome.runtime.sendMessage({ type: 'take-pending' });
+  if (result || note) renderResult(result, note);
+  return !!(result || note);
+}
+
 chrome.runtime.onMessage.addListener((msg) => {
+  if (msg.type === 'qr-pending') { takePending(); return; }
   if (checking) return;
   if (msg.type === 'scored') render();
   if (msg.type === 'links' && msg.tabId === currentTabId) loadLinks();
@@ -320,7 +331,5 @@ if (chrome.sidePanel) {
 
 (async () => {
   await loadSenior();
-  const { result, note } = await chrome.runtime.sendMessage({ type: 'take-pending' });
-  if (result) renderResult(result, note);
-  else render();
+  if (!(await takePending())) render();
 })();

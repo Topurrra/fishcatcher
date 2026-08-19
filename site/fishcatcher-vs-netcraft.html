@@ -18,13 +18,16 @@
 <meta name="twitter:title" content="Fish Catcher vs Netcraft: Free Open-Source Phishing Protection">
 <meta name="twitter:description" content="Fish Catcher gives private, on-device phishing warnings; Netcraft leans on a large cloud feed and takedowns. Compare privacy, cost, and what each catches.">
 <meta name="twitter:image" content="https://fishcatcher.dev/assets/og.jpg">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icon-128.png" sizes="128x128">
 <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/docs.css">
+<link rel="stylesheet" href="/assets/diagrams.css">
 <script src="/assets/theme-init.js"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Fish Catcher vs Netcraft: Free Open-Source Phishing Protection","description":"Fish Catcher gives private, on-device phishing warnings; Netcraft leans on a large cloud feed and takedowns. Compare privacy, cost, and what each catches.","url":"https://fishcatcher.dev/fishcatcher-vs-netcraft","mainEntityOfPage":"https://fishcatcher.dev/fishcatcher-vs-netcraft","datePublished":"2026-08-11","dateModified":"2026-08-11","inLanguage":"en","author":{"@type":"Organization","name":"Fish Catcher"},"publisher":{"@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Fish Catcher vs Netcraft: Free Open-Source Phishing Protection","description":"Fish Catcher gives private, on-device phishing warnings; Netcraft leans on a large cloud feed and takedowns. Compare privacy, cost, and what each catches.","url":"https://fishcatcher.dev/fishcatcher-vs-netcraft","mainEntityOfPage":"https://fishcatcher.dev/fishcatcher-vs-netcraft","datePublished":"2026-08-11","dateModified":"2026-08-19","inLanguage":"en","author":{"@type":"Organization","name":"Fish Catcher"},"publisher":{"@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fishcatcher.dev/"},{"@type":"ListItem","position":2,"name":"Fish Catcher vs Netcraft","item":"https://fishcatcher.dev/fishcatcher-vs-netcraft"}]}</script>
 </head>
 <body>
@@ -47,42 +50,90 @@
     <div class="breadcrumb"><a href="/">Home</a> / Fish Catcher vs Netcraft</div>
     <h1>Fish Catcher vs Netcraft</h1>
     <div class="meta-row">
-      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.5"/></svg> Updated <time datetime="2026-08-11">11 August 2026</time></span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.5"/></svg> Updated <time datetime="2026-08-19">19 August 2026</time></span>
       <span class="sep"></span>
       <a href="https://github.com/Topurrra/fishcatcher"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11 11 0 0 1 6 0C17 4.6 18 4.9 18 4.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg> View source</a>
     </div>
     <div class="rule"><span class="line"></span><span class="pill-mono">Honest comparison</span><span class="line"></span></div>
 
-<p class="lead-p">Fish Catcher is a free, open-source browser add-on for people who want private, on-device phishing warnings; Netcraft is a long-established anti-phishing company whose tools lean on a large cloud feed and takedown operation.</p>
+<p class="lead-p">Fish Catcher checks pages on your device and tells you in plain words why one looks risky. The Netcraft extension checks each site against Netcraft’s servers and feeds its takedown operation.</p>
 
-<h2 id="approach">Two different starting points</h2>
-<p>Fish Catcher runs its default checks on your device. It looks at the page and the link in front of you, decides on a risk color, and shows a plain-language reason. Nothing about the page you visit leaves your browser unless you turn on an optional layer. There is no account and no tracking. That design keeps you in control of your data, but it also means Fish Catcher does not draw on a shared, always-updating reputation service the way a cloud tool does, unless you opt in.</p>
-<p>Netcraft has spent many years building anti-phishing infrastructure. As of writing, its browser extension and related services are generally known for cloud-based reputation lookups, a large phishing feed, and community reporting that also feeds takedown work against malicious sites. In practice, a request usually involves checking a site against Netcraft's servers. That gives broad, current coverage backed by a team that hunts phishing at scale, with the trade-off that lookups typically involve sending some data to a third party.</p>
+<h2 id="data">Where your data goes</h2>
+<figure class="diagram">
+<svg class="cmp-flow" viewBox="0 0 640 220" role="img" aria-labelledby="flow-title" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+<title id="flow-title">Where your data goes: Fish Catcher keeps the check on your device; Netcraft sends the site address to its servers</title>
+<defs><symbol id="fc-fish" viewBox="0 0 14 11" shape-rendering="crispEdges"><path class="d" d="M6 0h2v1h-2zM5 1h5v1h-5zM1 2h1v1h-1zM4 2h1v1h-1zM10 2h1v1h-1zM0 3h3v1h-3zM10 3h1v1h-1zM0 4h3v1h-3zM11 4h1v1h-1zM0 5h2v1h-2zM12 5h1v1h-1zM0 6h3v1h-3zM12 6h1v1h-1zM0 7h3v1h-3zM11 7h1v1h-1zM1 8h1v1h-1zM4 8h1v1h-1zM10 8h1v1h-1zM5 9h5v1h-5zM6 10h2v1h-2z"/><path class="m" d="M11 3h1v1h-1zM12 4h1v1h-1zM13 5h1v1h-1zM13 6h1v1h-1zM12 7h1v1h-1z"/><path class="b" d="M5 2h5v1h-5zM3 3h7v1h-7zM3 4h5v1h-5zM10 4h1v1h-1zM2 5h6v1h-6zM10 5h2v1h-2zM3 6h3v1h-3zM10 6h2v1h-2zM3 7h3v1h-3zM10 7h1v1h-1zM5 8h5v1h-5z"/><path class="l" d="M8 4h2v1h-2zM8 5h1v1h-1zM6 6h4v1h-4zM6 7h4v1h-4z"/><path class="p" d="M9 5h1v1h-1z"/></symbol></defs>
+<text x="1" y="18" font-size="13" font-weight="600">With Fish Catcher</text>
+<rect class="dv" x="1" y="34" width="308" height="140" rx="10"/>
+<text class="muted" x="14" y="52" font-size="12">Your device</text>
+<rect class="bw" x="30" y="60" width="130" height="96" rx="6"/>
+<path class="hl" d="M30 76h130"/>
+<circle class="dot" cx="40" cy="68" r="2.5"/><circle class="dot" cx="49" cy="68" r="2.5"/><circle class="dot" cx="58" cy="68" r="2.5"/>
+<use href="#fc-fish" x="74" y="100" width="42" height="33"/>
+<path class="loop" d="M250 80.3A32 32 0 1 1 218 80.3"/>
+<path class="loop" d="M213.9 87.3 218 80.3 209.9 80.3"/>
+<path class="loop" d="M224 109l7 7 13-14"/>
+<text class="muted" x="234" y="160" font-size="12" text-anchor="middle">Checks run here</text>
+<text class="muted" x="155" y="196" font-size="12" text-anchor="middle">Nothing about the page leaves your browser</text>
+<text x="331" y="18" font-size="13" font-weight="600">With Netcraft</text>
+<rect class="dv" x="331" y="34" width="150" height="140" rx="10"/>
+<text class="muted" x="344" y="52" font-size="12">Your device</text>
+<rect class="bw" x="341" y="60" width="130" height="96" rx="6"/>
+<path class="hl" d="M341 76h130"/>
+<circle class="dot" cx="351" cy="68" r="2.5"/><circle class="dot" cx="360" cy="68" r="2.5"/><circle class="dot" cx="369" cy="68" r="2.5"/>
+<rect class="dot" x="355" y="92" width="78" height="4" rx="2"/><rect class="dot" x="355" y="104" width="100" height="4" rx="2"/><rect class="dot" x="355" y="116" width="60" height="4" rx="2"/><rect class="dot" x="355" y="128" width="88" height="4" rx="2"/>
+<path class="out" d="M471 108H507"/>
+<path class="out" d="M501 103l7 5-7 5"/>
+<rect class="bw" x="512" y="60" width="127" height="96" rx="10"/>
+<rect class="srv" x="558" y="80" width="35" height="12" rx="2"/><rect class="srv" x="558" y="96" width="35" height="12" rx="2"/>
+<circle class="sd" cx="564" cy="86" r="1.5"/><circle class="sd" cx="564" cy="102" r="1.5"/>
+<text x="575.5" y="134" font-size="12" text-anchor="middle">Netcraft servers</text>
+<text class="muted" x="485" y="196" font-size="12" text-anchor="middle">Sends the site address to Netcraft</text>
+</svg>
+<figcaption>Fish Catcher reads the page inside your browser and keeps the result there. The Netcraft extension sends the address of the site to Netcraft, which looks it up and feeds its takedown operation.</figcaption>
+</figure>
 
-<h2 id="detection">What each one catches</h2>
-<p>Fish Catcher focuses on signals it can read locally. It flags lookalike domains and homoglyphs, common URL tricks, and fake login-form patterns. It ships with a bundled blocklist and pulls a daily community feed drawn from Phishing.Database, URLhaus, and OpenPhish. It adds an on-device model for machine-generated domains, checks for adversary-in-the-middle and device-code scams, and includes scam packs for wallet-phrase and fake tech-support pages. A download guard watches risky files. You can also switch on Google Safe Browsing (with your own key) and a domain-age check for extra depth.</p>
-<p>Netcraft's strength is generally its reputation data and the human operation behind it. A well-resourced cloud feed can list freshly reported phishing sites quickly and broadly, and Netcraft's reporting pipeline is designed to act on what it sees. If your main need is wide, continuously refreshed coverage of known-bad sites, that model is hard to match with local checks alone.</p>
+<h2 id="compare">Side by side</h2>
+<table class="cmp-score">
+<thead><tr><th></th><th scope="col"><svg class="cmp-fish" viewBox="0 0 14 11" width="28" height="22" aria-hidden="true"><use href="#fc-fish"/></svg>Fish Catcher</th><th scope="col">Netcraft</th></tr></thead>
+<tbody>
+<tr><th scope="row">Privacy</th><td data-col="Fish Catcher"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Checks stay on your device</td><td data-col="Netcraft"><svg class="g no" role="img" viewBox="0 0 20 20" aria-label="No"><path d="M6 6l8 8M14 6l-8 8"/></svg>Site address sent to Netcraft</td></tr>
+<tr><th scope="row">Open source</th><td data-col="Fish Catcher"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>MIT licensed, code on GitHub</td><td data-col="Netcraft"><svg class="g no" role="img" viewBox="0 0 20 20" aria-label="No"><path d="M6 6l8 8M14 6l-8 8"/></svg>Closed source</td></tr>
+<tr><th scope="row">Blocks or warns</th><td data-col="Fish Catcher"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Warns, never blocks</td><td data-col="Netcraft"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Warns, blocks known bad sites</td></tr>
+<tr><th scope="row">How it detects</th><td data-col="Fish Catcher"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>On-device signals plus daily blocklist</td><td data-col="Netcraft"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Cloud lookup plus takedown team</td></tr>
+<tr><th scope="row">Cost</th><td data-col="Fish Catcher"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Free, no account</td><td data-col="Netcraft"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Free browser extension</td></tr>
+<tr><th scope="row">Best for</th><td data-col="Fish Catcher"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Private warnings with plain reasons</td><td data-col="Netcraft"><svg class="g ok" role="img" viewBox="0 0 20 20" aria-label="Yes"><path d="M4 10.5l4 4 8-9"/></svg>Wide coverage of reported sites</td></tr>
+</tbody>
+</table>
+<p class="cmp-note">Competitor details are from their public documentation as of August 2026; tell us if something changed.</p>
 
-<div class="table-wrap"><table><thead><tr><th>Aspect</th><th>Fish Catcher</th><th>Netcraft</th></tr></thead><tbody>
-<tr><td>Privacy model</td><td>Local-first; nothing about the page leaves the browser by default; no account, no tracking</td><td>Generally cloud-based reputation lookups, so some data is typically sent to Netcraft servers</td></tr>
-<tr><td>Open source</td><td>Yes, MIT licensed</td><td>Proprietary, commercial service</td></tr>
-<tr><td>Blocks vs warns</td><td>Warns, never blocks; you decide what to do</td><td>Typically warns and can block known dangerous sites</td></tr>
-<tr><td>Detection approach</td><td>On-device heuristics, bundled and daily community blocklists, on-device model, optional Safe Browsing</td><td>Large cloud phishing feed, community reporting, reputation lookups, takedown operation</td></tr>
-<tr><td>Cost</td><td>Free</td><td>Free extension available; broader services are commercial</td></tr>
-<tr><td>Best for</td><td>Privacy-minded users who want local warnings and clear reasons</td><td>Users who want broad cloud coverage backed by a dedicated anti-phishing team</td></tr>
-</tbody></table></div>
+<h2 id="pick">Which to pick</h2>
+<div class="cmp-pick">
+<div><h3>Pick Fish Catcher if</h3><ul>
+<li>You want nothing about your browsing sent to a third party.</li>
+<li>You want the reason behind every warning, in plain words.</li>
+<li>You want code you can read and no account to create.</li>
+</ul></div>
+<div><h3>Pick Netcraft if</h3><ul>
+<li>You want the widest coverage of freshly reported phishing sites.</li>
+<li>You want a human team behind the feed, taking sites down.</li>
+<li>You are fine with each site address being looked up in the cloud.</li>
+</ul></div>
+</div>
 
-<h2 id="who">Who should pick which</h2>
-<p>Pick Fish Catcher if you value privacy, want to see exactly why a page was flagged, and prefer a tool you can inspect and run without an account. Pick Netcraft if your priority is the widest possible cloud-backed coverage of known phishing sites and you are comfortable with cloud lookups. Many people are well served running a local warner like Fish Catcher alongside whatever their browser or antivirus already provides.</p>
-
-<h3 style="font-weight:600">Where Fish Catcher is weaker</h3>
-<p>Fish Catcher is new and less battle-tested than a service with years of operational history. Its bundled and feed blocklist is smaller than a large commercial reputation database, so a very freshly reported site may be listed by a big cloud feed before it reaches Fish Catcher. By default Fish Catcher does not use a cloud reputation service; that coverage is opt-in through Safe Browsing. It also focuses on URL and page signals rather than full webpage malware scanning or network-level blocking, and it has no takedown operation behind it.</p>
+<h2 id="weaker">Where Fish Catcher is weaker</h2>
+<ul>
+<li>It is new. Netcraft has years of operating history.</li>
+<li>Its blocklist is smaller, so a freshly reported site can reach Netcraft’s feed first.</li>
+<li>It only warns. It will not stop a page from loading.</li>
+<li>There is no takedown operation behind it. It protects you; it does not remove the site.</li>
+</ul>
 
 <h2 id="faq">Common questions</h2>
 <h3>Can I run Fish Catcher and Netcraft at the same time?</h3>
-<p>Generally yes. They work in different ways, and running a local warner next to a cloud-backed tool can give you both private on-device checks and broad cloud coverage. Watch for duplicate warnings on the same site and pick whichever reason is clearer to you.</p>
+<p>Yes. You may see two warnings on the same site; read whichever reason is clearer.</p>
 <h3>Does Fish Catcher send the sites I visit anywhere?</h3>
-<p>Not by default. Its standard checks run on your device, and nothing about the page leaves your browser. If you turn on the optional Google Safe Browsing layer, that specific check involves a lookup using your own key, which is your choice to enable.</p>
+<p>Not by default. If you turn on the optional Safe Browsing layer, that one check runs with your own Google key.</p>
 
     <h2 id="others">Other comparisons</h2>
     <div class="article-cards">
@@ -91,7 +142,7 @@
     </div>
 
     <div class="prevnext">
-      <a href="/docs"><small>Docs</small>Documentation</a>
+      <a href="/docs"><small>Read</small>Docs</a>
       <a class="nx" href="/"><small>Home</small>Back to the overview</a>
     </div>
   </article>

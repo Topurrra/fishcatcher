@@ -5,9 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fish Catcher Transparency: False-Positive Rate &amp; Tests</title>
 <meta name="description" content="How Fish Catcher measures its false-positive rate (0.005% over 100,000 domains), what it detects, and how to reproduce the numbers yourself.">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icon-128.png" sizes="128x128">
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/docs.css">
+<link rel="stylesheet" href="/assets/diagrams.css">
 <link rel="canonical" href="https://fishcatcher.dev/transparency">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Fish Catcher">
@@ -25,7 +28,7 @@
 <link rel="preload" href="/assets/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 <script src="/assets/theme-init.js"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fishcatcher.dev/"},{"@type":"ListItem","position":2,"name":"Transparency","item":"https://fishcatcher.dev/transparency"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Fish Catcher transparency","description":"How Fish Catcher measures its false-positive rate, what it detects, and how to reproduce the numbers yourself.","url":"https://fishcatcher.dev/transparency","datePublished":"2026-08-11","dateModified":"2026-08-11","inLanguage":"en","publisher":{"@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Fish Catcher transparency","description":"How Fish Catcher measures its false-positive rate, what it detects, and how to reproduce the numbers yourself.","url":"https://fishcatcher.dev/transparency","datePublished":"2026-08-11","dateModified":"2026-08-19","inLanguage":"en","publisher":{"@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev"}}</script>
 </head>
 <body>
 
@@ -53,7 +56,7 @@
     </div>
     <nav class="tree" aria-label="Transparency navigation">
       <a class="area" href="/">Home</a>
-      <a class="area" href="/docs">Documentation</a>
+      <a class="area" href="/docs">Docs</a>
       <a class="area" href="/learn">Learn</a>
       <a class="area" href="/privacy">Privacy</a>
       <a class="area current" href="/transparency">Transparency</a>
@@ -72,7 +75,7 @@
   <main class="docs-main">
     <div class="breadcrumb"><a href="/">Home</a> / Transparency</div>
     <h1>Transparency</h1>
-    <p class="sub">A warning tool is only worth trusting if you can check how often it cries wolf. So we measure that, and show the numbers.</p>
+    <p class="sub">A warning tool is only worth trusting if you can check how often it cries wolf. We measure that and show the numbers.</p>
     <div class="meta-row">
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 5-6"/></svg> Numbers you can reproduce</span>
       <span class="sep"></span>
@@ -82,53 +85,48 @@
 
     <h2 id="promises">Our promises</h2>
     <ul>
-      <li>It warns, it never blocks. You always decide.</li>
+      <li>It warns, it never blocks. You decide.</li>
       <li>It runs on your device. The default checks need no internet.</li>
-      <li>There is no server. Nothing about the page you are on reaches us, because there is nowhere for it to go.</li>
-      <li>The online checks (threat-list updates, domain age, Google Safe Browsing) stay off until you turn them on, and each sends only the one domain it needs.</li>
+      <li>There is no server. Nothing about the page you are on reaches us.</li>
+      <li>The online checks (threat-list updates, domain age, Google Safe Browsing) stay off until you turn them on, and each sends only the one thing it needs.</li>
     </ul>
 
     <h2 id="detect">What we detect</h2>
-    <p class="lead-p">Fish Catcher combines eight families of signal, all in plain terms.</p>
+    <p class="lead-p">Eight families of signal, combined into one score.</p>
     <ul>
       <li><b>Brand impersonation.</b> Misspelled or look-alike versions of well-known sites.</li>
-      <li><b>URL tricks.</b> Raw IP addresses, the @ trick, high-abuse endings, long subdomain chains, unencrypted logins, and digit-heavy names.</li>
-      <li><b>Known-bad lists.</b> A bundled blocklist plus a daily community feed, matched on your device.</li>
-      <li><b>Page checks.</b> A login form on a site it does not know, and device-code sign-in scams.</li>
-      <li><b>On-device model.</b> Spots the random, computer-generated addresses fresh phishing uses.</li>
-      <li><b>AiTM.</b> A sign-in or code prompt on a site whose address does not match the brand it looks like, with guardrails so real login providers do not trip it.</li>
-      <li><b>Scam packs.</b> Pages asking for a wallet recovery phrase, and fake tech-support pages.</li>
+      <li><b>URL tricks.</b> Raw IPs, the @ trick, high-abuse endings, long subdomain chains, digit-heavy names.</li>
+      <li><b>Known-bad lists.</b> A bundled blocklist plus a daily feed, matched on your device.</li>
+      <li><b>Page checks.</b> A login form on an unknown site, and device-code sign-in scams.</li>
+      <li><b>On-device model.</b> Random, computer-generated addresses.</li>
+      <li><b>AiTM.</b> A sign-in or code prompt on a site that does not match the brand it looks like.</li>
+      <li><b>Scam packs.</b> Wallet recovery-phrase requests and fake tech-support pages.</li>
       <li><b>Google Safe Browsing.</b> An extra layer, if you add your own free key.</li>
     </ul>
 
     <h2 id="fp">Measuring false positives</h2>
-    <p>A false positive is a warning on a site that is fine. The ones that matter are the loud ones, high and critical, so those are what we count.</p>
-    <p>We run the address-only part of the engine over the Majestic Million, a public list of the most-linked sites, and count how many good ones it warns about. The rate is the high and critical warnings divided by the total scanned.</p>
+    <p>A false positive is a warning on a site that is fine. We count the loud ones, high and critical. The address-only engine runs over the first 100,000 domains of the Majestic Million, a public list of the most-linked sites, and the rate is high plus critical warnings divided by domains scanned.</p>
 
     <h2 id="reproduce">Reproduce it</h2>
-    <p>The audit prints every site it flagged, so you can check the number yourself:</p>
+    <p>The audit prints every site it flagged:</p>
     <pre data-lang="bash"><code>node scripts/fp-audit.mjs</code></pre>
-    <p>Add <code>--selftest</code> to check the harness on a small built-in set, <code>--limit N</code> to scan fewer domains, or <code>--cache</code> to reuse an already-downloaded corpus.</p>
+    <p>Add <code>--selftest</code> to check the harness on a small built-in set, <code>--limit N</code> to scan fewer domains, or <code>--cache</code> to reuse a downloaded corpus.</p>
 
     <h2 id="result">Latest result</h2>
-    <p>Latest run, 2026-08-11, over 100,000 legitimate sites:</p>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th scope="col">Measure</th><th scope="col">Value</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Warnings at high</td><td>5</td></tr>
-          <tr><td>Warnings at critical</td><td>0</td></tr>
-          <tr><td>Rate</td><td>0.005% (5 in 100,000)</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>The five were all very short, digit-heavy names on high-abuse endings, like <code>hy315.cc</code>.</p>
-    <p>For the full method, the exact command, the list of flagged domains and the run-by-run history, see the <a href="/benchmark">false-positive benchmark</a>.</p>
+    <p>Run of <time datetime="2026-08-19">19 August 2026</time>, 100,000 legitimate sites. The 11 August run had the same numbers.</p>
+    <figure class="diagram">
+    <ul class="bars" aria-label="How 100,000 legitimate sites were rated">
+      <li><span class="lbl">Low</span><span class="bar"><i style="width:97.7%;background:var(--green)"></i></span><span class="val">97,697 (97.7%)</span></li>
+      <li><span class="lbl">Elevated</span><span class="bar"><i style="width:2.3%;background:var(--amber)"></i></span><span class="val">2,298 (2.3%)</span></li>
+      <li><span class="lbl">High</span><span class="bar"><i style="width:0.005%;background:var(--orange)"></i></span><span class="val">5 (0.005%)</span></li>
+      <li><span class="lbl">Critical</span><span class="bar"><i style="width:0%;background:var(--red)"></i></span><span class="val">0</span></li>
+    </ul>
+    <figcaption>False-positive rate 0.005%, 5 in 100,000. All five were very short, digit-heavy names on high-abuse endings, like <code>hy315.cc</code>.</figcaption>
+    </figure>
+    <p>Method, command, flagged domains and run history are on the <a href="/benchmark">benchmark page</a>.</p>
 
     <h2 id="report">Report a mistake</h2>
-    <p>If Fish Catcher warns about a good site, or misses a bad one, <a href="https://github.com/Topurrra/fishcatcher-registry/issues">open an issue</a>. Real examples make the lists and the model better for everyone.</p>
+    <p>If Fish Catcher warns about a good site, or misses a bad one, <a href="https://github.com/Topurrra/fishcatcher-registry/issues">open an issue</a>. Real examples improve the lists and the model.</p>
 
     <div class="prevnext">
       <a href="/privacy"><small>Privacy</small>Privacy policy</a>

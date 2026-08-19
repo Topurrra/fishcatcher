@@ -1,7 +1,7 @@
 // Shared settings wiring, used by both the options page and the Chromium
 // side panel. Binds controls by id in whatever document loads it.
 import { getMessage } from './i18n.js';
-import { UI_ICONS } from './icons.js';
+import { setIcon } from './icons.js';
 
 function fmtDate(ts) {
   if (!ts) return '';
@@ -21,17 +21,17 @@ async function setRemoteStatus(state, info = {}) {
   const icon = el.querySelector('.si-icon');
   const text = el.querySelector('.si-text');
   if (state === 'downloading') {
-    icon.innerHTML = UI_ICONS.spinner;
+    setIcon(icon, 'spinner');
     text.textContent = await getMessage('remoteUpdating');
   } else if (state === 'ready') {
-    icon.innerHTML = UI_ICONS.check;
+    setIcon(icon, 'check');
     if (info.count != null && info.updatedAt) {
       text.textContent = await getMessage('remoteReady', [Number(info.count).toLocaleString(), fmtDate(info.updatedAt)]);
     } else {
       text.textContent = await getMessage('remoteReadyNoCount');
     }
   } else if (state === 'error') {
-    icon.innerHTML = UI_ICONS.alert;
+    setIcon(icon, 'alert');
     text.textContent = await getMessage('remoteError');
   }
 }
@@ -78,13 +78,13 @@ async function setActive(id, on, key) {
   }
   el.hidden = false;
   el.className = 'statusline is-ready';
-  el.querySelector('.si-icon').innerHTML = UI_ICONS.check;
+  setIcon(el.querySelector('.si-icon'), 'check');
   el.querySelector('.si-text').textContent = await getMessage(key);
 }
 
 export async function initSettings() {
   const $ = (id) => document.getElementById(id);
-  const stored = await chrome.storage.local.get(['opt:strict', 'opt:remote', 'opt:cloud', 'opt:downloads', 'opt:gsb', 'gsb:key', 'opt:senior', 'senior:helper', 'ui:lang']);
+  const stored = await chrome.storage.local.get(['opt:strict', 'opt:remote', 'opt:cloud', 'opt:downloads', 'opt:gsb', 'gsb:key', 'opt:senior', 'senior:helper']);
 
   $('strict').checked = !!stored['opt:strict'];
   $('remote').checked = !!stored['opt:remote'];
@@ -94,7 +94,6 @@ export async function initSettings() {
   $('gsb-key').value = stored['gsb:key'] ?? '';
   $('senior').checked = !!stored['opt:senior'];
   $('senior-helper').value = stored['senior:helper'] ?? '';
-  $('lang').value = stored['ui:lang'] ?? 'auto';
 
   $('strict').addEventListener('change', (e) => {
     chrome.storage.local.set({ 'opt:strict': e.target.checked });
@@ -144,9 +143,6 @@ export async function initSettings() {
   });
   $('senior-helper').addEventListener('change', (e) => {
     chrome.storage.local.set({ 'senior:helper': e.target.value.trim() });
-  });
-  $('lang').addEventListener('change', (e) => {
-    chrome.storage.local.set({ 'ui:lang': e.target.value });
   });
 
   setActive('cloud-status', !!stored['opt:cloud'], 'cloudActive');

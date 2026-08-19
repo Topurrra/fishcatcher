@@ -18,15 +18,18 @@
 <meta name="twitter:title" content="How to Spot a Lookalike Domain Before You Get Phished">
 <meta name="twitter:description" content="A lookalike domain copies a trusted brand with small spelling or character tricks. Learn how to spot fake web addresses before you type a password or log in.">
 <meta name="twitter:image" content="https://fishcatcher.dev/assets/og.jpg">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icon-128.png" sizes="128x128">
 <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/docs.css">
+<link rel="stylesheet" href="/assets/diagrams.css">
 <script src="/assets/theme-init.js"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"How to Spot a Lookalike Domain Before You Get Phished","description":"A lookalike domain copies a trusted brand with small spelling or character tricks. Learn how to spot fake web addresses before you type a password or log in.","url":"https://fishcatcher.dev/lookalike-domain","mainEntityOfPage":"https://fishcatcher.dev/lookalike-domain","datePublished":"2026-08-11","dateModified":"2026-08-11","inLanguage":"en","author":{"@type":"Organization","name":"Fish Catcher"},"publisher":{"@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"How to Spot a Lookalike Domain Before You Get Phished","description":"A lookalike domain copies a trusted brand with small spelling or character tricks. Learn how to spot fake web addresses before you type a password or log in.","url":"https://fishcatcher.dev/lookalike-domain","mainEntityOfPage":"https://fishcatcher.dev/lookalike-domain","datePublished":"2026-08-11","dateModified":"2026-08-19","inLanguage":"en","author":{"@type":"Organization","name":"Fish Catcher"},"publisher":{"@type":"Organization","name":"Fish Catcher","url":"https://fishcatcher.dev"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fishcatcher.dev/"},{"@type":"ListItem","position":2,"name":"Learn","item":"https://fishcatcher.dev/learn"},{"@type":"ListItem","position":3,"name":"How to spot a lookalike domain","item":"https://fishcatcher.dev/lookalike-domain"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to spot a lookalike domain","description":"Three checks that reveal a web address imitating a brand you trust.","totalTime":"PT2M","inLanguage":"en","step":[{"@type":"HowToStep","position":1,"name":"Read the part that matters most","text":"The real owner of an address is the part just before the first single slash, like paypal.com in paypal.com/login. Everything before it is a subdomain and can say anything.","url":"https://fishcatcher.dev/lookalike-domain#read-the-address"},{"@type":"HowToStep","position":2,"name":"Look for the common tricks","text":"Swapped characters such as paypa1.com, added words such as paypal-support.com, and long subdomain chains that push the real owner out of sight.","url":"https://fishcatcher.dev/lookalike-domain#common-tricks"},{"@type":"HowToStep","position":3,"name":"Protect yourself","text":"Open sites yourself from a bookmark or by typing the address, rather than following a link in a message.","url":"https://fishcatcher.dev/lookalike-domain#protect-yourself"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to spot a lookalike domain","description":"Three checks that reveal a web address imitating a brand you trust.","totalTime":"PT2M","inLanguage":"en","step":[{"@type":"HowToStep","position":1,"name":"The one part that matters","text":"The real owner of an address is the part just before the first single slash, like paypal.com in paypal.com/login. Everything before it is a subdomain and can say anything.","url":"https://fishcatcher.dev/lookalike-domain#read-the-address"},{"@type":"HowToStep","position":2,"name":"Look for the common tricks","text":"Swapped characters such as paypa1.com, added words such as paypal-support.com, and long subdomain chains that push the real owner out of sight.","url":"https://fishcatcher.dev/lookalike-domain#common-tricks"},{"@type":"HowToStep","position":3,"name":"Protect yourself","text":"Open sites yourself from a bookmark or by typing the address, rather than following a link in a message.","url":"https://fishcatcher.dev/lookalike-domain#protect-yourself"}]}</script>
 </head>
 <body>
 
@@ -51,7 +54,7 @@
     </div>
     <nav class="tree" aria-label="Learn navigation">
       <a class="area" href="/">Home</a>
-      <a class="area" href="/docs">Documentation</a>
+      <a class="area" href="/docs">Docs</a>
       <a class="area current" href="/learn">Learn</a>
       <div class="sub">
         <a href="/learn">Overview</a>
@@ -73,52 +76,63 @@
     <div class="breadcrumb"><a href="/">Home</a> / <a href="/learn">Learn</a> / How to spot a lookalike domain</div>
     <h1>How to spot a lookalike domain</h1>
     <div class="meta-row">
-      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.5"/></svg> Updated <time datetime="2026-08-11">11 August 2026</time></span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.5"/></svg> Updated <time datetime="2026-08-19">19 August 2026</time></span>
       <span class="sep"></span>
       <a href="https://github.com/Topurrra/fishcatcher"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11 11 0 0 1 6 0C17 4.6 18 4.9 18 4.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg> View source</a>
     </div>
     <div class="rule"><span class="line"></span><span class="pill-mono">Stay safe</span><span class="line"></span></div>
 
-<p class="lead-p">A lookalike domain is a web address built to imitate a trusted brand using small spelling changes, extra words, or swapped characters, so a fake site can pass for the real one.</p>
+<p class="lead-p">A lookalike domain is a web address built to imitate a trusted brand with small spelling changes, extra words, or swapped characters, so a fake site can pass for the real one.</p>
 
 <h2 id="why-they-work">Why lookalike domains work</h2>
-<p>People do not read web addresses letter by letter. We glance at them and match the shape to a brand we know. Scammers rely on that. They register an address that looks close enough to a real one, put a copied login page on it, and wait for someone to sign in. The whole scam rests on a moment of fast reading.</p>
-<p>The address is the one part of a page that is hard to fake. Anyone can copy a logo, a layout, and the colors of a bank or a shop. Nobody else can own the real address. So the address bar is your most reliable check, as long as you know where to look.</p>
+<p>People do not read web addresses letter by letter. We glance and match the shape to a brand we know. Scammers register an address that looks close enough, put a copied login page on it, and wait. Anyone can copy a logo, but nobody else can own the real address, so the address bar is your most reliable check.</p>
 
-<h2 id="read-the-address">The one part that matters most</h2>
-<p>A web address has a main part that names the real owner of the site. It is the word right before the ending, such as .com, .net, or .org. In login.paypal.com, the owner is paypal. In paypal.secure-login.com, the owner is secure-login, and paypal is just a word placed early to fool you.</p>
-<p>Read from the ending backward. Find the ending, then read the word just before it. That word, plus the ending, is who really controls the page. Everything to the left of it can be anything the attacker wants, including a brand name dropped in to catch your eye.</p>
+<h2 id="read-the-address">The one part that matters</h2>
+<p>The owner of a site is the word right before the ending (.com, .net, .org). In login.paypal.com the owner is paypal. In paypal.secure-login.com it is secure-login, and paypal is just a word placed early to catch your eye.</p>
+<figure class="diagram">
+<svg viewBox="0 0 640 150" role="img" aria-labelledby="d-url-title"><title id="d-url-title">Anatomy of a lookalike address</title>
+<text x="80" y="44" class="mono muted" font-size="16" textLength="80" lengthAdjust="spacing">https://</text>
+<text x="160" y="44" class="mono muted" font-size="16" textLength="190" lengthAdjust="spacing">login.microsoft.com</text>
+<text x="350" y="44" class="mono muted" font-size="16">.</text>
+<text x="360" y="44" class="mono" font-size="16" font-weight="600" textLength="150" lengthAdjust="spacing">evil-domain.xyz</text>
+<text x="510" y="44" class="mono muted" font-size="16" textLength="50" lengthAdjust="spacing">/auth</text>
+<line x1="360" y1="52" x2="510" y2="52" style="stroke:var(--red)" stroke-width="2"/>
+<path d="M160 62v8h190v-8" fill="none" style="stroke:var(--muted)" stroke-width="1.5"/>
+<path d="M360 62v8h150v-8" fill="none" style="stroke:var(--red)" stroke-width="1.5"/>
+<text x="255" y="90" font-size="12" text-anchor="middle" class="muted">looks like the brand</text>
+<text x="435" y="90" font-size="12" text-anchor="middle">the part that matters</text>
+<text x="320" y="132" font-size="12" text-anchor="middle" class="muted">Read from the right: the real owner is the last two parts before the first slash.</text>
+</svg>
+<figcaption>The brand sits on the left to catch your eye. The owner is evil-domain.xyz.</figcaption>
+</figure>
 
 <h2 id="common-tricks">Common tricks to watch for</h2>
 <ul>
-<li><strong>Misspellings.</strong> A single changed, added, or missing letter, such as paypa1.com, netfliix.com, or amazonn.com. At a glance these read as the real name.</li>
-<li><strong>Swapped characters.</strong> A zero for the letter o, or the number one for a lowercase L, as in g00gle.com or paypa1.com. On many screens they look almost identical.</li>
-<li><strong>Lookalike letters from other alphabets.</strong> Some characters from other writing systems look like ordinary letters but are different underneath. The name reads as "apple" but is not the real address at all. This trick is called a homoglyph.</li>
-<li><strong>The brand as a subdomain.</strong> An address like microsoft.login-verify.com puts the trusted name early, where you notice it, while the real owner is login-verify.</li>
-<li><strong>Extra words that sound official.</strong> Words like secure, verify, support, billing, or account bolted onto a brand name, such as apple-support-billing.com. Real companies rarely need to string these together.</li>
-<li><strong>Unusual endings.</strong> A famous brand on an ending you would not expect, sometimes chosen because it is cheap to register and often abused.</li>
+<li><strong>Misspellings.</strong> One changed, added, or missing letter: paypa1.com, netfliix.com, amazonn.com.</li>
+<li><strong>Swapped characters.</strong> A zero for the letter o, or the number one for a lowercase L: g00gle.com, paypa1.com.</li>
+<li><strong>Letters from other alphabets.</strong> Characters from other writing systems that look like ordinary letters, so the name reads as "apple" but is not. This is called a homoglyph.</li>
+<li><strong>The brand as a subdomain.</strong> microsoft.login-verify.com puts the trusted name first, while the real owner is login-verify.</li>
+<li><strong>Official-sounding extra words.</strong> secure, verify, support, or billing bolted onto a brand: apple-support-billing.com.</li>
 </ul>
 
 <h2 id="protect-yourself">How to protect yourself</h2>
-<p>You do not have to become an expert. A few habits catch most lookalike domains.</p>
 <ul>
-<li>Before you type a password, read the address from the ending backward and check the owner name.</li>
-<li>Reach important sites yourself. Type the address you know or use a saved bookmark instead of clicking a link in an email or message.</li>
-<li>Let a password manager help. It fills your login only on the exact address it saved. If it stays empty on a page that looks familiar, treat that silence as a warning.</li>
-<li>Slow down when a message pushes urgency. Fake addresses do their best work when you are rushed.</li>
-<li>Be extra careful with pages that ask for a password, a card number, or a recovery phrase.</li>
+<li>Before you type a password, read the address from the ending backward and check the owner.</li>
+<li>Reach important sites yourself: type the address or use a bookmark, not a link in a message.</li>
+<li>A password manager fills your login only on the exact address it saved, so its silence on a familiar-looking page is a warning.</li>
+<li>Slow down when a message pushes urgency.</li>
 </ul>
-<p>Fish Catcher does this reading for you and never blocks the page. It checks the address for lookalike and misspelled brand names, for lookalike characters from other alphabets, and for tricks like a brand buried in a long subdomain chain or a raw address with no real name. When it finds a problem, it shows a plain warning and a risk color, from green for no suspicious signs up to red for strong signs of a fake. You still decide what to do, with the reason spelled out in front of you.</p>
+<p>Fish Catcher reads the address for you and warns in plain words when it finds a misspelled brand, lookalike characters, or a brand buried in a long subdomain. It never blocks the page.</p>
 
 <h2 id="faq">Common questions</h2>
 <h3>Is a longer web address always more dangerous?</h3>
-<p>Not always, but length is often used to hide the real owner. A long address gives room to place a trusted brand name early, where you will see it, while the true owner sits quietly before the ending. Always find the ending and read the word just before it, no matter how long the address is.</p>
+<p>Not always, but length is often used to hide the owner by putting a trusted brand early, where you will see it. Find the ending and read the word before it.</p>
 
 <h3>Does the padlock icon mean a site is safe?</h3>
-<p>No. The padlock only means the connection is encrypted, not that the site is honest. Scammers can get a padlock for a lookalike address just as easily as anyone else. A padlock on paypa1.com does not make it the real PayPal.</p>
+<p>No. It means the connection is encrypted, not that the site is honest. A padlock on paypa1.com does not make it PayPal.</p>
 
 <h3>What if the address looks correct but something still feels wrong?</h3>
-<p>Trust that feeling and stop. Do not sign in. Open a new tab and reach the site the way you normally would, by typing the address or using your bookmark. If both pages match and behave the same, you are fine. If they differ, you likely caught a fake.</p>
+<p>Stop. Open a new tab and reach the site by typing the address or using your bookmark. If the two differ, you caught a fake.</p>
 
     <div class="prevnext">
       <a href="/learn"><small>Learn</small>All lessons</a>

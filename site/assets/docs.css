@@ -143,3 +143,61 @@
   .docs-main { margin: 0; }
   .step-cards { grid-template-columns: 1fr; }
 }
+
+/* ── compare ─────────────────────────────────────────── */
+/* Comparison pages: "where your data goes" flow diagram, the pixel fish
+   (same sprite as the hero, drawn in accent shades), the scorecard and the
+   two "pick X if" lists. Colours are tokens only; no risk colours here. */
+#fc-fish .d { fill: var(--accent); }
+#fc-fish .m { fill: var(--accent); fill-opacity: .82; }
+#fc-fish .b { fill: var(--accent); fill-opacity: .62; }
+#fc-fish .l { fill: var(--accent); fill-opacity: .36; }
+#fc-fish .p { fill: var(--text); }
+
+.cmp-flow .dv { stroke: var(--border); stroke-dasharray: 5 4; }
+.cmp-flow .bw { fill: var(--surface-2); stroke: var(--border); }
+.cmp-flow .hl { stroke: var(--border); }
+.cmp-flow .dot { fill: var(--border); }
+.cmp-flow .loop { stroke: var(--accent); }
+.cmp-flow .out { stroke: var(--text); }
+.cmp-flow .srv { stroke: var(--text); }
+.cmp-flow .sd { fill: var(--text); }
+
+.docs-main .cmp-score { width: 100%; border-collapse: collapse; font-size: 0.95rem; margin: 0 0 10px; }
+.docs-main .cmp-score th, .docs-main .cmp-score td { padding: 14px 12px; border: 0; vertical-align: top; text-align: left; font-family: inherit; }
+.docs-main .cmp-score th:first-child, .docs-main .cmp-score td:first-child { padding-left: 0; }
+.docs-main .cmp-score th:last-child, .docs-main .cmp-score td:last-child { padding-right: 0; }
+.docs-main .cmp-score tr { border-bottom: 1px solid var(--border); }
+.docs-main .cmp-score thead tr { border-bottom-color: var(--border-strong); }
+.docs-main .cmp-score tbody tr:last-child { border-bottom: 0; }
+.docs-main .cmp-score thead th { background: transparent; font-weight: 600; color: var(--text); padding-top: 4px; white-space: nowrap; }
+.docs-main .cmp-score thead th .cmp-fish { vertical-align: -6px; margin-right: 8px; }
+.docs-main .cmp-score tbody th { font-weight: 550; color: var(--muted); width: 24%; }
+.docs-main .cmp-score td { color: var(--text); width: 38%; position: relative; padding-left: 40px; }
+.docs-main .cmp-score td::before { display: none; content: attr(data-col); font-size: 0.75rem; color: var(--muted); margin-bottom: 2px; }
+.docs-main .cmp-score .g { width: 18px; height: 18px; position: absolute; left: 12px; top: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.docs-main .cmp-score .g.ok { color: var(--accent); }
+.docs-main .cmp-score .g.part { color: var(--muted); }
+.docs-main .cmp-score .g.no { color: var(--text); }
+.docs-main .cmp-note { color: var(--muted); font-size: 0.82rem; margin: 0 0 1.4em; }
+
+.cmp-pick { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 0 0 1.2em; }
+.cmp-pick > div { border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px 16px; background: var(--surface); }
+.docs-main .cmp-pick h3 { margin: 0 0 10px; font-size: 1rem; }
+.docs-main .cmp-pick ul { margin: 0; padding-left: 18px; gap: 6px; }
+.docs-main .cmp-pick li { font-size: 0.95rem; }
+
+@media (max-width: 720px) {
+  .cmp-pick { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .docs-main .cmp-score, .docs-main .cmp-score tbody, .docs-main .cmp-score thead { display: block; }
+  .docs-main .cmp-score tr { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; padding: 12px 0; }
+  .docs-main .cmp-score thead tr { padding-top: 0; }
+  .docs-main .cmp-score thead th:first-child { display: none; }
+  .docs-main .cmp-score th, .docs-main .cmp-score td { display: block; padding: 0; width: auto; }
+  .docs-main .cmp-score td { padding-left: 28px; }
+  .docs-main .cmp-score td .g { left: 0; top: 20px; }
+  .docs-main .cmp-score tbody th { grid-column: 1 / -1; margin-bottom: 8px; width: auto; }
+  .docs-main .cmp-score td::before { display: block; }
+}

@@ -117,9 +117,6 @@
     };
   }
 
-  const aitm = collectAitm();
-  if (aitm) send({ type: 'aitm-scan', payload: aitm });
-
   // Scam packs (crypto-drainer + tech-support locker). Report DERIVED FACTS only;
   // the worker+engine own the verdict. Matchers come from the bundled
   // engine/scampacks.js; guard the calls in case the content bundle order lags.
@@ -171,9 +168,6 @@
     return { cryptoSeed, seedInput, techScare, phone, fullscreen };
   }
 
-  const scam = collectScam();
-  if (scam) send({ type: 'scam-scan', scam });
-
   // Link intelligence: collect anchors and let the background (which has the
   // full engine + PSL) judge them. The auto pass sends only candidates worth
   // checking; the panel's "Scan links" button asks for the full set.
@@ -195,8 +189,32 @@
     return out;
   }
 
-  const linkCandidates = collectLinks(false);
-  if (linkCandidates.length) send({ type: 'link-scan', links: linkCandidates });
+  // Page facts, sent at load and again on 'resend-facts' (the worker lost its
+  // in-memory per-tab state after being idle-killed).
+  function reportFacts() {
+    const aitm = collectAitm();
+    if (aitm) send({ type: 'aitm-scan', payload: aitm });
+    const scam = collectScam();
+    if (scam) send({ type: 'scam-scan', scam });
+    const linkCandidates = collectLinks(false);
+    if (linkCandidates.length) send({ type: 'link-scan', links: linkCandidates });
+  }
+  reportFacts();
+
+  // Remember the element under the last right-click so the worker can locate
+  // a QR image on screen when it cannot fetch the image itself.
+  let lastContextTarget = null;
+  document.addEventListener('contextmenu', (e) => { lastContextTarget = e.target; }, true);
+
+  function findImage(srcUrl) {
+    const t = lastContextTarget;
+    if (t instanceof HTMLImageElement) return t;
+    for (const img of document.images) {
+      if ((img.currentSrc || img.src) === srcUrl) return img;
+    }
+    // Overlay or wrapper was the target: fall back to an image inside / around it.
+    return t?.closest?.('picture')?.querySelector('img') || t?.querySelector?.('img') || null;
+  }
 
   // Ask whether a strict-mode banner is due now that our listener is ready.
   try {
@@ -214,6 +232,23 @@
     }
     if (m.type === 'show-banner') {
       showBanner(m.payload);
+    }
+    if (m.type === 'resend-facts') {
+      reportFacts();
+    }
+    if (m.type === 'qr-image-rect') {
+      const img = findImage(m.srcUrl);
+      if (!img) {
+        respond({ rect: null });
+      } else {
+        const r = img.getBoundingClientRect();
+        respond({
+          rect: { x: r.x, y: r.y, width: r.width, height: r.height },
+          dpr: window.devicePixelRatio || 1,
+          viewport: { w: window.innerWidth, h: window.innerHeight }
+        });
+      }
+      return true;
     }
   });
 

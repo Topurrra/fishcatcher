@@ -65,9 +65,19 @@ const ready = loadData();
 
 // Optional opt-in update channel: downloads a JSON bundle, never uploads anything.
 // ETag-cached, refreshed daily via alarm. Falls back silently to bundled lists.
-async function loadRemoteLists() {
-  const prefs = await chrome.storage.local.get(['opt:remote', 'data:etag', 'remote:count']);
+// Without `force` the network is skipped while the last fetch is under a day old
+// (the worker restarts often; only the alarm and the opt-in toggle force a fetch).
+// The last downloaded bundle is kept in storage.local and re-applied on every
+// worker start, so the feed stays active across restarts and 304 responses.
+const REMOTE_REFRESH_MS = 24 * 60 * 60 * 1000;
+async function loadRemoteLists(force = false) {
+  const prefs = await chrome.storage.local.get(['opt:remote', 'data:etag', 'remote:count', 'remote:updatedAt', 'remote:bundle']);
   if (!prefs['opt:remote']) return;
+  if (prefs['remote:bundle'] && !data.bloom) Object.assign(data, applyBundle(data, prefs['remote:bundle']));
+  if (!force && prefs['remote:updatedAt'] && Date.now() - prefs['remote:updatedAt'] < REMOTE_REFRESH_MS) {
+    broadcast({ type: 'remote-status', state: 'ready', count: prefs['remote:count'], updatedAt: prefs['remote:updatedAt'] });
+    return;
+  }
   const url = DEFAULT_REMOTE_URL; // single fixed source: the FishCatcher registry
   broadcast({ type: 'remote-status', state: 'downloading' });
   try {
@@ -90,7 +100,7 @@ async function loadRemoteLists() {
     const etag = res.headers.get('ETag');
     const count = typeof bundle.count === 'number' ? bundle.count : null;
     const updatedAt = Date.now();
-    const set = { 'remote:updatedAt': updatedAt };
+    const set = { 'remote:updatedAt': updatedAt, 'remote:bundle': bundle };
     if (count != null) set['remote:count'] = count;
     if (etag) set['data:etag'] = etag;
     await chrome.storage.local.set(set);
@@ -100,9 +110,13 @@ async function loadRemoteLists() {
   }
 }
 
-chrome.alarms?.create('fc-list-update', { periodInMinutes: 1440 });
+// Create the alarm only if it does not exist: re-creating it on every worker
+// start would restart its timer and it would never reach 24h.
+chrome.alarms?.get('fc-list-update', (alarm) => {
+  if (!alarm) chrome.alarms.create('fc-list-update', { periodInMinutes: 1440 });
+});
 chrome.alarms?.onAlarm.addListener((alarm) => {
-  if (alarm.name === 'fc-list-update') loadRemoteLists();
+  if (alarm.name === 'fc-list-update') loadRemoteLists(true);
 });
 
 // Opt-in RDAP domain-age check: sends only the registrable domain, nothing else.
@@ -271,14 +285,52 @@ async function flagDeviceCode(tabId, url) {
 }
 
 // ── QR decoding (fully local) ───────────────────────────────────
+// `crop` (optional) is a rect in bitmap pixels; it is clamped to the bitmap and
+// a tiny visible part (< 40px either way) is treated as unreadable.
+function decodeQrBitmap(bmp, crop) {
+  let x = 0, y = 0, w = bmp.width, h = bmp.height;
+  if (crop) {
+    x = Math.max(0, Math.floor(crop.x));
+    y = Math.max(0, Math.floor(crop.y));
+    w = Math.min(bmp.width, Math.ceil(crop.x + crop.width)) - x;
+    h = Math.min(bmp.height, Math.ceil(crop.y + crop.height)) - y;
+    if (w < 40 || h < 40) return null;
+  }
+  const canvas = new OffscreenCanvas(w, h);
+  const ctx2d = canvas.getContext('2d');
+  ctx2d.drawImage(bmp, x, y, w, h, 0, 0, w, h);
+  const img = ctx2d.getImageData(0, 0, w, h);
+  return jsQR(img.data, img.width, img.height)?.data ?? null;
+}
+
 async function decodeQr(blob) {
   const bmp = await createImageBitmap(blob);
   try {
-    const canvas = new OffscreenCanvas(bmp.width, bmp.height);
-    const ctx2d = canvas.getContext('2d');
-    ctx2d.drawImage(bmp, 0, 0);
-    const img = ctx2d.getImageData(0, 0, bmp.width, bmp.height);
-    return jsQR(img.data, img.width, img.height)?.data ?? null;
+    return decodeQrBitmap(bmp, null);
+  } finally {
+    bmp.close?.();
+  }
+}
+
+// Fallback when the image itself cannot be fetched (no host permission for its
+// origin): screenshot the visible tab (activeTab grants this after the
+// context-menu click) and decode the image's on-screen rectangle, then the
+// whole screenshot once.
+async function decodeQrFromScreenshot(tab, srcUrl) {
+  let rect = null, dpr = 1;
+  try {
+    const res = await chrome.tabs.sendMessage(tab.id, { type: 'qr-image-rect', srcUrl });
+    rect = res?.rect ?? null;
+    dpr = res?.dpr || 1;
+  } catch {
+    // content script not reachable: decode the full screenshot only
+  }
+  const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, { format: 'png' });
+  const blob = await (await fetch(dataUrl)).blob();
+  const bmp = await createImageBitmap(blob);
+  try {
+    const crop = rect ? { x: rect.x * dpr, y: rect.y * dpr, width: rect.width * dpr, height: rect.height * dpr } : null;
+    return (crop && decodeQrBitmap(bmp, crop)) || decodeQrBitmap(bmp, null);
   } finally {
     bmp.close?.();
   }
@@ -292,21 +344,29 @@ async function openPanel(windowId) {
   }
 }
 
-async function checkQrImage(srcUrl, windowId) {
+async function checkQrImage(srcUrl, tab) {
+  let text = null;
   try {
-    const blob = await (await fetch(srcUrl)).blob();
-    const url = await decodeQr(blob);
-    if (!url) return;
-    await ready;
-    const result = analyzeUrl(url, data);
-    if (!result) return;
-    result.trusted = data.trustList.has(result.registrable);
-    pendingResult = result;
-    pendingNote = 'qrResultNote';
-    if (windowId) openPanel(windowId);
+    text = await decodeQr(await (await fetch(srcUrl)).blob());
   } catch {
-    // unfetchable image or no QR — stay silent
+    // no host permission for the image origin, or not decodable: try a screenshot
   }
+  if (!text && tab?.id != null) {
+    try {
+      text = await decodeQrFromScreenshot(tab, srcUrl);
+    } catch {
+      // capture not permitted or failed
+    }
+  }
+  await ready;
+  const result = text ? analyzeUrl(text, data) : null;
+  if (result) result.trusted = data.trustList.has(result.registrable);
+  pendingResult = result;
+  // Never stay silent: the panel shows why there is no result.
+  pendingNote = result ? 'qrResultNote' : text ? 'qrNotUrl' : 'qrUnreadable';
+  // The panel was opened by the click handler (gesture intact); if it is already
+  // showing, this tells it to pick up the result now.
+  broadcast({ type: 'qr-pending' });
 }
 
 function createMenus() {
@@ -321,7 +381,10 @@ chrome.runtime.onStartup.addListener(createMenus);
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === 'check-qr' && info.srcUrl) {
-    checkQrImage(info.srcUrl, tab?.windowId);
+    // Open first, while the user gesture is still live: sidePanel.open() refuses
+    // to run after the async fetch/screenshot work below.
+    if (tab?.windowId) openPanel(tab.windowId);
+    checkQrImage(info.srcUrl, tab);
   }
 });
 
@@ -434,6 +497,20 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     await ready;
     switch (msg.type) {
       case 'get-result':
+        // Per-tab state is in-memory and lost when the worker is idle-killed,
+        // while the tab icon keeps its colour. Rebuild the URL verdict now and
+        // ask the page to resend its facts so the 'scored' broadcast re-renders.
+        if (!results.has(msg.tabId) && msg.tabId != null) {
+          try {
+            const tab = await chrome.tabs.get(msg.tabId);
+            if (tab?.url && /^https?:/i.test(tab.url)) {
+              await scoreTab(msg.tabId, tab.url);
+              chrome.tabs.sendMessage(msg.tabId, { type: 'resend-facts' }).catch(() => {});
+            }
+          } catch {
+            // tab closed or not accessible
+          }
+        }
         sendResponse({ result: results.get(msg.tabId) ?? null });
         break;
       case 'rescore': {
@@ -529,7 +606,14 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'local') return;
-  if (changes['opt:remote']) loadRemoteLists();
+  if (changes['opt:remote']) {
+    if (changes['opt:remote'].newValue) {
+      loadRemoteLists(true);
+    } else {
+      data.bloom = null; // back to the bundled lists, and forget the download
+      chrome.storage.local.remove(['remote:bundle', 'data:etag', 'remote:count', 'remote:updatedAt']);
+    }
+  }
   if (changes['opt:cloud']) cloudEnabled = !!changes['opt:cloud'].newValue;
   if (changes['opt:gsb']) { gsbEnabled = !!changes['opt:gsb'].newValue; gsbCache.clear(); }
   if (changes['gsb:key']) { gsbKey = changes['gsb:key'].newValue || ''; gsbCache.clear(); }

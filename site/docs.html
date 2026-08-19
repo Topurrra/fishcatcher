@@ -4,27 +4,30 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fish Catcher Docs: Install, Settings &amp; Risk Levels</title>
-<meta name="description" content="How to install and use Fish Catcher: what it checks, the green to red risk levels, settings including Safe Browsing, automatic updates, and building from source.">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<meta name="description" content="How to install and use Fish Catcher: what it checks, the green to red risk levels, settings including Safe Browsing, threat-list updates, and building from source.">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icon-128.png" sizes="128x128">
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/docs.css">
+<link rel="stylesheet" href="/assets/diagrams.css">
 <link rel="canonical" href="https://fishcatcher.dev/docs">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Fish Catcher">
 <meta property="og:title" content="Fish Catcher Docs: Install, Settings &amp; Risk Levels">
-<meta property="og:description" content="How to install and use Fish Catcher: what it checks, the green to red risk levels, settings including Safe Browsing, automatic updates, and building from source.">
+<meta property="og:description" content="How to install and use Fish Catcher: what it checks, the green to red risk levels, settings including Safe Browsing, threat-list updates, and building from source.">
 <meta property="og:url" content="https://fishcatcher.dev/docs">
 <meta property="og:image" content="https://fishcatcher.dev/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Fish Catcher Docs: Install, Settings &amp; Risk Levels">
-<meta name="twitter:description" content="How to install and use Fish Catcher: what it checks, the green to red risk levels, settings including Safe Browsing, automatic updates, and building from source.">
+<meta name="twitter:description" content="How to install and use Fish Catcher: what it checks, the green to red risk levels, settings including Safe Browsing, threat-list updates, and building from source.">
 <meta name="twitter:image" content="https://fishcatcher.dev/assets/og.jpg">
 <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 <script src="/assets/theme-init.js"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","name":"Fish Catcher documentation","url":"https://fishcatcher.dev/docs","datePublished":"2026-08-11","dateModified":"2026-08-11","inLanguage":"en","mainEntity":[{"@type":"Question","name":"Does it slow down my browsing?","acceptedAnswer":{"@type":"Answer","text":"No. The checks are small string operations that run on your device in a fraction of a second."}},{"@type":"Question","name":"Will it block me from a site?","acceptedAnswer":{"@type":"Answer","text":"Never. Fish Catcher only warns. You always decide what to do."}},{"@type":"Question","name":"Does it send my browsing anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. See the privacy policy for exactly what the optional online features send."}},{"@type":"Question","name":"It flagged a site I trust. What now?","acceptedAnswer":{"@type":"Answer","text":"Open the panel and choose Trust this site. It stops being flagged, and you can undo it in Settings."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","name":"Fish Catcher docs","url":"https://fishcatcher.dev/docs","datePublished":"2026-08-11","dateModified":"2026-08-19","inLanguage":"en","mainEntity":[{"@type":"Question","name":"Does it slow down my browsing?","acceptedAnswer":{"@type":"Answer","text":"No. The checks are small string operations that run on your device in a fraction of a second."}},{"@type":"Question","name":"Will it block me from a site?","acceptedAnswer":{"@type":"Answer","text":"Never. Fish Catcher only warns. You always decide what to do."}},{"@type":"Question","name":"Does it send my browsing anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. See the privacy policy for exactly what the optional online features send."}},{"@type":"Question","name":"It flagged a site I trust. What now?","acceptedAnswer":{"@type":"Answer","text":"Open the panel and choose Trust this site. It stops being flagged, and you can undo it in Settings."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fishcatcher.dev/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://fishcatcher.dev/docs"}]}</script>
 </head>
 <body>
@@ -51,16 +54,16 @@
       <input id="docFilter" type="text" placeholder="Filter" aria-label="Filter navigation" autocomplete="off">
       <kbd>/</kbd>
     </div>
-    <nav class="tree" aria-label="Documentation navigation">
+    <nav class="tree" aria-label="Docs navigation">
       <a class="area" href="/">Home</a>
-      <a class="area current" href="/docs">Documentation <span class="badge">Start here</span></a>
+      <a class="area current" href="/docs">Docs <span class="badge">Start here</span></a>
       <div class="sub">
         <a href="#overview" class="active">Overview</a>
         <a href="#install">Install</a>
         <a href="#settings">Settings</a>
         <a href="#checks">What it checks</a>
         <a href="#levels">Risk levels</a>
-        <a href="#updates">Automatic updates</a>
+        <a href="#updates">Threat-list updates</a>
         <a href="#build">Build from source</a>
         <a href="#faq">FAQ</a>
       </div>
@@ -73,8 +76,8 @@
 
   <main class="docs-main">
     <div class="breadcrumb"><a href="/">Home</a> / Docs</div>
-    <h1>Documentation</h1>
-    <p class="sub">Install Fish Catcher, understand what it checks, and make it your own.</p>
+    <h1>Docs</h1>
+    <p class="sub">Install it, see what it checks, set it up your way.</p>
     <div class="meta-row">
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Built for people who are not security experts</span>
       <span class="sep"></span>
@@ -83,66 +86,80 @@
     <div class="rule"><span class="line"></span><span class="pill-mono">Plain language</span><span class="line"></span></div>
 
     <h2 id="overview">Overview</h2>
-    <p class="lead-p">Fish Catcher is a browser extension that looks at the site you are on and warns you, in plain language, when it looks like phishing or a scam. It never blocks a page, and it does its checks on your device.</p>
-    <p>Click the toolbar icon to see the current site's verdict and why. On Chrome, Brave, Edge and Opera it opens a side panel; on Firefox it opens a popup.</p>
+    <p class="lead-p">Fish Catcher is a browser extension that warns you, in plain words, when the site you are on looks like phishing or a scam. It never blocks a page, and the checks run on your device.</p>
+    <p>Click the toolbar icon for the current site's verdict and why: a side panel on Chrome, Brave, Edge and Opera, a popup on Firefox.</p>
 
     <h2 id="install">Install</h2>
-    <p>Store listings are on the way. Until then you can load it from source in about a minute.</p>
+    <p>Store listings are on the way. Until then, load it from source in about a minute.</p>
     <div class="step-cards">
       <div class="c"><b>Chrome, Brave, Edge, Opera</b><span>Open the extensions page, turn on Developer mode, choose Load unpacked, and pick the <code>dist/chrome</code> folder.</span></div>
-      <div class="c"><b>Firefox</b><span>Open <code>about:debugging</code>, choose This Firefox, Load Temporary Add-on, and pick <code>dist/firefox/manifest.json</code>.</span></div>
+      <div class="c"><b>Firefox</b><span>Open <code>about:debugging</code>, choose This Firefox, Load Temporary Add-on, and pick <code>dist/firefox/manifest.json</code>. Firefox 128 or newer.</span></div>
     </div>
-    <p>To produce those folders from the source:</p>
+    <p>To produce those folders:</p>
     <pre data-lang="bash"><code>git clone https://github.com/Topurrra/fishcatcher.git
 cd fishcatcher
 node scripts/build.mjs</code></pre>
-    <div class="callout"><p>Nothing to configure. Fish Catcher works the moment it is loaded, fully offline.</p></div>
 
     <h2 id="settings">Settings</h2>
-    <p>Open Settings from the side panel (Chrome family) or the extension's options page (Firefox). Everything is off by default except the on-device checks.</p>
+    <p>Open Settings from the side panel (Chrome family) or the options page (Firefox). All of these are off by default.</p>
     <ul>
-      <li><b>Strict mode.</b> Shows a dismissible warning banner on high-risk pages. Never blocks the page.</li>
-      <li><b>Threat-list updates.</b> Downloads a daily Bloom-filter file that merges three keyless public feeds (Phishing.Database, URLhaus, OpenPhish). It only downloads, never uploads, and every check is local.</li>
-      <li><b>Domain-age check (RDAP).</b> Asks a public directory service how old a domain is. Sends only the domain name.</li>
-      <li><b>Google Safe Browsing.</b> Off by default. Sends the address you visit to Google, and needs your own free Google API key. <a href="https://developers.google.com/safe-browsing/v4/get-started">How to get a free key</a>.</li>
-      <li><b>Download guard.</b> Warns when a download is disguised, like a program pretending to be a PDF. Offers a one-click cancel.</li>
-      <li><b>Family mode.</b> Bigger text, a clear alert on dangerous sites, and an optional one-tap email to a helper. Nothing sends until you press send.</li>
-      <li><b>Report this site.</b> One button opens a pre-filled report that a maintainer reviews before it reaches the threat list.</li>
-      <li><b>Language.</b> English or Georgian, or follow the browser.</li>
-      <li><b>Trusted sites.</b> Any site you mark as trusted stops being flagged. You can remove it here anytime.</li>
+      <li><b>Strict mode.</b> A dismissible warning banner on high-risk pages. Still never blocks.</li>
+      <li><b>Threat-list updates.</b> See <a href="#updates">below</a>.</li>
+      <li><b>Domain-age check (RDAP).</b> Asks a public directory how old a domain is. Sends only the domain name.</li>
+      <li><b>Google Safe Browsing.</b> Sends the address you visit to Google. Needs <a href="https://developers.google.com/safe-browsing/v4/get-started">your own free API key</a>.</li>
+      <li><b>Download guard.</b> Warns when a download is disguised, like a program pretending to be a PDF, with a one-click cancel.</li>
+      <li><b>Family mode.</b> Bigger text, a plainer alert, and an optional one-tap email to a helper that only goes when you press send.</li>
+      <li><b>Report this site.</b> Opens a pre-filled report that a maintainer reviews before it reaches the threat list.</li>
+      <li><b>Trusted sites.</b> Sites you mark as trusted stop being flagged. Remove them here anytime.</li>
     </ul>
 
     <h2 id="checks">What it checks</h2>
-    <p>Fish Catcher combines many small signals into one score. A few examples, all in plain terms:</p>
+    <p>Small signals add up to one score:</p>
     <ul>
-      <li>A domain that looks like a misspelling of a known brand, like <code>paypa1.com</code>.</li>
-      <li>Look-alike characters used to imitate a brand (homoglyphs).</li>
-      <li>A brand's name used on a domain that is not the brand's.</li>
-      <li>A raw IP address instead of a normal domain.</li>
-      <li>High-abuse domain endings, deep subdomain chains, and generated-looking names.</li>
-      <li>A password form on a site that is not a known legitimate domain.</li>
-      <li>Adversary-in-the-middle (AiTM) pages: a login, MFA, or passkey flow on an origin that does not match the brand it claims to be.</li>
-      <li>The device-code scam pattern, and known-bad sites from the threat list.</li>
-      <li>Scam packs: pages asking for a crypto wallet recovery phrase or private key, and fake tech-support pages that tell you to call a number.</li>
-      <li>Links whose visible text does not match where they go, and disguised downloads.</li>
-      <li>An optional Google Safe Browsing layer, when you turn it on with your own key.</li>
+      <li>Misspelled or look-alike brand names, like <code>paypa1.com</code>, or a brand's name on a domain it does not own.</li>
+      <li>A raw IP address, high-abuse domain endings, deep subdomain chains, and generated-looking names.</li>
+      <li>A password, code, or passkey prompt on a site that does not match the brand it claims to be.</li>
+      <li>The device-code scam pattern, wallet recovery-phrase requests, and fake tech-support pages.</li>
+      <li>Links whose text does not match where they go, and disguised downloads.</li>
+      <li>Known-bad sites from the threat list, and Google Safe Browsing if you turn it on.</li>
     </ul>
-    <p>Well-known legitimate sites are recognized so they are not flagged by mistake.</p>
+    <p>Well-known sites are recognised and not flagged by mistake.</p>
 
     <h2 id="levels">Risk levels</h2>
-    <div class="step-cards">
-      <div class="c"><b>Green</b><span>No suspicious signs found.</span></div>
-      <div class="c"><b>Yellow</b><span>A little unusual. Double check the address.</span></div>
-      <div class="c"><b>Orange</b><span>Several phishing indicators. Be careful before logging in.</span></div>
-      <div class="c"><b>Red</b><span>Strong signs of a fake. Do not enter passwords.</span></div>
-    </div>
+    <figure class="diagram">
+      <svg viewBox="0 0 720 92" role="img" aria-labelledby="levels-title">
+        <title id="levels-title">Risk scale: low 0 to 19, elevated 20 to 44, high 45 to 74, critical 75 to 100</title>
+        <g font-size="12">
+          <text x="72" y="14" text-anchor="middle">No suspicious signs</text>
+          <text x="234" y="14" text-anchor="middle">A little unusual, double check</text>
+          <text x="432" y="14" text-anchor="middle">Several phishing indicators</text>
+          <text x="630" y="14" text-anchor="middle">Strong signs of a fake</text>
+        </g>
+        <rect class="px" x="0" y="26" width="142" height="18" fill="var(--green)"/>
+        <rect class="px" x="144" y="26" width="178" height="18" fill="var(--amber)"/>
+        <rect class="px" x="324" y="26" width="214" height="18" fill="var(--orange)"/>
+        <rect class="px" x="540" y="26" width="180" height="18" fill="var(--red)"/>
+        <g font-size="13" font-weight="600">
+          <text x="72" y="64" text-anchor="middle">Low</text>
+          <text x="234" y="64" text-anchor="middle">Elevated</text>
+          <text x="432" y="64" text-anchor="middle">High</text>
+          <text x="630" y="64" text-anchor="middle">Critical</text>
+        </g>
+        <g class="mono muted" font-size="12">
+          <text x="72" y="84" text-anchor="middle">0 to 19</text>
+          <text x="234" y="84" text-anchor="middle">20 to 44</text>
+          <text x="432" y="84" text-anchor="middle">45 to 74</text>
+          <text x="630" y="84" text-anchor="middle">75 to 100</text>
+        </g>
+      </svg>
+      <figcaption>Only high and critical raise an alarm. At high, be careful before logging in; at critical, do not enter passwords.</figcaption>
+    </figure>
 
-    <h2 id="updates">Automatic updates</h2>
-    <p>The list of known phishing sites stays current with no manual work. A companion repository rebuilds it every day, merging three keyless public feeds, Phishing.Database, URLhaus by abuse.ch, and OpenPhish, into one compact Bloom-filter file.</p>
-    <p>When you turn on <b>Threat-list updates</b>, the extension fetches that file once a day, and only when it has changed. Source: <a href="https://github.com/Topurrra/fishcatcher-registry">the Fish Catcher registry on GitHub</a>.</p>
+    <h2 id="updates">Threat-list updates</h2>
+    <p><a href="https://github.com/Topurrra/fishcatcher-registry">The Fish Catcher registry</a> rebuilds a compact Bloom-filter file of known phishing sites every day from three keyless public feeds: Phishing.Database, URLhaus by abuse.ch, and OpenPhish. With this on, the extension fetches the file once a day, only when it has changed, and matches against it on your device. Download only, never upload.</p>
 
     <h2 id="build">Build from source</h2>
-    <p>Plain vanilla JavaScript, no framework, just Node scripts.</p>
+    <p>Plain JavaScript, no framework.</p>
     <pre data-lang="bash"><code>node scripts/build.mjs      # build dist/chrome and dist/firefox
 node tests/verify.mjs       # run the checks
 node scripts/package.mjs    # zip both builds for the stores</code></pre>

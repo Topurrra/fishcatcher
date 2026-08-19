@@ -123,14 +123,6 @@
     "message": "Optional. Only a JSON file is downloaded. Nothing leaves your device.",
     "description": "Options: remote update privacy note"
   },
-  "langLabel": {
-    "message": "Language",
-    "description": "Options: language selector label"
-  },
-  "langAuto": {
-    "message": "Automatic (browser language)",
-    "description": "Options: follow browser language"
-  },
   "trustTitle": {
     "message": "Trusted sites",
     "description": "Options: trusted sites section heading"
@@ -186,6 +178,14 @@
   "qrResultNote": {
     "message": "Result for the scanned QR code:",
     "description": "Panel note above a QR check result"
+  },
+  "qrUnreadable": {
+    "message": "Could not read a QR code from that image. Try saving it and using Check a QR image in the panel.",
+    "description": "Context-menu QR check: image could not be fetched or decoded"
+  },
+  "qrNotUrl": {
+    "message": "This QR code does not contain a web address, so there is nothing to check.",
+    "description": "Context-menu QR check: payload is not an http(s) URL"
   },
   "ctxCheckQr": {
     "message": "Check QR code with FishCatcher",
